@@ -1,0 +1,83 @@
+{
+  "name": "pds-front",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@ant-design/icons": "^4.1.0",
+    "@tinymce/tinymce-react": "^3.6.0",
+    "@types/lodash": "^4.14.151",
+    "@types/node": "12.11.7",
+    "@types/qs": "^6.9.2",
+    "@types/query-string": "^6.3.0",
+    "@types/react": "16.9.11",
+    "@types/react-beautiful-dnd": "^11.0.5",
+    "@types/react-dom": "16.9.3",
+    "@types/react-infinite-scroller": "^1.2.1",
+    "@types/react-router-dom": "^5.1.5",
+    "antd": "^4.2.4",
+    "axios": "^0.19.2",
+    "husky": "^3.0.9",
+    "js-file-download": "^0.4.12",
+    "less": "^3.11.1",
+    "lint-staged": "^9.5.0",
+    "lodash": "^4.17.15",
+    "mobx": "^5.15.4",
+    "mobx-react": "^6.2.2",
+    "mobx-react-router": "^4.1.0",
+    "moment": "^2.25.3",
+    "path-to-regexp": "^3.1.0",
+    "prettier": "^1.18.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-router-dom": "^5.2.0"
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json,css,less,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "scripts": {
+    "start": "cross-env proxy=localhost react-app-rewired start",
+    "dev": "cross-env proxy=dev react-app-rewired start",
+    "qa": "cross-env proxy=qa react-app-rewired start",
+    "build": "react-app-rewired build",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-decorators": "^7.8.3",
+    "@babel/plugin-proposal-function-bind": "^7.8.3",
+    "@babel/preset-env": "^7.9.6",
+    "@babel/preset-react": "^7.9.4",
+    "babel-plugin-import": "^1.13.0",
+    "babel-preset-mobx": "^2.0.0",
+    "cross-env": "^7.0.2",
+    "customize-cra": "^0.8.0",
+    "less-loader": "^5.0.0",
+    "react-app-rewired": "^2.1.6",
+    "react-dev-utils": "^10.2.1",
+    "react-scripts": "^3.4.1",
+    "typescript": "3.6.4"
+  }
+}

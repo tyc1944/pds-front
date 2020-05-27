@@ -1,0 +1,22 @@
+---
+- name: deploy customer front end to production
+  hosts: all
+  remote_user: root
+  tasks:
+      - name: deploy docker image
+        docker_container:
+            name: mems-customer
+            image: registry.yunmotec.com:1443/{{CI_PROJECT_NAME}}:{{CI_COMMIT_REF_NAME}}-{{CI_COMMIT_SHORT_SHA}}
+            pull: yes
+            log_driver: json-file
+            log_options:
+                max-size: 100m
+                max-file: 3
+            ports:
+                - 8088:80
+            restart_policy: always
+            volumes:
+                - /etc/hosts:/etc/hosts
+                - /etc/localtime:/etc/localtime:ro
+                - /usr/share/fonts:/usr/share/fonts
+                - /mnt/vdb/data/file:/data/file

@@ -1,0 +1,32 @@
+.login-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  & > div {
+    width: 100%;
+  }
+
+  & > div:first-child {
+    flex: 0.8;
+    background: url(/img/login_bg_top.png) no-repeat;
+    background-size: 100% 100%;
+  }
+
+  & > div:last-child {
+    flex: 1;
+    height: 300px;
+    background: url(/img/login_bg_bottom.png) no-repeat;
+    background-size: 100% 100%;
+
+    & > div {
+      padding: 50px 0 0 0;
+      width: 500px;
+      margin: 0 auto;
+
+      & > div {
+        margin-bottom: 28px;
+      }
+    }
+  }
+}

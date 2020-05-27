@@ -1,0 +1,86 @@
+#root {
+  height: 100%;
+}
+
+.App {
+  height: 100%;
+
+  & > .ant-layout {
+    height: 100%;
+  }
+
+  //override ant design default style
+  .ant-table-thead > tr > th {
+    background-color: white !important;
+    color: #3f4d6a !important;
+  }
+
+  .ant-table-tbody > .ant-table-row:nth-child(even) {
+    background-color: #f6f9ff;
+  }
+
+  .ant-tabs-nav-scroll {
+    background-color: #f6f9fc;
+
+    .ant-tabs-ink-bar {
+      bottom: none;
+      top: 0px;
+    }
+
+    .ant-tabs-nav {
+      .ant-tabs-tab {
+        width: 150px;
+        height: 58px;
+        font-size: 18px;
+        text-align: center;
+        color: #6c87b3;
+      }
+
+      .ant-tabs-tab-active {
+        background-color: white;
+        margin: 0px;
+        color: #195cc7;
+      }
+    }
+  }
+
+  .ant-tree {
+    .anticon {
+      color: #89a4df;
+    }
+  }
+
+  .ant-tree.ant-tree-directory
+    .ant-tree-treenode
+    .ant-tree-node-content-wrapper.ant-tree-node-selected,
+  .ant-tree.ant-tree-directory
+    .ant-tree-treenode
+    .ant-tree-node-content-wrapper.ant-tree-node-selected:hover {
+    color: #195cc7;
+  }
+
+  .ant-tree.ant-tree-directory .ant-tree-treenode:hover::before,
+  .ant-tree.ant-tree-directory .ant-tree-treenode-selected:hover::before,
+  .ant-tree.ant-tree-directory .ant-tree-treenode-selected::before {
+    background: #d7e5f9;
+  }
+
+  .ant-tree-title {
+    font-size: 16px;
+  }
+}
+
+.MyModalClass {
+  .ant-modal-body {
+    padding: 24px 0px 0px 0px;
+  }
+
+  .ant-modal-header {
+    background-color: #4084f0;
+    color: white;
+
+    .ant-modal-title {
+      color: white;
+    }
+  }
+}
