@@ -28,8 +28,30 @@
     background-color: #f6f9ff;
   }
 
+  .ant-tabs {
+    flex          : auto;
+    min-height    : 0;
+    display       : flex;
+    flex-direction: column;
+
+    .ant-tabs-bar {
+      margin: 0px !important;
+    }
+
+    .ant-tabs-content {
+      flex      : auto;
+      min-height: 0;
+
+      .ant-tabs-tabpane {
+        height : 100%;
+        display: flex;
+      }
+    }
+  }
+
   .ant-tabs-nav-scroll {
-    background-color: #f6f9fc;
+    border          : 1px solid #D8DBE1;
+    background-color: #F5F7FB;
 
     .ant-tabs-ink-bar {
       bottom: none;
@@ -38,11 +60,12 @@
 
     .ant-tabs-nav {
       .ant-tabs-tab {
-        width     : 150px;
-        height    : 58px;
-        font-size : 18px;
-        text-align: center;
-        color     : #6c87b3;
+        width       : 150px;
+        height      : 58px;
+        font-size   : 18px;
+        text-align  : center;
+        color       : #6c87b3;
+        margin-right: 0 !important;
       }
 
       .ant-tabs-tab-active {

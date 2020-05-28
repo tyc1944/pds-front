@@ -2,6 +2,7 @@ import React from "react";
 
 interface BoxContainerProps {
   children: React.ReactNode;
+  noPadding?: boolean
 }
 
 interface BoxContainerInnerProps {
@@ -15,7 +16,7 @@ export class BoxContainer extends React.Component<BoxContainerProps> {
     return (
       <div
         style={{
-          padding: "16px 15px 0px 15px",
+          padding: this.props.noPadding ? "0px" : "16px 15px 0px 15px",
           width: "100%",
           minHeight: "0",
           height: "auto",
@@ -43,6 +44,7 @@ export class BoxContainerInner extends React.Component<BoxContainerInnerProps> {
           flexDirection: "column",
           backgroundColor: "#FFFFFF",
           marginBottom: "15px",
+          border: "1px solid #D6DDE3",
           flex: this.props.flex ? this.props.flex : 'auto'
         }}
       >

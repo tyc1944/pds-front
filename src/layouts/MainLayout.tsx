@@ -127,16 +127,32 @@ class MainLayout extends Component<MainLayoutProps, object> {
                 count: 0,
                 activeUrl: "/index/clue/analysis/all",
               }]} />
-            <MenuItem name="案件监督" icon={<FileDoneOutlined translate="true" />} subItems={[{
-              name: "待审批",
-              count: 12,
-              activeUrl: "/index/case/supervise/pending"
-            },
-            {
-              name: "全部案件",
-              count: 0,
-              activeUrl: "/index/case/supervise/all",
-            }]} />
+            <MenuItem name="案件监督" icon={<FileDoneOutlined translate="true" />} subItems={[
+              {
+                name: "待审批",
+                count: 12,
+                activeUrl: "/index/case/supervise/pendingExamine"
+              },
+              {
+                name: "待处理",
+                count: 12,
+                activeUrl: "/index/case/supervise/pendingProcess"
+              },
+              {
+                name: "已审批",
+                count: 12,
+                activeUrl: "/index/case/supervise/examined"
+              },
+              {
+                name: "待指派",
+                count: 12,
+                activeUrl: "/index/case/supervise/pendingAppoint"
+              },
+              {
+                name: "全部案件",
+                count: 0,
+                activeUrl: "/index/case/supervise/all",
+              }]} />
 
             <MenuItem name="决策辅助" icon={<AreaChartOutlined translate="true" />} subItems={[{
               name: "全国案例数据分析",

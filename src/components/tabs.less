@@ -1,0 +1,30 @@
+.tableNameWithNumberStyle(@bgColor) {
+    display        : flex;
+    align-items    : center;
+    justify-content: center;
+    height         : 100%;
+    font-size      : 16px;
+
+    &>div {
+        background-color: @bgColor;
+        border-radius   : 40%;
+        color           : #FFFFFF;
+        font-size       : 12px;
+        width           : 30px;
+        height          : 19px;
+        margin-left     : 6px;
+    }
+}
+
+.App .ant-tabs-nav-scroll .ant-tabs-nav {
+    .tableNameWithNumber {
+        .tableNameWithNumberStyle(#93B1E1);
+    }
+
+}
+
+.App .ant-tabs-nav-scroll .ant-tabs-nav .ant-tabs-tab-active {
+    .tableNameWithNumber {
+        .tableNameWithNumberStyle(#FF3F11);
+    }
+}
