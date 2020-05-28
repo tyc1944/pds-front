@@ -5,9 +5,10 @@ import { RouteComponentProps } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 import MainStore, { UserProfile } from "stores/mainStore";
 import "../common";
-import { Route, Switch } from "react-router";
+import { Route, Switch, Redirect } from "react-router";
 
 import Main from "../pages/main";
+import ClueAnalysis from "../pages/clueAnalysis";
 import { TableSelectionContext, TableSelection } from "components/table";
 import {
   SearchOutlined,
@@ -16,6 +17,12 @@ import {
 } from "@ant-design/icons";
 import { TOKEN_KEY } from "utils/RequestUtil";
 import { MenuItem } from "components/menu";
+import ClueJudge from "pages/clueJudge";
+import DataAnalysis from "pages/dataAnalysis";
+import CaseSupervise from "pages/caseSupervise";
+import DataRetrieval from "pages/dataRetrieval";
+import Setting from "pages/setting";
+import Wiki from "pages/wiki";
 
 const { Header, Sider, Content } = Layout;
 
@@ -89,71 +96,100 @@ class MainLayout extends Component<MainLayoutProps, object> {
               width={254}
               style={{
                 overflowY: "auto",
-                borderRight:"1px solid #D6DDE3 "
+                borderRight: "1px solid #D6DDE3 "
               }}
             >
-              <MenuItem name="首页" icon={<HomeOutlined translate="true" />} />
-              <MenuItem name="线索汇聚" icon={<DeploymentUnitOutlined translate="true" />} />
+              <MenuItem name="首页" icon={<HomeOutlined translate="true" />} onClick={() => {
+                window.location.href = "/index/main";
+              }} />
+              <MenuItem name="线索汇聚" icon={<DeploymentUnitOutlined translate="true" />} onClick={() => {
+                window.location.href = "/index/clue/analysis";
+              }} />
               <MenuItem name="线索研判" icon={<ShareAltOutlined translate="true" />} subItems={[{
                 name: "待审批",
-                count: 12
+                count: 12,
+                activeUrl: "/index/clue/judge/pending",
               },
               {
                 name: "全部线索",
-                count: 0
+                count: 0,
+                activeUrl: "/index/clue/analysis/all",
               }]} />
               <MenuItem name="案件监督" icon={<FileDoneOutlined translate="true" />} subItems={[{
                 name: "待审批",
-                count: 12
+                count: 12,
+                activeUrl: "/index/case/supervise/pending"
               },
               {
                 name: "全部案件",
-                count: 0
+                count: 0,
+                activeUrl: "/index/case/supervise/all",
               }]} />
 
               <MenuItem name="决策辅助" icon={<AreaChartOutlined translate="true" />} subItems={[{
                 name: "全国案例数据分析",
-                count: 12
+                count: 12,
+                activeUrl: "/index/data/analysis/national",
               },
               {
                 name: "全市案件数据分析",
-                count: 0
+                count: 0,
+                activeUrl: "/index/data/analysis/city"
               }, {
                 name: "本区案件数据分析",
-                count: 0
+                count: 0,
+                activeUrl: "/index/data/analysis/district",
               }]} />
               <MenuItem name="资料检索" icon={<FileSearchOutlined translate="true" />} subItems={[{
                 name: "法律法规",
-                count: 12
+                count: 12,
+                activeUrl: "/index/data/retrieval/laws",
               },
               {
                 name: "典型案例",
-                count: 0
+                count: 0,
+                activeUrl: '/index/data/retrieval/specialCases',
               }, {
                 name: "全国案例",
-                count: 0
+                count: 0,
+                activeUrl: "/index/data/retrieval/nationalCases",
               }, {
                 name: "无锡案例",
-                count: 0
+                count: 0,
+                activeUrl: "/index/data/retrieval/wuxiCases"
               }]} />
               <MenuItem name="知产宣传" icon={<NotificationOutlined translate="true" />} subItems={[{
                 name: "决策参考",
-                count: 0
+                count: 0,
+                activeUrl: "/index/data/retrieval/wuxiCases"
               }, {
                 name: "知产新闻",
-                count: 0
+                count: 0,
+                activeUrl: '/index/data/retrieval/wuxiCases'
               }]} />
               <MenuItem name="系统设置" icon={<SettingOutlined translate="true" />} subItems={[{
                 name: "账户管理",
-                count: 0
+                count: 0,
+                activeUrl: "/index/setting"
               }, {
                 name: "修改密码",
-                count: 0
+                count: 0,
+                activeUrl: "/index/setting"
               }]} />
             </Sider>
             <Content>
               <Switch>
+                <Route path="/" exact>
+                  <Redirect to="/index/main"></Redirect>
+                </Route>
                 <Route path="/index/main" component={Main} />
+                <Route path="/index/clue/analysis" component={ClueAnalysis} />
+                <Route path="/index/clue/judge/:status" component={ClueJudge} />
+                <Route path="/index/case/supervise/:status" component={CaseSupervise} />
+                <Route path="/index/data/analysis" component={DataAnalysis} />
+                <Route path="/index/data/retrieval" component={DataRetrieval} />
+                <Route path="/index/setting" component={Setting} />
+                <Route path="/index/wiki" component={Wiki} />
               </Switch>
             </Content>
           </Layout>

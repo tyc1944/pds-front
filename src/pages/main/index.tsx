@@ -2,11 +2,8 @@ import React from "react";
 import MainStore from "stores/mainStore";
 import { inject, observer } from "mobx-react";
 import { RouterStore } from "mobx-react-router";
-import { Layout } from "antd";
 import Breadscrum from "components/breadscrum";
 import { BoxContainer, BoxContainerInner } from "components/layout";
-
-const { Content } = Layout;
 
 export interface Props {
   application: MainStore;

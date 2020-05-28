@@ -1,22 +1,48 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./menu.less"
 import { RightOutlined, DownOutlined } from "@ant-design/icons";
 
 interface SubItem {
     name: string;
     count: number;
+    activeUrl: string;
+    onClick?: () => void;
 }
 
-export const MenuItem = ({ subItems, name, icon }: {
+export const MenuItem = ({ onClick, subItems, name, icon, activeUrl }: {
     name: string,
     icon: React.ReactNode,
-    subItems?: SubItem[]
+    subItems?: SubItem[],
+    activeUrl?: string;
+    onClick?: () => void
 }) => {
 
     const [showSubItems, setShowSubItems] = React.useState(false)
+    const href = window.location.href;
+
+    useEffect(() => {
+        if (subItems && subItems.length > 0) {
+            for (let i in subItems) {
+                if (href.lastIndexOf(subItems[i].activeUrl) !== -1) {
+                    setShowSubItems(true)
+                    break;
+                }
+            }
+        }
+    }, [subItems, href])
 
     return <div>
-        <div className="MenuItem" onClick={() => setShowSubItems(!showSubItems)}>
+        <div className={`MenuItem`} onClick={() => {
+            if (subItems && subItems.length > 0) {
+                setShowSubItems(!showSubItems)
+            } else {
+                onClick ? onClick() : (() => {
+                    if (activeUrl) {
+                        window.location.href = activeUrl;
+                    }
+                })();
+            }
+        }}>
             <div style={{
                 flex: 0.4,
                 textAlign: "center"
@@ -45,7 +71,13 @@ export const MenuItem = ({ subItems, name, icon }: {
             showSubItems && subItems && <>
                 {
                     subItems.map(item =>
-                        <div className="SubMenuItem" key={item.name} style={{}}>
+                        <div className={`SubMenuItem ${href.lastIndexOf(item.activeUrl) !== -1 ? 'active' : ''}`} key={item.name} onClick={() => {
+                            if (item.onClick) {
+                                item.onClick()
+                            } else {
+                                window.location.href = item.activeUrl;
+                            }
+                        }}>
                             {item.name}
                             {
                                 item.count ? ` (${item.count})` : ''
