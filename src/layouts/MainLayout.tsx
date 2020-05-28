@@ -21,6 +21,7 @@ import DataAnalysis from "pages/dataAnalysis";
 import CaseSupervise from "pages/caseSupervise";
 import DataRetrieval from "pages/dataRetrieval";
 import Setting from "pages/setting";
+import ModifyPassword from "pages/setting/modifyPassword";
 import Wiki from "pages/wiki";
 
 const { Header, Sider, Content } = Layout;
@@ -198,11 +199,11 @@ class MainLayout extends Component<MainLayoutProps, object> {
             <MenuItem name="系统设置" icon={<SettingOutlined translate="true" />} subItems={[{
               name: "账户管理",
               count: 0,
-              activeUrl: "/index/setting"
+              activeUrl: "/index/setting/account"
             }, {
               name: "修改密码",
               count: 0,
-              activeUrl: "/index/setting"
+              activeUrl: "/index/setting/password"
             }]} />
           </Sider>
           <Content>
@@ -216,7 +217,8 @@ class MainLayout extends Component<MainLayoutProps, object> {
               <Route path="/index/case/supervise/:status" component={CaseSupervise} />
               <Route path="/index/data/analysis" component={DataAnalysis} />
               <Route path="/index/data/retrieval" component={DataRetrieval} />
-              <Route path="/index/setting" component={Setting} />
+              <Route path="/index/setting/account" component={Setting} />
+              <Route path="/index/setting/password" component={ModifyPassword} />
               <Route path="/index/wiki" component={Wiki} />
             </Switch>
           </Content>
