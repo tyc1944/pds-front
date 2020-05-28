@@ -1,13 +1,15 @@
 import React, { useContext } from "react";
-import { Input, DatePicker, Select, Cascader, InputNumber } from "antd";
+import { Input, DatePicker, Select, Cascader, InputNumber, Checkbox } from "antd";
 import { isArray, isUndefined } from "util";
 import Search from "antd/lib/input/Search";
 import { RangeValue } from "rc-picker/lib/interface";
 import { TableListOpsContext } from "./tableListOpsContext";
-import { getDayStartDate, getDayEndDate } from "utils/TimeUtil";
+import { getDayStartDate, getDayEndDate, getMonthStartDate, getMonthEndDate, getLastMonthStartDate, getLastMonthEndDate, getYearStartDate, getYearEndDate, formatTimeYMD, formatTimeYMDHMS } from "utils/TimeUtil";
 import moment from "moment";
 import { SettingOutlined } from "@ant-design/icons";
 import { CascaderValueType } from "antd/lib/cascader";
+import { InputProps } from "antd/lib/input";
+import "./tableListOpsComponents.less";
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
@@ -434,8 +436,9 @@ export const InputWithoutIcon = ({
   name = "",
   title,
   defaultValue = "",
-  style = {}
-}: TableListOpsProps) => {
+  style = {},
+  placeholder
+}: TableListOpsProps & InputProps) => {
   const { updateChange, getChange } = useContext(TableListOpsContext);
   let initValue = "";
   if (getChange().filter(data => data.name === name).length === 1) {
@@ -446,6 +449,7 @@ export const InputWithoutIcon = ({
     <div>
       {title && <span style={{ padding: "0 10px" }}>{title}</span>}
       <Input
+        placeholder={placeholder}
         style={style}
         defaultValue={initValue === "" ? defaultValue : initValue}
         onChange={e => {
@@ -524,6 +528,214 @@ export const InputSearch = ({
         }}
       ></Search>
     </div>
+  );
+};
+
+
+/**
+ *
+ */
+export const SingleSelectionGroup = ({
+  name = "",
+  title,
+  defaultValue = "",
+  selectItems = []
+}: TableListOpsProps) => {
+  const { updateChange, getChange } = useContext(TableListOpsContext);
+  let initValue = "";
+  if (getChange().filter(data => data.name === name).length === 1) {
+    initValue = getChange().filter(data => data.name === name)[0]
+      .value as string;
+  }
+  if (!initValue || initValue === "") {
+    initValue = defaultValue;
+  }
+  return (
+    <div>
+      {
+        title && <span style={{ padding: "0 10px" }}>{title}</span>
+      }
+
+      <div style={{
+        display: 'flex',
+        justifyContent: "flex-start"
+      }}>
+        {
+          selectItems.map((selectItem, index) =>
+            <div
+              key={index}
+              className={`selectOption ${selectItem === initValue ? 'selected' : ''}`}
+              onClick={() => updateChange({
+                name: name as string,
+                value: selectItem
+              })}>{selectItem}</div>
+          )
+        }
+      </div>
+    </div>
+  );
+};
+
+export const MultiSelectionGroup = ({
+  name = "",
+  title,
+  defaultValues = [],
+  selectItems = []
+}: TableListOpsProps) => {
+  const { updateChange, getChange } = useContext(TableListOpsContext);
+  let initValue = "";
+  if (getChange().filter(data => data.name === name).length === 1) {
+    initValue = getChange().filter(data => data.name === name)[0]
+      .value as string;
+  }
+  return (
+    <div>
+      {
+        title && <span style={{ padding: "0 10px" }}>{title}</span>
+      }
+
+      <div style={{
+        display: 'flex',
+        justifyContent: "flex-start"
+      }}>
+        <div
+          onClick={() => updateChange({
+            name: name as string,
+            value: ""
+          })
+          }
+          className={`selectOption ${initValue === "" ? 'selected' : ''}`} >
+          不限
+        </div>
+        <Checkbox.Group
+          options={selectItems}
+          defaultValue={defaultValues}
+          value={initValue.split(",")}
+          onChange={checkedValues => updateChange({
+            name: name as string,
+            value: checkedValues.join(",")
+          })} />
+      </div>
+    </div>
+  );
+};
+
+export const OptionsDateRangePicker = ({
+  name = ["startDate", "endDate"],
+  title,
+  style = {}
+}: TableListOpsProps) => {
+  const { updateChange, getChange } = useContext(TableListOpsContext);
+  const currentMounthDate = [formatTimeYMDHMS(getMonthStartDate()), formatTimeYMDHMS(getMonthEndDate())]
+  const lastMonthDate = [formatTimeYMDHMS(getLastMonthStartDate()), formatTimeYMDHMS(getLastMonthEndDate())]
+  const currentYearDate = [formatTimeYMDHMS(getYearStartDate()), formatTimeYMDHMS(getYearEndDate())]
+
+  let initValue =
+    getChange()
+      .filter(data => name.indexOf(data.name) !== -1)
+      .map(data => moment(data.value)) as RangeValue<moment.Moment>
+  return (
+    <div>
+      {
+        title && <span style={{ padding: "0 10px", color: style.color }}>{title}</span>
+      }
+      <div style={{
+        display: 'flex',
+        justifyContent: "flex-start",
+        alignItems: 'center'
+      }}>
+        <div
+          onClick={() => updateChange([{
+            name: name[0],
+            value: undefined
+          }, {
+            name: name[1],
+            value: undefined
+          }])}
+          className={`selectOption ${!initValue || initValue.length !== 2 || !initValue[0] ? 'selected' : ''}`} >
+          不限
+        </div>
+
+        <div
+          onClick={() => updateChange([{
+            name: name[0],
+            value: currentMounthDate[0]
+          }, {
+            name: name[1],
+            value: currentMounthDate[1]
+          }])}
+          className={`selectOption ${initValue && initValue.length === 2 && formatTimeYMDHMS(initValue[0]) === currentMounthDate[0] ? 'selected' : ''}`} >
+          本月
+        </div>
+
+        <div
+          onClick={() => updateChange([{
+            name: name[0],
+            value: lastMonthDate[0]
+          }, {
+            name: name[1],
+            value: lastMonthDate[1]
+          }])}
+          className={`selectOption ${initValue && initValue.length === 2 && formatTimeYMDHMS(initValue[0]) === lastMonthDate[0] ? 'selected' : ''}`} >
+          上个月
+        </div>
+
+        <div
+          onClick={() => updateChange([{
+            name: name[0],
+            value: currentYearDate[0]
+          }, {
+            name: name[1],
+            value: currentYearDate[1]
+          }])}
+          className={`selectOption ${initValue && initValue.length === 2 && formatTimeYMDHMS(initValue[0]) === currentYearDate[0] ? 'selected' : ''}`} >
+          近一年
+        </div>
+        <div>
+          <RangePicker
+            value={initValue}
+            allowClear
+            onChange={date => {
+              let changedVal: Array<TableListOpsValueType> = [];
+              if (date) {
+                if (date[0]) {
+                  changedVal.push({
+                    name: name[0],
+                    value: getDayStartDate(date[0].valueOf())
+                  });
+                } else {
+                  changedVal.push({
+                    name: name[0],
+                    value: undefined
+                  });
+                }
+                if (date[1]) {
+                  changedVal.push({
+                    name: name[1],
+                    value: getDayEndDate(date[1].valueOf())
+                  });
+                } else {
+                  changedVal.push({
+                    name: name[1],
+                    value: undefined
+                  });
+                }
+              } else {
+                changedVal.push({
+                  name: name[0],
+                  value: undefined
+                });
+                changedVal.push({
+                  name: name[1],
+                  value: undefined
+                });
+              }
+              updateChange(changedVal);
+            }}
+          />
+        </div>
+      </div>
+    </div >
   );
 };
 

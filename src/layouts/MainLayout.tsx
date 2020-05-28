@@ -105,16 +105,30 @@ class MainLayout extends Component<MainLayoutProps, object> {
               <MenuItem name="线索汇聚" icon={<DeploymentUnitOutlined translate="true" />} onClick={() => {
                 window.location.href = "/index/clue/analysis";
               }} />
-              <MenuItem name="线索研判" icon={<ShareAltOutlined translate="true" />} subItems={[{
-                name: "待审批",
-                count: 12,
-                activeUrl: "/index/clue/judge/pending",
-              },
-              {
-                name: "全部线索",
-                count: 0,
-                activeUrl: "/index/clue/analysis/all",
-              }]} />
+              <MenuItem name="线索研判" icon={<ShareAltOutlined translate="true" />} subItems={[
+                {
+                  name: "待处理",
+                  count: 12,
+                  activeUrl: "/index/clue/judge/pendingProcess",
+                }, {
+                  name: "待指派",
+                  count: 12,
+                  activeUrl: "/index/clue/judge/pendingAppoint",
+                }, {
+                  name: "待审批",
+                  count: 12,
+                  activeUrl: "/index/clue/judge/pendingExamine",
+                },
+                {
+                  name: "待监督",
+                  count: 12,
+                  activeUrl: "/index/clue/judge/pendingSupervise",
+                },
+                {
+                  name: "全部线索",
+                  count: 0,
+                  activeUrl: "/index/clue/analysis/all",
+                }]} />
               <MenuItem name="案件监督" icon={<FileDoneOutlined translate="true" />} subItems={[{
                 name: "待审批",
                 count: 12,

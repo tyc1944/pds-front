@@ -1,4 +1,4 @@
-import moment from "moment";
+import moment, { Moment } from "moment";
 
 const formatTimeYMD = (dateString: number | string | Date) => {
   if (dateString) {
@@ -8,7 +8,7 @@ const formatTimeYMD = (dateString: number | string | Date) => {
   }
 };
 
-const formatTimeYMDHMS = (dateString: number | string | Date) => {
+const formatTimeYMDHMS = (dateString: number | string | Date | Moment | null) => {
   return moment(dateString).format("YYYY-MM-DD HH:mm:ss");
 };
 
@@ -44,19 +44,18 @@ const getDayEndDateStr = (dateString: number | string | Date) => {
   return formatTimeYMDHMS(new Date(yeat, month, day, 23, 59, 59));
 };
 
-const getMonthStartDate = () => {
+export const getMonthStartDate = () => {
   let now = new Date();
   let nowYear = now.getFullYear();
   let nowMonth = now.getMonth();
-  let monthStartDate = new Date(nowYear, nowMonth, 1);
-  return "";
+  return new Date(nowYear, nowMonth, 1);
 };
 
-const getMonthEndDate = () => {
+export const getMonthEndDate = () => {
   let now = new Date();
   let nowYear = now.getFullYear();
   let nowMonth = now.getMonth();
-  let monthEndDate = new Date(
+  return new Date(
     nowYear,
     nowMonth,
     getMonthDays(nowYear, nowMonth),
@@ -64,26 +63,43 @@ const getMonthEndDate = () => {
     59,
     59
   );
-  return "";
 };
 
-const getLastMonthStartDate = () => {
+export const getYearStartDate = () => {
+  let now = new Date();
+  let nowYear = now.getFullYear();
+  return new Date(nowYear, 0, 1);
+};
+
+export const getYearEndDate = () => {
+  let now = new Date();
+  let nowYear = now.getFullYear();
+  return new Date(
+    nowYear,
+    11,
+    31,
+    23,
+    59,
+    59
+  );
+};
+
+export const getLastMonthStartDate = () => {
   let lastMonthDate = new Date();
   lastMonthDate.setDate(1);
   lastMonthDate.setMonth(lastMonthDate.getMonth() - 1);
   let lastYear = lastMonthDate.getFullYear();
   let lastMonth = lastMonthDate.getMonth();
-  let lastMonthStartDate = new Date(lastYear, lastMonth, 1);
-  return "";
+  return new Date(lastYear, lastMonth, 1);
 };
 
-const getLastMonthEndDate = () => {
+export const getLastMonthEndDate = () => {
   let lastMonthDate = new Date();
   lastMonthDate.setDate(1);
   lastMonthDate.setMonth(lastMonthDate.getMonth() - 1);
   let lastYear = lastMonthDate.getFullYear();
   let lastMonth = lastMonthDate.getMonth();
-  let lastMonthEndDate = new Date(
+  return new Date(
     lastYear,
     lastMonth,
     getMonthDays(lastYear, lastMonth),
@@ -91,7 +107,6 @@ const getLastMonthEndDate = () => {
     59,
     59
   );
-  return "";
 };
 
 const getMonthDays = (nowYear: any, nowMonth: any) => {
@@ -104,9 +119,5 @@ export {
   getDayStartDate,
   getDayEndDate,
   formatTimeYMD,
-  formatTimeYMDHMS,
-  getMonthStartDate,
-  getMonthEndDate,
-  getLastMonthStartDate,
-  getLastMonthEndDate
+  formatTimeYMDHMS
 };

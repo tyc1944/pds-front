@@ -25,7 +25,7 @@ export default class Breadscrum extends React.Component<BreadscrumProps> {
         当前位置：
         {this.props.data.map((item, index, arr) => (
           <span key={index}>{`${item}${
-            index !== arr.length - 1 ? (index <= 1 ? " - " : " > ") : ""
+            index !== arr.length - 1 ? " > " : ""
             }`}</span>
         ))}
       </div>
