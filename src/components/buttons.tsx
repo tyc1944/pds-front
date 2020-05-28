@@ -36,7 +36,7 @@ export const ColorButton = (props: {
     style={{
       backgroundColor: props.bgColor ? props.bgColor : "#1B9CFF",
       color: props.fontColor ? props.fontColor : "white",
-      marginLeft: props.width ? "0px" : "20px",
+      marginLeft: props.width ? "13px" : "20px",
       width: props.width ? props.width : "110px",
       height: "34px"
     }}

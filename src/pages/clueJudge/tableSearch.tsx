@@ -9,8 +9,10 @@ export const TableSearch = (props: {
 }) => {
 
     const [changed, setChanged] = React.useState([] as TableListOpsValueType[])
+    const [key, setKey] = React.useState(Date.now());
 
     return <TableListOpsHelper
+        key={key}
         onChanged={changed => {
             setChanged(changed as [])
         }}
@@ -29,9 +31,12 @@ export const TableSearch = (props: {
                         <div style={{
                             display: "flex",
                         }}>
-                            <InputWithoutIcon name="keyword" placeholder="输入关键词进行搜索"></InputWithoutIcon>
-                            <ColorButton bgColor="#4084F0">查询</ColorButton>
-                            <ColorButton>清空</ColorButton>
+                            <InputWithoutIcon style={{ width: "290px" }} name="keyword" placeholder="输入关键词进行搜索"></InputWithoutIcon>
+                            <ColorButton width="76px" bgColor="#4084F0" onClick={() => props.onSearch(changed)}>查询</ColorButton>
+                            <ColorButton width="76px" bgColor="#FFFFFF" fontColor="#72757B" onClick={() => {
+                                setChanged([])
+                                setKey(Date.now())
+                            }}>清空</ColorButton>
                         </div>
                     </Col>
                 </Row>

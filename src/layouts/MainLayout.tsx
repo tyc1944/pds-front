@@ -9,7 +9,6 @@ import { Route, Switch, Redirect } from "react-router";
 
 import Main from "../pages/main";
 import ClueAnalysis from "../pages/clueAnalysis";
-import { TableSelectionContext, TableSelection } from "components/table";
 import {
   SearchOutlined,
   FileDoneOutlined, AreaChartOutlined, FileSearchOutlined, PoweroffOutlined, NotificationOutlined,
@@ -43,172 +42,170 @@ class MainLayout extends Component<MainLayoutProps, object> {
       location: { pathname }
     } = this.props;
     return (
-      <TableSelectionContext.Provider value={new TableSelection()}>
-        <Layout className="mainLayout">
-          <Header>
-            <div className="mainLogo">
+      <Layout className="mainLayout">
+        <Header>
+          <div className="mainLogo">
+            <img
+              src="/img/header_gh.png"
+              alt="gh"
+              width="44"
+              style={{
+                marginRight: "15px"
+              }}
+            ></img>
+              无锡市人民检察院知识产权检察监督信息平台</div>
+          <div className="mainSearch">
+            <Input addonAfter={<SearchOutlined translate="true" />} />
+          </div>
+          <div className="loginInfo">
+            <div
+              style={{
+                textAlign: "right"
+              }}
+            >
               <img
-                src="/img/header_gh.png"
-                alt="gh"
-                width="44"
+                src="/img/profile_header.png"
+                alt="profile_header"
                 style={{
+                  width: "40px",
+                  height: "40px",
                   marginRight: "15px"
                 }}
               ></img>
-              无锡市人民检察院知识产权检察监督信息平台</div>
-            <div className="mainSearch">
-              <Input addonAfter={<SearchOutlined translate="true" />} />
             </div>
-            <div className="loginInfo">
-              <div
+            <div>您好！{main.userProfile.name}</div>
+            <div>
+              <PoweroffOutlined
                 style={{
-                  textAlign: "right"
+                  fontSize: "24px"
                 }}
-              >
-                <img
-                  src="/img/profile_header.png"
-                  alt="profile_header"
-                  style={{
-                    width: "40px",
-                    height: "40px",
-                    marginRight: "15px"
-                  }}
-                ></img>
-              </div>
-              <div>您好！{main.userProfile.name}</div>
-              <div>
-                <PoweroffOutlined
-                  style={{
-                    fontSize: "24px"
-                  }}
-                  translate="true"
-                  onClick={() => {
-                    localStorage.removeItem(TOKEN_KEY);
-                    this.props.main.userProfile = {} as UserProfile;
-                    window.location.replace("/login");
-                  }}
-                />
-              </div>
+                translate="true"
+                onClick={() => {
+                  localStorage.removeItem(TOKEN_KEY);
+                  this.props.main.userProfile = {} as UserProfile;
+                  window.location.replace("/login");
+                }}
+              />
             </div>
-          </Header>
-          <Layout>
-            <Sider
-              width={254}
-              style={{
-                overflowY: "auto",
-                borderRight: "1px solid #D6DDE3 "
-              }}
-            >
-              <MenuItem name="首页" icon={<HomeOutlined translate="true" />} onClick={() => {
-                window.location.href = "/index/main";
-              }} />
-              <MenuItem name="线索汇聚" icon={<DeploymentUnitOutlined translate="true" />} onClick={() => {
-                window.location.href = "/index/clue/analysis";
-              }} />
-              <MenuItem name="线索研判" icon={<ShareAltOutlined translate="true" />} subItems={[
-                {
-                  name: "待处理",
-                  count: 12,
-                  activeUrl: "/index/clue/judge/pendingProcess",
-                }, {
-                  name: "待指派",
-                  count: 12,
-                  activeUrl: "/index/clue/judge/pendingAppoint",
-                }, {
-                  name: "待审批",
-                  count: 12,
-                  activeUrl: "/index/clue/judge/pendingExamine",
-                },
-                {
-                  name: "待监督",
-                  count: 12,
-                  activeUrl: "/index/clue/judge/pendingSupervise",
-                },
-                {
-                  name: "全部线索",
-                  count: 0,
-                  activeUrl: "/index/clue/analysis/all",
-                }]} />
-              <MenuItem name="案件监督" icon={<FileDoneOutlined translate="true" />} subItems={[{
+          </div>
+        </Header>
+        <Layout>
+          <Sider
+            width={254}
+            style={{
+              overflowY: "auto",
+              borderRight: "1px solid #D6DDE3 "
+            }}
+          >
+            <MenuItem name="首页" icon={<HomeOutlined translate="true" />} onClick={() => {
+              window.location.href = "/index/main";
+            }} />
+            <MenuItem name="线索汇聚" icon={<DeploymentUnitOutlined translate="true" />} onClick={() => {
+              window.location.href = "/index/clue/analysis";
+            }} />
+            <MenuItem name="线索研判" icon={<ShareAltOutlined translate="true" />} subItems={[
+              {
+                name: "待处理",
+                count: 12,
+                activeUrl: "/index/clue/judge/pendingProcess",
+              }, {
+                name: "待指派",
+                count: 12,
+                activeUrl: "/index/clue/judge/pendingAppoint",
+              }, {
                 name: "待审批",
                 count: 12,
-                activeUrl: "/index/case/supervise/pending"
+                activeUrl: "/index/clue/judge/pendingExamine",
               },
               {
-                name: "全部案件",
+                name: "待监督",
+                count: 12,
+                activeUrl: "/index/clue/judge/pendingSupervise",
+              },
+              {
+                name: "全部线索",
                 count: 0,
-                activeUrl: "/index/case/supervise/all",
+                activeUrl: "/index/clue/analysis/all",
               }]} />
+            <MenuItem name="案件监督" icon={<FileDoneOutlined translate="true" />} subItems={[{
+              name: "待审批",
+              count: 12,
+              activeUrl: "/index/case/supervise/pending"
+            },
+            {
+              name: "全部案件",
+              count: 0,
+              activeUrl: "/index/case/supervise/all",
+            }]} />
 
-              <MenuItem name="决策辅助" icon={<AreaChartOutlined translate="true" />} subItems={[{
-                name: "全国案例数据分析",
-                count: 12,
-                activeUrl: "/index/data/analysis/national",
-              },
-              {
-                name: "全市案件数据分析",
-                count: 0,
-                activeUrl: "/index/data/analysis/city"
-              }, {
-                name: "本区案件数据分析",
-                count: 0,
-                activeUrl: "/index/data/analysis/district",
-              }]} />
-              <MenuItem name="资料检索" icon={<FileSearchOutlined translate="true" />} subItems={[{
-                name: "法律法规",
-                count: 12,
-                activeUrl: "/index/data/retrieval/laws",
-              },
-              {
-                name: "典型案例",
-                count: 0,
-                activeUrl: '/index/data/retrieval/specialCases',
-              }, {
-                name: "全国案例",
-                count: 0,
-                activeUrl: "/index/data/retrieval/nationalCases",
-              }, {
-                name: "无锡案例",
-                count: 0,
-                activeUrl: "/index/data/retrieval/wuxiCases"
-              }]} />
-              <MenuItem name="知产宣传" icon={<NotificationOutlined translate="true" />} subItems={[{
-                name: "决策参考",
-                count: 0,
-                activeUrl: "/index/data/retrieval/wuxiCases"
-              }, {
-                name: "知产新闻",
-                count: 0,
-                activeUrl: '/index/data/retrieval/wuxiCases'
-              }]} />
-              <MenuItem name="系统设置" icon={<SettingOutlined translate="true" />} subItems={[{
-                name: "账户管理",
-                count: 0,
-                activeUrl: "/index/setting"
-              }, {
-                name: "修改密码",
-                count: 0,
-                activeUrl: "/index/setting"
-              }]} />
-            </Sider>
-            <Content>
-              <Switch>
-                <Route path="/" exact>
-                  <Redirect to="/index/main"></Redirect>
-                </Route>
-                <Route path="/index/main" component={Main} />
-                <Route path="/index/clue/analysis" component={ClueAnalysis} />
-                <Route path="/index/clue/judge/:status" component={ClueJudge} />
-                <Route path="/index/case/supervise/:status" component={CaseSupervise} />
-                <Route path="/index/data/analysis" component={DataAnalysis} />
-                <Route path="/index/data/retrieval" component={DataRetrieval} />
-                <Route path="/index/setting" component={Setting} />
-                <Route path="/index/wiki" component={Wiki} />
-              </Switch>
-            </Content>
-          </Layout>
+            <MenuItem name="决策辅助" icon={<AreaChartOutlined translate="true" />} subItems={[{
+              name: "全国案例数据分析",
+              count: 12,
+              activeUrl: "/index/data/analysis/national",
+            },
+            {
+              name: "全市案件数据分析",
+              count: 0,
+              activeUrl: "/index/data/analysis/city"
+            }, {
+              name: "本区案件数据分析",
+              count: 0,
+              activeUrl: "/index/data/analysis/district",
+            }]} />
+            <MenuItem name="资料检索" icon={<FileSearchOutlined translate="true" />} subItems={[{
+              name: "法律法规",
+              count: 12,
+              activeUrl: "/index/data/retrieval/laws",
+            },
+            {
+              name: "典型案例",
+              count: 0,
+              activeUrl: '/index/data/retrieval/specialCases',
+            }, {
+              name: "全国案例",
+              count: 0,
+              activeUrl: "/index/data/retrieval/nationalCases",
+            }, {
+              name: "无锡案例",
+              count: 0,
+              activeUrl: "/index/data/retrieval/wuxiCases"
+            }]} />
+            <MenuItem name="知产宣传" icon={<NotificationOutlined translate="true" />} subItems={[{
+              name: "决策参考",
+              count: 0,
+              activeUrl: "/index/data/retrieval/wuxiCases"
+            }, {
+              name: "知产新闻",
+              count: 0,
+              activeUrl: '/index/data/retrieval/wuxiCases'
+            }]} />
+            <MenuItem name="系统设置" icon={<SettingOutlined translate="true" />} subItems={[{
+              name: "账户管理",
+              count: 0,
+              activeUrl: "/index/setting"
+            }, {
+              name: "修改密码",
+              count: 0,
+              activeUrl: "/index/setting"
+            }]} />
+          </Sider>
+          <Content>
+            <Switch>
+              <Route path="/" exact>
+                <Redirect to="/index/main"></Redirect>
+              </Route>
+              <Route path="/index/main" component={Main} />
+              <Route path="/index/clue/analysis" component={ClueAnalysis} />
+              <Route path="/index/clue/judge/:status" component={ClueJudge} />
+              <Route path="/index/case/supervise/:status" component={CaseSupervise} />
+              <Route path="/index/data/analysis" component={DataAnalysis} />
+              <Route path="/index/data/retrieval" component={DataRetrieval} />
+              <Route path="/index/setting" component={Setting} />
+              <Route path="/index/wiki" component={Wiki} />
+            </Switch>
+          </Content>
         </Layout>
-      </TableSelectionContext.Provider>
+      </Layout>
     );
   }
 }

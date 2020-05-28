@@ -7,6 +7,7 @@ interface BoxContainerProps {
 interface BoxContainerInnerProps {
   children: React.ReactNode;
   flex?: number
+  noPadding?: boolean
 }
 
 export class BoxContainer extends React.Component<BoxContainerProps> {
@@ -35,7 +36,7 @@ export class BoxContainerInner extends React.Component<BoxContainerInnerProps> {
     return (
       <div
         style={{
-          padding: "0px 12px 12px 12px",
+          padding: this.props.noPadding ? "0px" : "0px 12px 12px 12px",
           width: "100%",
           height: "100%",
           display: "flex",

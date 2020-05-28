@@ -3,6 +3,9 @@ import Breadscrum from "components/breadscrum";
 import { BoxContainer, BoxContainerInner } from "components/layout";
 import { RouteComponentProps } from "react-router-dom";
 import { TableSearch } from "./tableSearch";
+import { TableColumn } from "./tableConfig";
+import { TableList } from "components/table";
+import { ColorButton } from "components/buttons";
 
 interface MatchParams {
     status: string;
@@ -21,6 +24,14 @@ class ClueJudge extends React.Component<ClueJudgeProps> {
 
     componentDidMount() {
         this.getBreadscrumData(this.props.match.params.status)
+    }
+
+    onDetailClick = () => {
+
+    }
+
+    onRejectClick = () => {
+
     }
 
     getBreadscrumData = (status: string) => {
@@ -62,10 +73,16 @@ class ClueJudge extends React.Component<ClueJudgeProps> {
             <Breadscrum data={this.state.breadscrumData}></Breadscrum>
             <BoxContainer>
                 <BoxContainerInner flex={0.5}>
-                    <TableSearch onSearch={changed => { }}></TableSearch>
+                    <TableSearch onSearch={changed => { console.log(changed) }}></TableSearch>
                 </BoxContainerInner>
-                <BoxContainerInner flex={1}>
-
+                <BoxContainerInner flex={1} noPadding>
+                    <TableList
+                        title="线索列表"
+                        tableSearchOps={<ColorButton bgColor="#4084F0">+自行发现</ColorButton>}
+                        data={[]}
+                        columns={TableColumn(this.onDetailClick, this.onRejectClick)}
+                        onChange={(page, pageSize) => { console.log(page) }}
+                    />
                 </BoxContainerInner>
             </BoxContainer>
         </div>
