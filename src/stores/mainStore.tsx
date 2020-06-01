@@ -1,5 +1,6 @@
 import { observable, action } from "mobx";
 import { axios, TOKEN_KEY } from "../utils/RequestUtil";
+import { TableListOpsValueType } from "components/table/tableListOpsComponents";
 
 export interface UserProfile {
   id: number;
@@ -7,11 +8,24 @@ export interface UserProfile {
   role: string;
 }
 
+export interface UserAccount {
+  id: number;
+  username: string;
+  name: string;
+  department: string;
+  phone: string;
+  unit: string;
+}
+
 export default class MainStore {
+
   @observable
   userProfile: UserProfile = {} as UserProfile;
   @observable
   logining = false;
+
+  @observable
+  searchAccountParams = [] as TableListOpsValueType[]
 
   @action
   getUserProfile() {
@@ -40,5 +54,21 @@ export default class MainStore {
         window.location.replace("/index/main");
       })
       .finally(() => (this.logining = false));
+  }
+
+  getAccountList(page = 1) {
+    return axios.get("/api/account", {
+      params: this.searchAccountParams.length === 0 ? {
+        page
+      } : {}
+    })
+  }
+
+  async addAccount(userAccount: UserAccount) {
+    await axios.post("/api/account", userAccount)
+  }
+
+  async updateAccount(accountId: number, userAccount: UserAccount) {
+    await axios.put(`/api/account/${accountId}`, userAccount)
   }
 }

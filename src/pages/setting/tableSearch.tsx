@@ -3,6 +3,7 @@ import { TableListOpsHelper } from "components/table/tableListOpsContext";
 import { TableListOpsValueType, InputWithoutIcon, SingleSelectionGroup, OptionsDateRangePicker } from "components/table/tableListOpsComponents";
 import { Row, Col } from "antd";
 import { ColorButton } from "components/buttons";
+import { ALL_PROCURATORATE } from "common";
 
 export const TableSearch = (props: {
     onSearch: (changed: TableListOpsValueType[]) => void;
@@ -45,8 +46,7 @@ export const TableSearch = (props: {
                 <Row>
                     <Col xl={2} xs={4} style={{ color: '#9099A2' }}>归属检察院</Col>
                     <Col xl={22} xs={20}>
-                        <SingleSelectionGroup name="belongTo" defaultValue="不限" selectItems={["不限", "无锡市人民检察院", "新吴区人民检察院",
-                            "梁溪区人民检察院", "惠山区人民检察院", "宜兴市人民检察院", "江阴市人民检察院", "锡山区人民检察院", "滨湖区人民检察院"]}></SingleSelectionGroup>
+                        <SingleSelectionGroup name="belongTo" defaultValue="不限" selectItems={["不限"].concat(ALL_PROCURATORATE)}></SingleSelectionGroup>
                     </Col>
                 </Row>
             </div>

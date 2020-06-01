@@ -11,7 +11,7 @@ export const MyModal = (props: {
   <Modal
     width={props.width ? props.width : 520}
     wrapClassName="MyModalClass"
-    closeIcon={<span style={{ color: "gray" }}>X</span>}
+    closeIcon={<span style={{ color: "white" }}>X</span>}
     footer={null}
     title={props.title}
     visible={props.visiable}
