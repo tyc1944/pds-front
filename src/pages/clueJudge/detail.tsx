@@ -26,7 +26,8 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
     state = {
         breadscrumData: [],
         clueDataInfo: [],
-        clueRelatedCases: [] as CaseData[]
+        clueRelatedCases: [] as CaseData[],
+        dataFlow: [] as { flowType: string, createdTime: number }[]
     }
 
     componentDidMount() {
@@ -59,6 +60,9 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
             })
         this.props.clue.getClueRelatedCases(clueId).then(res => this.setState({
             clueRelatedCases: res.data
+        }))
+        this.props.clue.getClueDataFlow(clueId).then(res => this.setState({
+            dataFlow: res.data
         }))
     }
 
@@ -125,15 +129,10 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
             <BoxContainer>
                 <BoxContainerInner flex={1} noPadding>
                     <DataDetail header="线索处理进度">
-                        <DataProcessStep baseStepData={clue.baseStepData} steps={[
-                            {
-                                index: 'STEP_1',
-                                stepDate: Date.now()
-                            }, {
-                                index: 'STEP_2',
-                                stepDate: Date.now()
-                            }
-                        ]}></DataProcessStep>
+                        <DataProcessStep baseStepData={clue.baseStepData} steps={this.state.dataFlow.map(item => ({
+                            index: item.flowType,
+                            stepDate: item.createdTime
+                        }))}></DataProcessStep>
                     </DataDetail>
                     <DataDetail header="线索原始信息">
                         <CloseableDataTable title="系统并归线索" dataInfo={this.state.clueDataInfo} />
@@ -179,7 +178,7 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
                     </div>
                 </BoxContainerInner>
             </BoxContainer>
-        </div>
+        </div >
     }
 }
 

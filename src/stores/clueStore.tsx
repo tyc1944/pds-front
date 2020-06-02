@@ -78,6 +78,10 @@ export default class ClueStore {
     return axios.get(`/api/clue/${clueId}/cases`)
   }
 
+  getClueDataFlow(clueId: number) {
+    return axios.get(`/api/clue/${clueId}/flow`)
+  }
+
   async createSelfFoundClue(caseData: CaseData) {
     await axios.post("/api/clue", caseData)
   }
