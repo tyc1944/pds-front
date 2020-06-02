@@ -71,4 +71,5 @@ export default class MainStore {
   async updateAccount(accountId: number, userAccount: UserAccount) {
     await axios.put(`/api/account/${accountId}`, userAccount)
   }
+
 }

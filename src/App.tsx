@@ -8,11 +8,13 @@ import { Route, Router, Switch } from "react-router";
 import { browserHistory } from "./routing";
 import { RouterStore, syncHistoryWithStore } from "mobx-react-router";
 import Login from "./pages/login";
+import ClueStore from "stores/clueStore";
 
 const routingStore = new RouterStore();
 
 const stores = {
-  main: new MainStore()
+  main: new MainStore(),
+  clue: new ClueStore()
 };
 
 export const history = syncHistoryWithStore(browserHistory, routingStore);

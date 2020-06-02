@@ -12,28 +12,39 @@ interface SubItem {
 export const MenuItem = ({ onClick, subItems, name, icon, activeUrl }: {
     name: string,
     icon: React.ReactNode,
-    subItems?: SubItem[],
+    subItems?: SubItem[] | (() => Promise<SubItem[]>),
     activeUrl?: string;
     onClick?: () => void
 }) => {
 
     const [showSubItems, setShowSubItems] = React.useState(false)
+    const [subItemsInner, setsubItemsInner] = React.useState([] as SubItem[])
     const href = window.location.href;
 
     useEffect(() => {
-        if (subItems && subItems.length > 0) {
-            for (let i in subItems) {
-                if (href.lastIndexOf(subItems[i].activeUrl) !== -1) {
+        if (subItemsInner && subItemsInner.length > 0) {
+            for (let i in subItemsInner) {
+                if (href.lastIndexOf(subItemsInner[i].activeUrl) !== -1) {
                     setShowSubItems(true)
                     break;
                 }
             }
         }
-    }, [subItems, href])
+    }, [subItemsInner, href])
+
+    useEffect(() => {
+        if (typeof subItems === "function") {
+            (subItems as () => Promise<SubItem[]>)().then(res => {
+                setsubItemsInner(res)
+            })
+        } else {
+            setsubItemsInner(subItems as SubItem[])
+        }
+    }, [subItems])
 
     return <div>
         <div className={`MenuItem`} onClick={() => {
-            if (subItems && subItems.length > 0) {
+            if (subItemsInner && subItemsInner.length > 0) {
                 setShowSubItems(!showSubItems)
             } else {
                 onClick ? onClick() : (() => {
@@ -51,7 +62,7 @@ export const MenuItem = ({ onClick, subItems, name, icon, activeUrl }: {
                 flex: 1
             }}>{name}</div>
             {
-                subItems && subItems.length > 0 ? <div style={{
+                subItemsInner && subItemsInner.length > 0 ? <div style={{
                     flex: 0.2,
                 }}>
                     {
@@ -68,9 +79,9 @@ export const MenuItem = ({ onClick, subItems, name, icon, activeUrl }: {
             }
         </div>
         {
-            showSubItems && subItems && <>
+            showSubItems && <>
                 {
-                    subItems.map(item =>
+                    subItemsInner.map(item =>
                         <div className={`SubMenuItem ${href.lastIndexOf(item.activeUrl) !== -1 ? 'active' : ''}`} key={item.name} onClick={() => {
                             if (item.onClick) {
                                 item.onClick()

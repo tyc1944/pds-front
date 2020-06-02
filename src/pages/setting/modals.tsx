@@ -1,6 +1,6 @@
 import React from "react";
 import { MyModal } from "components/modal";
-import { Select, Form, Input, Radio, Row, Col } from "antd";
+import { Select, Form, Input, Row, Col } from "antd";
 import { Store } from "antd/lib/form/interface";
 import { ValidateErrorEntity } from "rc-field-form/lib/interface";
 import { ColorButton } from "components/buttons";

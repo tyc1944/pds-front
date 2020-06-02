@@ -1,10 +1,11 @@
 import React from "react";
 import { Space } from "antd";
 import { formatTimeYMD } from "utils/TimeUtil";
+import { DATA_STATUS_ACTION, ALL_CASE_CATEGORY, CLUE_SOURCE } from "common";
 
 export const TableColumn = (
-  onDeleteClick: () => void,
-  onEditClick: () => void
+  onDetailClick: (id: number) => void,
+  onDeleteClick: () => void
 ) => [
     {
       title: "序号",
@@ -13,44 +14,54 @@ export const TableColumn = (
     },
     {
       title: "最早报案日期",
-      dataIndex: "name",
-      key: "name",
-      render: (val: string) => (val ? formatTimeYMD(val) : "")
+      dataIndex: "earliestReportedDate",
+      key: "earliestReportedDate",
+      render: (val: number) => (val ? formatTimeYMD(val) : "")
     },
     {
       title: "线索编号",
-      dataIndex: "dataCount",
-      key: "dataCount"
+      dataIndex: "clueCode",
+      key: "clueCode"
     },
     {
       title: "案件类别",
-      dataIndex: "createdTime",
-      key: "createdTime",
+      dataIndex: "caseCategory",
+      key: "caseCategory",
+      render: (val: string) => {
+        let tmp = ALL_CASE_CATEGORY.filter(item => item.val === val);
+        if (tmp.length > 0) {
+          return tmp[0].name
+        } else {
+          return ""
+        }
+      }
     },
     {
       title: "案发区域",
-      dataIndex: "createdTime",
-      key: "createdTime",
+      dataIndex: "caseArea",
+      key: "caseArea",
     },
     {
       title: "简要案情",
-      dataIndex: "createdTime",
-      key: "createdTime",
+      dataIndex: "caseBriefInfo",
+      key: "caseBriefInfo",
     },
     {
       title: "线索发现次数",
-      dataIndex: "createdTime",
-      key: "createdTime",
+      dataIndex: "foundCount",
+      key: "foundCount",
     },
     {
       title: "线索来源",
-      dataIndex: "createdTime",
-      key: "createdTime",
+      dataIndex: "sourceTypes",
+      key: "sourceTypes",
+      render: (val: string) => val.split(",").map(item => CLUE_SOURCE[item]).join(",")
     },
     {
       title: "案件来源",
-      dataIndex: "createdTime",
-      key: "createdTime",
+      dataIndex: "statusAction",
+      key: "statusAction",
+      render: (val: string) => DATA_STATUS_ACTION[val]
     },
     {
       title: "操作",
@@ -62,7 +73,7 @@ export const TableColumn = (
             style={{
               cursor: "pointer"
             }}
-            onClick={() => onEditClick()}
+            onClick={() => onDetailClick(row.id)}
           >
             查看
         </span>

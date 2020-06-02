@@ -8,7 +8,7 @@ const formatTimeYMD = (dateString: number | string | Date) => {
   }
 };
 
-const formatTimeYMDHMS = (dateString: number | string | Date | Moment | null) => {
+const formatTimeYMDHMS = (dateString: number | string | Date | Moment | null | undefined) => {
   return moment(dateString).format("YYYY-MM-DD HH:mm:ss");
 };
 

@@ -70,7 +70,7 @@ axios.interceptors.response.use(
       errMessage(error.response.data);
     }
     if (error.response.status === 400) {
-      if (error.response.data.error == "invalid_grant") {
+      if (error.response.data.error === "invalid_grant") {
         message.error("用户名或密码错误");
       } else {
         message.warning(error.response.data.detail);

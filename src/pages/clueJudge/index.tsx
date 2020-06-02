@@ -6,32 +6,59 @@ import { TableSearch } from "./tableSearch";
 import { TableColumn } from "./tableConfig";
 import { TableList } from "components/table";
 import { ColorButton } from "components/buttons";
+import { inject, observer } from "mobx-react";
+import ClueStore, { ClueDataSearchModel } from "stores/clueStore";
+import { fillObjectFromOpsValue } from "components/table/tableListOpsComponents";
+import { CreateSelfFoundClue } from "./modals";
+import { Moment } from "moment";
+import { message } from "antd";
 
 interface MatchParams {
     status: string;
 }
 
 interface ClueJudgeProps extends RouteComponentProps<MatchParams> {
-
+    clue: ClueStore
 }
 
 
+@inject("clue")
+@observer
 class ClueJudge extends React.Component<ClueJudgeProps> {
 
     state = {
-        breadscrumData: []
+        breadscrumData: [],
+        clueDataList: [],
+        clueDataTotalCount: 0,
+        showCreateSelfFoundClueModal: false,
     }
 
     componentDidMount() {
         this.getBreadscrumData(this.props.match.params.status)
+        this.getClueDataList();
     }
 
-    onDetailClick = () => {
+    getClueDataList = () => {
+        this.props.clue.getClueDataList().then(res => {
+            this.setState({
+                clueDataList: res.data.records,
+                clueDataTotalCount: res.data.total
+            })
+        })
+    }
 
+    onDetailClick = (clueId: number) => {
+        window.location.href = `/index/clue/judge/pendingProcess/${clueId}`
     }
 
     onRejectClick = () => {
 
+    }
+
+    onSelfFoundClick = () => {
+        this.setState({
+            showCreateSelfFoundClueModal: true
+        })
     }
 
     getBreadscrumData = (status: string) => {
@@ -65,23 +92,60 @@ class ClueJudge extends React.Component<ClueJudgeProps> {
 
 
     render() {
+        const { clue } = this.props;
         return <div style={{
             display: "flex",
             height: "100%",
             flexDirection: 'column'
         }}>
+            {
+                this.state.showCreateSelfFoundClueModal && <CreateSelfFoundClue
+                    title="自行发现"
+                    visiable={this.state.showCreateSelfFoundClueModal}
+                    onCancel={() => {
+                        this.setState({
+                            showCreateSelfFoundClueModal: false
+                        })
+                    }}
+                    onFinish={async vals => {
+                        await clue.createSelfFoundClue({
+                            caseContent: vals.caseContent,
+                            caseCategory: vals.caseCategory,
+                            foundDate: vals.foundDate ? (vals.foundDate as Moment).valueOf() : undefined,
+                            foundArea: vals.foundAreaDetail ? (vals.foundArea.join("") + vals.foundAreaDetail) : vals.foundArea.join(""),
+                            happenedDate: vals.happenedDate ? (vals.happenedDate as Moment).valueOf() : undefined,
+                            suspects: vals.suspects,
+                            briefCaseInfo: vals.briefCaseInfo
+                        });
+                        message.success("创建成功！")
+                        clue.resetSearchModal()
+                        this.getClueDataList()
+                        this.setState({
+                            showCreateSelfFoundClueModal: false
+                        })
+                    }}
+                ></CreateSelfFoundClue>
+            }
             <Breadscrum data={this.state.breadscrumData}></Breadscrum>
             <BoxContainer>
                 <BoxContainerInner flex={0.5}>
-                    <TableSearch onSearch={changed => { console.log(changed) }}></TableSearch>
+                    <TableSearch onSearch={changed => {
+                        clue.searchModel = fillObjectFromOpsValue({}, changed) as ClueDataSearchModel
+                        clue.searchModel.page = 1;
+                        this.getClueDataList();
+                    }}></TableSearch>
                 </BoxContainerInner>
                 <BoxContainerInner flex={1} noPadding>
                     <TableList
                         title="线索列表"
-                        tableSearchOps={<ColorButton bgColor="#4084F0">+自行发现</ColorButton>}
-                        data={[]}
+                        total={this.state.clueDataTotalCount}
+                        tableSearchOps={<ColorButton bgColor="#4084F0" onClick={this.onSelfFoundClick}>+自行发现</ColorButton>}
+                        data={this.state.clueDataList}
                         columns={TableColumn(this.onDetailClick, this.onRejectClick)}
-                        onChange={(page, pageSize) => { console.log(page) }}
+                        onChange={(page, pageSize) => {
+                            clue.searchModel.page = page;
+                            this.getClueDataList();
+                        }}
                     />
                 </BoxContainerInner>
             </BoxContainer>

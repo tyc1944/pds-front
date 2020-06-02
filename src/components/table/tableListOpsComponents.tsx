@@ -63,22 +63,28 @@ export const getObjectFromOpsValue = (opsValues: TableListOpsValueType[]) => {
  *
  * @param oriObject
  * @param opsValues
- * @param keys
+ * @param keys 可以指定需要的字段，为空时，使用全部
  */
 export const fillObjectFromOpsValue = (
   oriObject: { [key: string]: any },
   opsValues: TableListOpsValueType[] | undefined,
-  keys: string[]
+  keys?: string[]
 ) => {
   if (!opsValues) {
     return oriObject;
   }
-  for (let i in opsValues) {
-    for (let ii in keys) {
-      if (opsValues[parseInt(i)].name == keys[ii]) {
-        oriObject[keys[ii]] = opsValues[parseInt(i)].value;
-        break;
+  if (keys) {
+    for (let i in opsValues) {
+      for (let ii in keys) {
+        if (opsValues[parseInt(i)].name === keys[ii]) {
+          oriObject[keys[ii]] = opsValues[parseInt(i)].value;
+          break;
+        }
       }
+    }
+  } else {
+    for (let i in opsValues) {
+      oriObject[opsValues[parseInt(i)].name] = opsValues[parseInt(i)].value;
     }
   }
   return oriObject;

@@ -23,14 +23,17 @@ import DataRetrieval from "pages/dataRetrieval";
 import Setting from "pages/setting";
 import ModifyPassword from "pages/setting/modifyPassword";
 import Wiki from "pages/wiki";
+import ClueStore from "stores/clueStore";
+import ClueJudgeDetail from "pages/clueJudge/detail";
 
 const { Header, Sider, Content } = Layout;
 
 export interface MainLayoutProps extends RouteComponentProps {
   main: MainStore;
+  clue: ClueStore;
 }
 
-@inject("main")
+@inject("main", "clue")
 @observer
 class MainLayout extends Component<MainLayoutProps, object> {
   componentDidMount() {
@@ -40,6 +43,7 @@ class MainLayout extends Component<MainLayoutProps, object> {
   render() {
     const {
       main,
+      clue,
       location: { pathname }
     } = this.props;
     return (
@@ -104,30 +108,45 @@ class MainLayout extends Component<MainLayoutProps, object> {
             <MenuItem name="线索汇聚" icon={<DeploymentUnitOutlined translate="true" />} onClick={() => {
               window.location.href = "/index/clue/analysis";
             }} />
-            <MenuItem name="线索研判" icon={<ShareAltOutlined translate="true" />} subItems={[
-              {
-                name: "待处理",
-                count: 12,
-                activeUrl: "/index/clue/judge/pendingProcess",
-              }, {
-                name: "待指派",
-                count: 12,
-                activeUrl: "/index/clue/judge/pendingAppoint",
-              }, {
-                name: "待审批",
-                count: 12,
-                activeUrl: "/index/clue/judge/pendingExamine",
-              },
-              {
-                name: "待监督",
-                count: 12,
-                activeUrl: "/index/clue/judge/pendingSupervise",
-              },
-              {
-                name: "全部线索",
-                count: 0,
-                activeUrl: "/index/clue/analysis/all",
-              }]} />
+            <MenuItem name="线索研判" icon={<ShareAltOutlined translate="true" />} subItems={async () => {
+              let statusCount = {
+                pendingProcessCount: 0,
+                pendingAppointCount: 0,
+                pendingExamineCount: 0,
+                pendingSuperviseCount: 0,
+              }
+              let res = await clue.getClueStatusCount();
+              if (res.data) {
+                statusCount.pendingAppointCount = 0;
+                statusCount.pendingExamineCount = res.data.pendingExamineCount;
+                statusCount.pendingSuperviseCount = res.data.pendingSuperviseCount;
+                statusCount.pendingProcessCount = res.data.pendingProcessCount;
+              }
+              return [
+                {
+                  name: "待处理",
+                  count: statusCount.pendingProcessCount,
+                  activeUrl: "/index/clue/judge/pendingProcess",
+                }, {
+                  name: "待指派",
+                  count: statusCount.pendingAppointCount,
+                  activeUrl: "/index/clue/judge/pendingAppoint",
+                }, {
+                  name: "待审批",
+                  count: statusCount.pendingExamineCount,
+                  activeUrl: "/index/clue/judge/pendingExamine",
+                },
+                {
+                  name: "待监督",
+                  count: statusCount.pendingSuperviseCount,
+                  activeUrl: "/index/clue/judge/pendingSupervise",
+                },
+                {
+                  name: "全部线索",
+                  count: 0,
+                  activeUrl: "/index/clue/analysis/all",
+                }]
+            }} />
             <MenuItem name="案件监督" icon={<FileDoneOutlined translate="true" />} subItems={[
               {
                 name: "待审批",
@@ -211,15 +230,16 @@ class MainLayout extends Component<MainLayoutProps, object> {
               <Route path="/" exact>
                 <Redirect to="/index/main"></Redirect>
               </Route>
-              <Route path="/index/main" component={Main} />
-              <Route path="/index/clue/analysis" component={ClueAnalysis} />
-              <Route path="/index/clue/judge/:status" component={ClueJudge} />
-              <Route path="/index/case/supervise/:status" component={CaseSupervise} />
-              <Route path="/index/data/analysis" component={DataAnalysis} />
-              <Route path="/index/data/retrieval" component={DataRetrieval} />
-              <Route path="/index/setting/account" component={Setting} />
-              <Route path="/index/setting/password" component={ModifyPassword} />
-              <Route path="/index/wiki" component={Wiki} />
+              <Route path="/index/main" exact component={Main} />
+              <Route path="/index/clue/analysis" exact component={ClueAnalysis} />
+              <Route path="/index/clue/judge/:status" exact component={ClueJudge} />
+              <Route path="/index/clue/judge/:status/:clueId" exact component={ClueJudgeDetail} />
+              <Route path="/index/case/supervise/:status" exact component={CaseSupervise} />
+              <Route path="/index/data/analysis" exact component={DataAnalysis} />
+              <Route path="/index/data/retrieval" exact component={DataRetrieval} />
+              <Route path="/index/setting/account" exact component={Setting} />
+              <Route path="/index/setting/password" exact component={ModifyPassword} />
+              <Route path="/index/wiki" exact component={Wiki} />
             </Switch>
           </Content>
         </Layout>
