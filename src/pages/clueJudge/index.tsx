@@ -49,7 +49,7 @@ class ClueJudge extends React.Component<ClueJudgeProps> {
     }
 
     onDetailClick = (clueId: number) => {
-        window.location.href = `/index/clue/judge/pendingProcess/${clueId}`
+        window.location.href = `/index/clue/judge/${this.props.match.params.status}/${clueId}`
     }
 
     onReturnClick = (clueId: number) => {

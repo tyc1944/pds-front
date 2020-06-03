@@ -25,6 +25,7 @@ import ModifyPassword from "pages/setting/modifyPassword";
 import Wiki from "pages/wiki";
 import ClueStore from "stores/clueStore";
 import ClueJudgeDetail from "pages/clueJudge/detail";
+import SubmitClueJudge from "pages/clueJudge/submit";
 
 const { Header, Sider, Content } = Layout;
 
@@ -234,6 +235,7 @@ class MainLayout extends Component<MainLayoutProps, object> {
               <Route path="/index/clue/analysis" exact component={ClueAnalysis} />
               <Route path="/index/clue/judge/:status" exact component={ClueJudge} />
               <Route path="/index/clue/judge/:status/:clueId" exact component={ClueJudgeDetail} />
+              <Route path="/index/clue/judge/:status/:clueId/submit" exact component={SubmitClueJudge} />
               <Route path="/index/case/supervise/:status" exact component={CaseSupervise} />
               <Route path="/index/data/analysis" exact component={DataAnalysis} />
               <Route path="/index/data/retrieval" exact component={DataRetrieval} />

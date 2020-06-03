@@ -190,7 +190,11 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
                     }}>
                         <div>
                             <ColorButton bgColor="#FF9800" fontColor="#FFFFFF">分析报告</ColorButton>
-                            <ColorButton bgColor="#4084F0" fontColor="#FFFFFF">处理</ColorButton>
+                            <ColorButton bgColor="#4084F0" fontColor="#FFFFFF" onClick={() => {
+                                const { params } = this.props.match
+                                window.location.href = `/index/clue/judge/${params.status}/${params.clueId}/submit`
+                            }
+                            }>处理</ColorButton>
                             <ColorButton bgColor="#FF3F11" fontColor="#FFFFFF">退回</ColorButton>
                             <ColorButton bgColor="#FFFFFF" fontColor="#1E1E1E" onClick={() => window.history.back()}>取消</ColorButton>
                         </div>

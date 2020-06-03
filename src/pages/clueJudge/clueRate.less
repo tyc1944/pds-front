@@ -1,0 +1,92 @@
+.clue-rate {
+    display       : flex;
+    flex-direction: column;
+
+    .clue-rate-category {
+        .clue-rate-header {
+            background-color: #F5F7FB;
+            display         : flex;
+            justify-content : center;
+            align-items     : center;
+            height          : 36px;
+            border          : 1px solid #D6DDE3;
+        }
+
+        .clue-rate-row {
+            display: flex;
+            border : 1px solid #D6DDE3;
+            height : 36px;
+
+            &>div {
+                display     : flex;
+                align-items : center;
+                height      : 100%;
+                border-right: 1px solid #D6DDE3;
+            }
+
+            &>div:nth-child(odd) {
+                justify-content: flex-end;
+                padding-right  : 13px;
+                width          : 143px;
+            }
+
+            &>div:nth-child(even) {
+                padding-left: 13px;
+                flex        : 1;
+            }
+        }
+
+    }
+
+    .clue-rate-result {
+        margin-top: 27px;
+        display   : flex;
+
+        &>div {
+            display    : flex;
+            align-items: center;
+        }
+
+        &>div:nth-child(1) {
+            padding: 0 14px;
+
+            &>span {
+                color    : #FF9800;
+                font-size: 20px;
+            }
+        }
+
+        &>div:nth-child(2) {
+            flex     : 1;
+            color    : #D2D2D2;
+            font-size: 20px;
+
+            &>div {
+                display: flex;
+            }
+
+            &>div:last-child {
+                flex     : 1;
+                display  : flex;
+                font-size: 14px;
+
+                &>div:first-child {
+                    flex : 1;
+                    color: #4084F0;
+                }
+
+                &>div:last-child {
+                    cursor: pointer;
+                    color : #101010;
+                }
+            }
+
+            &>div:first-child {
+                &>span {
+                    padding: 0 5px;
+                }
+            }
+
+        }
+    }
+}
