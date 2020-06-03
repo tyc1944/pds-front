@@ -77,11 +77,7 @@ class SubmitClueJudge extends React.Component<SubmitClueJudgeProps> {
                         <ClueRate onGeneratedRate={(rate, rateData) => { console.log(rateData) }}></ClueRate>
                     </DataDetail>
                     <DataDetail header="线索处理信息">
-                        <ClueProcessInfo
-                            clueData={clue.clueProcessData}
-                            onChange={clueData => {
-                                clue.clueProcessData = clueData;
-                            }}></ClueProcessInfo>
+                        <ClueProcessInfo></ClueProcessInfo>
                     </DataDetail>
                     <div style={{
                         display: "flex",
@@ -90,7 +86,9 @@ class SubmitClueJudge extends React.Component<SubmitClueJudgeProps> {
                         marginBottom: '15px'
                     }}>
                         <div>
-                            <ColorButton bgColor="#FF9800" fontColor="#FFFFFF">提交</ColorButton>
+                            <ColorButton bgColor="#FF9800" fontColor="#FFFFFF" onClick={() => {
+                                console.log(clue.clueProcessData)
+                            }}>提交</ColorButton>
                             <ColorButton bgColor="#FFFFFF" fontColor="#1E1E1E" onClick={() => window.history.back()}>取消</ColorButton>
                         </div>
                     </div>
