@@ -9,7 +9,7 @@ import { ColorButton } from "components/buttons";
 import { inject, observer } from "mobx-react";
 import ClueStore, { ClueDataSearchModel } from "stores/clueStore";
 import { fillObjectFromOpsValue } from "components/table/tableListOpsComponents";
-import { CreateSelfFoundClue } from "./modals";
+import { CreateSelfFoundClue, ReturnClueModal } from "./modals";
 import { Moment } from "moment";
 import { message } from "antd";
 
@@ -31,6 +31,7 @@ class ClueJudge extends React.Component<ClueJudgeProps> {
         clueDataList: [],
         clueDataTotalCount: 0,
         showCreateSelfFoundClueModal: false,
+        showReturnClueModal: false
     }
 
     componentDidMount() {
@@ -39,7 +40,7 @@ class ClueJudge extends React.Component<ClueJudgeProps> {
     }
 
     getClueDataList = () => {
-        this.props.clue.getClueDataList().then(res => {
+        this.props.clue.getClueDataList(this.props.match.params.status).then(res => {
             this.setState({
                 clueDataList: res.data.records,
                 clueDataTotalCount: res.data.total
@@ -51,7 +52,7 @@ class ClueJudge extends React.Component<ClueJudgeProps> {
         window.location.href = `/index/clue/judge/pendingProcess/${clueId}`
     }
 
-    onRejectClick = () => {
+    onReturnClick = (clueId: number) => {
 
     }
 
@@ -126,6 +127,20 @@ class ClueJudge extends React.Component<ClueJudgeProps> {
                     }}
                 ></CreateSelfFoundClue>
             }
+            {
+                this.state.showReturnClueModal && <ReturnClueModal
+                    title="退回线索"
+                    visiable={this.state.showReturnClueModal}
+                    onCancel={() => this.setState({
+                        showReturnClueModal: false
+                    })}
+                    onFinish={vals => {
+                        this.setState({
+                            showReturnClueModal: false
+                        })
+                    }}
+                />
+            }
             <Breadscrum data={this.state.breadscrumData}></Breadscrum>
             <BoxContainer>
                 <BoxContainerInner flex={0.5}>
@@ -141,7 +156,7 @@ class ClueJudge extends React.Component<ClueJudgeProps> {
                         total={this.state.clueDataTotalCount}
                         tableSearchOps={<ColorButton bgColor="#4084F0" onClick={this.onSelfFoundClick}>+自行发现</ColorButton>}
                         data={this.state.clueDataList}
-                        columns={TableColumn(this.onDetailClick, this.onRejectClick)}
+                        columns={TableColumn(this.onDetailClick, this.onReturnClick)}
                         onChange={(page, pageSize) => {
                             clue.searchModel.page = page;
                             this.getClueDataList();

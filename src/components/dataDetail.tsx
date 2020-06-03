@@ -45,7 +45,8 @@ export const DataProcessStep = (props: {
 export const CloseableDataTable = (props: {
     dataInfo: { [key: string]: string }[],
     title: string,
-    headerInfo?: React.ReactNode
+    headerInfo?: React.ReactNode,
+    onAddressClick?: (address: string) => void
 }) => {
     const [closed, setClosed] = React.useState(false)
     return <div className="closeable-data-table">
@@ -63,7 +64,17 @@ export const CloseableDataTable = (props: {
                                 (() => {
                                     let tmp = []
                                     for (let k in item) {
-                                        tmp.push(<Fragment key={k}><div style={{ width: "200px", justifyContent: "flex-end", paddingRight: "14px" }}>{k}</div><div style={{ flex: 1, paddingLeft: "14px" }}>{item[k]}</div></Fragment>)
+                                        tmp.push(
+                                            <Fragment key={k}>
+                                                <div style={{ width: "200px", justifyContent: "flex-end", paddingRight: "14px" }}>{k}</div>
+                                                <div style={{ flex: 1, paddingLeft: "14px" }}>{(k === "案发地址" || k === "发生地点") ? <span
+                                                    style={{
+                                                        textDecoration: "underline",
+                                                        color: "#4084F0",
+                                                        cursor: "pointer"
+                                                    }}
+                                                    onClick={() => props.onAddressClick && props.onAddressClick(item[k])}>{item[k]}</span> : item[k]}</div>
+                                            </Fragment>)
                                     }
                                     return tmp
                                 })()
@@ -75,6 +86,7 @@ export const CloseableDataTable = (props: {
         }
     </div>
 }
+
 
 
 

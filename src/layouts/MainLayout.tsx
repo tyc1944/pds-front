@@ -117,7 +117,7 @@ class MainLayout extends Component<MainLayoutProps, object> {
               }
               let res = await clue.getClueStatusCount();
               if (res.data) {
-                statusCount.pendingAppointCount = 0;
+                statusCount.pendingAppointCount = res.data.pendingAppointCount;
                 statusCount.pendingExamineCount = res.data.pendingExamineCount;
                 statusCount.pendingSuperviseCount = res.data.pendingSuperviseCount;
                 statusCount.pendingProcessCount = res.data.pendingProcessCount;
@@ -144,7 +144,7 @@ class MainLayout extends Component<MainLayoutProps, object> {
                 {
                   name: "全部线索",
                   count: 0,
-                  activeUrl: "/index/clue/analysis/all",
+                  activeUrl: "/index/clue/judge/all",
                 }]
             }} />
             <MenuItem name="案件监督" icon={<FileDoneOutlined translate="true" />} subItems={[

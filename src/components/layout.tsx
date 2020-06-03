@@ -39,7 +39,7 @@ export class BoxContainerInner extends React.Component<BoxContainerInnerProps> {
         style={{
           padding: this.props.noPadding ? "0px" : "0px 12px 12px 12px",
           width: "100%",
-          height: "100%",
+          height: "auto",
           display: "flex",
           flexDirection: "column",
           backgroundColor: "#FFFFFF",

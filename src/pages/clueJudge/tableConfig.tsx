@@ -5,7 +5,7 @@ import { DATA_STATUS_ACTION, ALL_CASE_CATEGORY, CLUE_SOURCE } from "common";
 
 export const TableColumn = (
   onDetailClick: (id: number) => void,
-  onDeleteClick: () => void
+  onReturnClick: (id: number) => void
 ) => [
     {
       title: "序号",
@@ -77,14 +77,17 @@ export const TableColumn = (
           >
             查看
         </span>
-          <span
-            style={{
-              cursor: "pointer"
-            }}
-            onClick={() => onDeleteClick()}
-          >
-            退回
+          {
+            row.statusAction !== "SELF" &&
+            <span
+              style={{
+                cursor: "pointer"
+              }}
+              onClick={() => onReturnClick(row.id)}
+            >
+              退回
         </span>
+          }
         </Space>
       )
     }

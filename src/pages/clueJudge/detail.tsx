@@ -9,6 +9,7 @@ import { ExceptionOutlined } from "@ant-design/icons";
 import { ColorButton } from "components/buttons";
 import { formatTimeYMDHMS } from "utils/TimeUtil";
 import { CASE_CATEGORY, CLUE_SOURCE } from "common";
+import { AddressMapModal } from "./modals";
 
 interface MatchParams {
     status: string;
@@ -27,17 +28,21 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
         breadscrumData: [],
         clueDataInfo: [],
         clueRelatedCases: [] as CaseData[],
-        dataFlow: [] as { flowType: string, createdTime: number }[]
+        dataFlow: [] as { flowType: string, createdTime: number }[],
+        showAddressModal: false,
+        currentSelectAddress: ""
     }
 
     componentDidMount() {
+        const { clue } = this.props;
         let clueId = parseInt(this.props.match.params.clueId);
         this.getBreadscrumData(this.props.match.params.status)
-        this.props.clue.getClueData(clueId)
+        clue.getClueData(clueId)
             .then(res => {
                 let tmp = res.data;
                 let detail = [] as { [key: string]: string }[];
                 if (tmp) {
+                    clue.setBaseStepData(tmp.belongToUnit)
                     detail = [{
                         "线索编号": tmp.clueCode,
                         "线索归并时间": formatTimeYMDHMS(tmp.updatedTime)
@@ -48,7 +53,7 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
                     },
                     {
                         "案发地址": tmp.caseArea,
-                        "被举报对象": ""
+                        "被举报对象": tmp.caseTarget
                     },
                     {
                         "简要案情": tmp.caseBriefInfo
@@ -58,10 +63,10 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
                     clueDataInfo: detail
                 })
             })
-        this.props.clue.getClueRelatedCases(clueId).then(res => this.setState({
+        clue.getClueRelatedCases(clueId).then(res => this.setState({
             clueRelatedCases: res.data
         }))
-        this.props.clue.getClueDataFlow(clueId).then(res => this.setState({
+        clue.getClueDataFlow(clueId).then(res => this.setState({
             dataFlow: res.data
         }))
     }
@@ -118,6 +123,14 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
         return []
     }
 
+    onAddressClick = (address: string) => {
+        this.setState({
+            currentSelectAddress: address,
+            showAddressModal: true
+        })
+    }
+
+
     render() {
         const { clue } = this.props;
         return <div style={{
@@ -125,6 +138,16 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
             height: "100%",
             flexDirection: 'column'
         }}>
+            {
+                this.state.showAddressModal && <AddressMapModal title="案发地址"
+                    onCancel={() => this.setState({
+                        showAddressModal: false,
+                        currentSelectAddress: ""
+                    })}
+                    visiable={this.state.showAddressModal}
+                    address={this.state.currentSelectAddress}
+                ></AddressMapModal>
+            }
             <Breadscrum data={this.state.breadscrumData}></Breadscrum>
             <BoxContainer>
                 <BoxContainerInner flex={1} noPadding>
@@ -135,7 +158,7 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
                         }))}></DataProcessStep>
                     </DataDetail>
                     <DataDetail header="线索原始信息">
-                        <CloseableDataTable title="系统并归线索" dataInfo={this.state.clueDataInfo} />
+                        <CloseableDataTable title="系统并归线索" dataInfo={this.state.clueDataInfo} onAddressClick={this.onAddressClick} />
                         {
                             this.state.clueRelatedCases.map((item, index) => {
                                 let tmpDataInfo = item.caseContent ? this.generateDataTableFormatDataFromString(item.caseContent) : [{
@@ -153,7 +176,7 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
                                     <div style={{ maxWidth: "1373px", backgroundColor: '#99B1DD', color: '#FFFFFF', height: '34px', display: "flex", alignItems: 'center', paddingLeft: "16px" }}>
                                         {CLUE_SOURCE[item.sourceType as string]}
                                     </div>
-                                    <CloseableDataTable title="案件编号：123213" dataInfo={tmpDataInfo} headerInfo={<span style={{ color: '#8C929F' }}>报案时间：{formatTimeYMDHMS(item.foundDate)}</span>} />
+                                    <CloseableDataTable onAddressClick={this.onAddressClick} title="案件编号：123213" dataInfo={tmpDataInfo} headerInfo={<span style={{ color: '#8C929F' }}>报案时间：{formatTimeYMDHMS(item.foundDate)}</span>} />
                                 </Fragment>
                             }
                             )
@@ -162,13 +185,14 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
                     <div style={{
                         display: "flex",
                         alignItems: "center",
-                        maxWidth: "1373px"
+                        maxWidth: "1373px",
+                        marginBottom: '15px'
                     }}>
                         <div>
                             <ColorButton bgColor="#FF9800" fontColor="#FFFFFF">分析报告</ColorButton>
                             <ColorButton bgColor="#4084F0" fontColor="#FFFFFF">处理</ColorButton>
                             <ColorButton bgColor="#FF3F11" fontColor="#FFFFFF">退回</ColorButton>
-                            <ColorButton bgColor="#FFFFFF" fontColor="#1E1E1E">取消</ColorButton>
+                            <ColorButton bgColor="#FFFFFF" fontColor="#1E1E1E" onClick={() => window.history.back()}>取消</ColorButton>
                         </div>
                         <div style={{
                             flex: 1,
