@@ -1,0 +1,39 @@
+.clue-process-info {
+    display       : flex;
+    flex-direction: column;
+
+    .clue-process-info-row {
+        display: flex;
+        border : 1px solid #D6DDE3;
+        height : 36px;
+
+        &.higher {
+            height: 100px;
+        }
+
+        &>div {
+            display     : flex;
+            align-items : center;
+            height      : 100%;
+            border-right: 1px solid #D6DDE3;
+
+            &>textarea {
+                height: 100%;
+                border: none;
+            }
+        }
+
+        &>div:nth-child(odd) {
+            justify-content: flex-end;
+            padding-right  : 13px;
+            width          : 143px;
+        }
+
+        &>div:nth-child(even) {
+            padding-left: 13px;
+            flex        : 1;
+        }
+    }
+
+
+}

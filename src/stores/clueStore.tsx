@@ -25,6 +25,21 @@ export interface CaseData {
   briefCaseInfo: string;
 }
 
+export interface ClueData {
+  id?: number;
+  statusAction: string;
+  processedDate: number;
+  reportDate: number;
+  caseCategory: string;
+  caseArea: string;
+  caseTarget: string;
+  reporter: string;
+  contractPhone: string;
+  caseBriefInfo: string;
+  executorComment?: string;
+  executor?: string;
+}
+
 export default class ClueStore {
 
 
@@ -33,6 +48,9 @@ export default class ClueStore {
 
   @observable
   baseStepData = [] as ProcessStep[];
+
+  @observable
+  clueProcessData = {} as ClueData;
 
 
   @action
@@ -94,5 +112,11 @@ export default class ClueStore {
 
   async createSelfFoundClue(caseData: CaseData) {
     await axios.post("/api/clue", caseData)
+  }
+
+  @action
+  getClueProcessData(clueId: number) {
+    axios.get(`/api/clue/${clueId}/process`)
+      .then(res => this.clueProcessData = res.data)
   }
 }

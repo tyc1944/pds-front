@@ -1,6 +1,6 @@
 import React from "react";
 import { inject, observer } from "mobx-react";
-import ClueStore from "stores/clueStore";
+import ClueStore, { ClueData } from "stores/clueStore";
 import { RouteComponentProps } from "react-router-dom";
 import { DataDetail } from "components/dataDetail";
 import Breadscrum from "components/breadscrum";
@@ -8,6 +8,7 @@ import { BoxContainer, BoxContainerInner } from "components/layout";
 import { ColorButton } from "components/buttons";
 import "./submit.less";
 import { ClueRate } from "./clueRate";
+import { ClueProcessInfo } from "./processInfo";
 
 interface MatchParams {
     status: string;
@@ -29,6 +30,7 @@ class SubmitClueJudge extends React.Component<SubmitClueJudgeProps> {
 
     componentDidMount() {
         this.getBreadscrumData(this.props.match.params.status)
+        this.props.clue.getClueProcessData(parseInt(this.props.match.params.clueId));
     }
 
 
@@ -62,6 +64,7 @@ class SubmitClueJudge extends React.Component<SubmitClueJudgeProps> {
     }
 
     render() {
+        const { clue } = this.props;
         return <div style={{
             display: "flex",
             height: "100%",
@@ -74,6 +77,11 @@ class SubmitClueJudge extends React.Component<SubmitClueJudgeProps> {
                         <ClueRate onGeneratedRate={(rate, rateData) => { console.log(rateData) }}></ClueRate>
                     </DataDetail>
                     <DataDetail header="线索处理信息">
+                        <ClueProcessInfo
+                            clueData={clue.clueProcessData}
+                            onChange={clueData => {
+                                clue.clueProcessData = clueData;
+                            }}></ClueProcessInfo>
                     </DataDetail>
                     <div style={{
                         display: "flex",
