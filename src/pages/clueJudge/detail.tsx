@@ -12,7 +12,6 @@ import { CASE_CATEGORY, CLUE_SOURCE } from "common";
 import { AddressMapModal } from "./modals";
 
 interface MatchParams {
-    status: string;
     clueId: string;
 }
 
@@ -37,7 +36,6 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
     componentDidMount() {
         const { clue } = this.props;
         let clueId = parseInt(this.props.match.params.clueId);
-        this.getBreadscrumData(this.props.match.params.status)
         clue.getClueData(clueId)
             .then(res => {
                 let tmp = res.data;
@@ -73,35 +71,6 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
         clue.getClueDataFlow(clueId).then(res => this.setState({
             dataFlow: res.data
         }))
-    }
-
-    getBreadscrumData = (status: string) => {
-        switch (status) {
-            case "pendingAppoint":
-                this.setState({
-                    breadscrumData: ["线索研判", "待指派数据", "线索详情"]
-                })
-                break;
-            case "pendingExamine":
-                this.setState({
-                    breadscrumData: ["线索研判", "待审批数据", "线索详情"]
-                })
-                break;
-            case "pendingProcess":
-                this.setState({
-                    breadscrumData: ["线索研判", "待处理数据", "线索详情"]
-                })
-                break;
-            case "pendingSupervise":
-                this.setState({
-                    breadscrumData: ["线索研判", "待监督数据", "线索详情"]
-                })
-                break;
-            default:
-                this.setState({
-                    breadscrumData: ["线索研判", "全部数据", "线索详情"]
-                })
-        }
     }
 
     generateDataTableFormatDataFromString = (str: string): { [key: string]: string }[] => {
@@ -152,7 +121,7 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
                     address={this.state.currentSelectAddress}
                 ></AddressMapModal>
             }
-            <Breadscrum data={this.state.breadscrumData}></Breadscrum>
+            <Breadscrum data={["线索研判", "待处理数据", "线索详情"]}></Breadscrum>
             <BoxContainer>
                 <BoxContainerInner flex={1} noPadding>
                     <DataDetail header="线索处理进度">
@@ -196,7 +165,7 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
                             <ColorButton bgColor="#FF9800" fontColor="#FFFFFF">分析报告</ColorButton>
                             <ColorButton bgColor="#4084F0" fontColor="#FFFFFF" onClick={() => {
                                 const { params } = this.props.match
-                                window.location.href = `/index/clue/judge/${params.status}/${params.clueId}/submit`
+                                window.location.href = `/index/clue/executor/judge/pendingProcess/${params.clueId}/submit`
                             }
                             }>处理</ColorButton>
                             {

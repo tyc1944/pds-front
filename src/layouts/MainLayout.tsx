@@ -16,7 +16,6 @@ import {
 } from "@ant-design/icons";
 import { TOKEN_KEY } from "utils/RequestUtil";
 import { MenuItem } from "components/menu";
-import ClueJudge from "pages/clueJudge";
 import DataAnalysis from "pages/dataAnalysis";
 import CaseSupervise from "pages/caseSupervise";
 import DataRetrieval from "pages/dataRetrieval";
@@ -24,8 +23,10 @@ import Setting from "pages/setting";
 import ModifyPassword from "pages/setting/modifyPassword";
 import Wiki from "pages/wiki";
 import ClueStore from "stores/clueStore";
+import ExecutorClueJudge from "pages/clueJudge/executor/pendingProcess";
+import ExecutorSubmitClueJudge from "pages/clueJudge/executor/pendingProcess/submit";
 import ClueJudgeDetail from "pages/clueJudge/detail";
-import SubmitClueJudge from "pages/clueJudge/submit";
+import ExecutorClueJudgePendingExamine from "pages/clueJudge/executor/pendingExamine";
 
 const { Header, Sider, Content } = Layout;
 
@@ -115,6 +116,7 @@ class MainLayout extends Component<MainLayoutProps, object> {
                 pendingAppointCount: 0,
                 pendingExamineCount: 0,
                 pendingSuperviseCount: 0,
+                examinedCount: 0
               }
               let res = await clue.getClueStatusCount();
               if (res.data) {
@@ -122,31 +124,62 @@ class MainLayout extends Component<MainLayoutProps, object> {
                 statusCount.pendingExamineCount = res.data.pendingExamineCount;
                 statusCount.pendingSuperviseCount = res.data.pendingSuperviseCount;
                 statusCount.pendingProcessCount = res.data.pendingProcessCount;
+                statusCount.examinedCount = 0;
               }
-              return [
-                {
-                  name: "待处理",
-                  count: statusCount.pendingProcessCount,
-                  activeUrl: "/index/clue/judge/pendingProcess",
-                }, {
-                  name: "待指派",
-                  count: statusCount.pendingAppointCount,
-                  activeUrl: "/index/clue/judge/pendingAppoint",
-                }, {
-                  name: "待审批",
-                  count: statusCount.pendingExamineCount,
-                  activeUrl: "/index/clue/judge/pendingExamine",
-                },
-                {
-                  name: "待监督",
-                  count: statusCount.pendingSuperviseCount,
-                  activeUrl: "/index/clue/judge/pendingSupervise",
-                },
-                {
-                  name: "全部线索",
-                  count: 0,
-                  activeUrl: "/index/clue/judge/all",
-                }]
+              switch (main.userProfile.role) {
+                case "NORMAL_USER":
+                  return [
+                    {
+                      name: "待处理",
+                      count: statusCount.pendingProcessCount,
+                      activeUrl: "/index/clue/executor/judge/pendingProcess",
+                    }, {
+                      name: "待审批",
+                      count: statusCount.pendingExamineCount,
+                      activeUrl: "/index/clue/executor/judge/pendingExamine",
+                    }, {
+                      name: "已审批",
+                      count: statusCount.examinedCount,
+                      activeUrl: "/index/clue/executor/judge/examined",
+                    },
+                    {
+                      name: "待监督",
+                      count: statusCount.pendingSuperviseCount,
+                      activeUrl: "/index/clue/executor/judge/pendingSupervise",
+                    },
+                    {
+                      name: "全部线索",
+                      count: 0,
+                      activeUrl: "/index/clue/executor/judge/all",
+                    }]
+                case "DEPARTMENT_LEADER":
+                  return [
+                    {
+                      name: "待指派",
+                      count: statusCount.pendingAppointCount,
+                      activeUrl: "/index/clue/departmentLeader/judge/pendingAppoint",
+                    }, {
+                      name: "待审批",
+                      count: statusCount.pendingExamineCount,
+                      activeUrl: "/index/clue/departmentLeader/judge/pendingExamine",
+                    }, {
+                      name: "全部线索",
+                      count: 0,
+                      activeUrl: "/index/clue/departmentLeader/judge/all",
+                    }]
+                case "LEADERSHIP":
+                  return [
+                    {
+                      name: "待审批",
+                      count: statusCount.pendingExamineCount,
+                      activeUrl: "/index/clue/leader/judge/pendingExamine",
+                    }, {
+                      name: "全部线索",
+                      count: 0,
+                      activeUrl: "/index/clue/leader/judge/all",
+                    }]
+              }
+              return []
             }} />
             <MenuItem name="案件监督" icon={<FileDoneOutlined translate="true" />} subItems={[
               {
@@ -233,9 +266,21 @@ class MainLayout extends Component<MainLayoutProps, object> {
               </Route>
               <Route path="/index/main" exact component={Main} />
               <Route path="/index/clue/analysis" exact component={ClueAnalysis} />
-              <Route path="/index/clue/judge/:status" exact component={ClueJudge} />
-              <Route path="/index/clue/judge/:status/:clueId" exact component={ClueJudgeDetail} />
-              <Route path="/index/clue/judge/:status/:clueId/submit" exact component={SubmitClueJudge} />
+              <Route path="/index/clue/judge/:clueId" exact component={ClueJudgeDetail} />
+              {/* 承办人线索 */}
+              <Route path="/index/clue/executor/judge/pendingProcess" exact component={ExecutorClueJudge} />
+              <Route path="/index/clue/executor/judge/pendingProcess/:clueId/submit" exact component={ExecutorSubmitClueJudge} />
+              <Route path="/index/clue/executor/judge/pendingExamine" exact component={ExecutorClueJudgePendingExamine} />
+              <Route path="/index/clue/executor/judge/examined" exact component={ExecutorClueJudge} />
+              <Route path="/index/clue/executor/judge/all" exact component={ExecutorClueJudge} />
+              {/* 部门领导线索 */}
+              <Route path="/index/clue/departmentLeader/judge/pendingAppoint" exact component={ExecutorClueJudge} />
+              <Route path="/index/clue/departmentLeader/judge/pendingExamine" exact component={ExecutorClueJudge} />
+              <Route path="/index/clue/departmentLeader/judge/all" exact component={ExecutorClueJudge} />
+              {/* 院领导线索*/}
+              <Route path="/index/clue/leader/judge/pendingExamine" exact component={ExecutorClueJudge} />
+              <Route path="/index/clue/leader/judge/all" exact component={ExecutorClueJudge} />
+
               <Route path="/index/case/supervise/:status" exact component={CaseSupervise} />
               <Route path="/index/data/analysis" exact component={DataAnalysis} />
               <Route path="/index/data/retrieval" exact component={DataRetrieval} />

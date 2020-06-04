@@ -1,7 +1,6 @@
 import React from "react";
 import Breadscrum from "components/breadscrum";
 import { BoxContainer, BoxContainerInner } from "components/layout";
-import { RouteComponentProps } from "react-router-dom";
 import { TableSearch } from "./tableSearch";
 import { TableColumn } from "./tableConfig";
 import { TableList } from "components/table";
@@ -13,18 +12,14 @@ import { CreateSelfFoundClue, ReturnClueModal } from "./modals";
 import { Moment } from "moment";
 import { message } from "antd";
 
-interface MatchParams {
-    status: string;
-}
-
-interface ClueJudgeProps extends RouteComponentProps<MatchParams> {
+interface ClueJudgeProps {
     clue: ClueStore
 }
 
 
 @inject("clue")
 @observer
-class ClueJudge extends React.Component<ClueJudgeProps> {
+class ExecutorClueJudge extends React.Component<ClueJudgeProps> {
 
     state = {
         breadscrumData: [],
@@ -35,12 +30,11 @@ class ClueJudge extends React.Component<ClueJudgeProps> {
     }
 
     componentDidMount() {
-        this.getBreadscrumData(this.props.match.params.status)
         this.getClueDataList();
     }
 
     getClueDataList = () => {
-        this.props.clue.getClueDataList(this.props.match.params.status).then(res => {
+        this.props.clue.getClueDataList("pendingProcess").then(res => {
             this.setState({
                 clueDataList: res.data.records,
                 clueDataTotalCount: res.data.total
@@ -49,7 +43,7 @@ class ClueJudge extends React.Component<ClueJudgeProps> {
     }
 
     onDetailClick = (clueId: number) => {
-        window.location.href = `/index/clue/judge/${this.props.match.params.status}/${clueId}`
+        window.location.href = `/index/clue/judge/${clueId}`
     }
 
     onReturnClick = (clueId: number) => {
@@ -60,35 +54,6 @@ class ClueJudge extends React.Component<ClueJudgeProps> {
         this.setState({
             showCreateSelfFoundClueModal: true
         })
-    }
-
-    getBreadscrumData = (status: string) => {
-        switch (status) {
-            case "pendingAppoint":
-                this.setState({
-                    breadscrumData: ["线索研判", "待指派数据"]
-                })
-                break;
-            case "pendingExamine":
-                this.setState({
-                    breadscrumData: ["线索研判", "待审批数据"]
-                })
-                break;
-            case "pendingProcess":
-                this.setState({
-                    breadscrumData: ["线索研判", "待处理数据"]
-                })
-                break;
-            case "pendingSupervise":
-                this.setState({
-                    breadscrumData: ["线索研判", "待监督数据"]
-                })
-                break;
-            default:
-                this.setState({
-                    breadscrumData: ["线索研判", "全部数据"]
-                })
-        }
     }
 
 
@@ -141,7 +106,7 @@ class ClueJudge extends React.Component<ClueJudgeProps> {
                     }}
                 />
             }
-            <Breadscrum data={this.state.breadscrumData}></Breadscrum>
+            <Breadscrum data={["线索研判", "待处理数据"]}></Breadscrum>
             <BoxContainer>
                 <BoxContainerInner flex={0.5}>
                     <TableSearch onSearch={changed => {
@@ -168,4 +133,4 @@ class ClueJudge extends React.Component<ClueJudgeProps> {
     }
 }
 
-export default ClueJudge;
+export default ExecutorClueJudge;

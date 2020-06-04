@@ -7,8 +7,8 @@ import Breadscrum from "components/breadscrum";
 import { BoxContainer, BoxContainerInner } from "components/layout";
 import { ColorButton } from "components/buttons";
 import "./submit.less";
-import { ClueRate } from "./clueRate";
-import { ClueProcessInfo } from "./processInfo";
+import { ClueRate } from "../../clueRate";
+import { ClueProcessInfo } from "../../processInfo";
 import { message } from "antd";
 import _ from "lodash";
 
@@ -24,7 +24,7 @@ interface SubmitClueJudgeProps extends RouteComponentProps<MatchParams> {
 
 @inject("clue")
 @observer
-class SubmitClueJudge extends React.Component<SubmitClueJudgeProps> {
+class ExecutorSubmitClueJudge extends React.Component<SubmitClueJudgeProps> {
 
     state = {
         breadscrumData: [],
@@ -123,4 +123,4 @@ class SubmitClueJudge extends React.Component<SubmitClueJudgeProps> {
     }
 }
 
-export default SubmitClueJudge
+export default ExecutorSubmitClueJudge
