@@ -6,6 +6,7 @@ import { DatePicker, Select } from "antd";
 import { ALL_CASE_CATEGORY, DATA_STATUS_ACTION } from "common";
 import moment from "moment";
 import { inject, useObserver } from "mobx-react";
+import { formatTimeYMDHMS } from "utils/TimeUtil";
 
 const RedMark = () => <span style={{ color: "#FF2828" }}>*</span>
 const { Option } = Select;
@@ -16,20 +17,21 @@ export const ClueProcessInfo = inject("clue")((props: {
     onAddressClick?: (address: string) => void;
 }) => {
     const { clueProcessData } = props.clue!;
-    return useObserver(() =>
-        <div className="clue-process-info">
+    return useObserver(() => {
+        return <div className="clue-process-info">
             <div className="clue-process-info-row">
                 <div>案件来源</div>
                 <div>{DATA_STATUS_ACTION[clueProcessData.statusAction]}</div>
                 <div>处理时间{!props.readonly && <RedMark />}</div>
                 <div>
-                    <DatePicker defaultValue={moment()}></DatePicker>
+                    <DatePicker onChange={val => clueProcessData.processedDate = val ? val.valueOf() : undefined}></DatePicker>
                 </div>
             </div>
             <div className="clue-process-info-row">
                 <div>案发日期</div>
                 <div>
-                    <DatePicker defaultValue={moment(clueProcessData.reportDate)}></DatePicker>
+                    {formatTimeYMDHMS(clueProcessData.reportDate)}
+                    {/* <DatePicker defaultValue={moment(clueProcessData.reportDate)}></DatePicker> */}
                 </div>
                 <div>案件类别</div>
                 <div>
@@ -79,5 +81,6 @@ export const ClueProcessInfo = inject("clue")((props: {
                     <TextArea defaultValue={clueProcessData.executorComment} onChange={e => clueProcessData.executorComment = e.currentTarget.value}></TextArea>
                 </div>
             </div>
-        </div>)
+        </div>
+    })
 })

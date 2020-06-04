@@ -1,6 +1,6 @@
 import React from "react";
 import { inject, observer } from "mobx-react";
-import ClueStore, { ClueData } from "stores/clueStore";
+import ClueStore from "stores/clueStore";
 import { RouteComponentProps } from "react-router-dom";
 import { DataDetail } from "components/dataDetail";
 import Breadscrum from "components/breadscrum";
@@ -9,6 +9,8 @@ import { ColorButton } from "components/buttons";
 import "./submit.less";
 import { ClueRate } from "./clueRate";
 import { ClueProcessInfo } from "./processInfo";
+import { message } from "antd";
+import _ from "lodash";
 
 interface MatchParams {
     status: string;
@@ -74,7 +76,10 @@ class SubmitClueJudge extends React.Component<SubmitClueJudgeProps> {
             <BoxContainer>
                 <BoxContainerInner flex={1} noPadding>
                     <DataDetail header="线索评级">
-                        <ClueRate onGeneratedRate={(rate, rateData) => { console.log(rateData) }}></ClueRate>
+                        <ClueRate onGeneratedRate={(rate, rateData) => {
+                            clue.clueProcessData.rate = rate;
+                            clue.clueProcessData.rateParams = JSON.stringify(rateData);
+                        }}></ClueRate>
                     </DataDetail>
                     <DataDetail header="线索处理信息">
                         <ClueProcessInfo></ClueProcessInfo>
@@ -86,8 +91,26 @@ class SubmitClueJudge extends React.Component<SubmitClueJudgeProps> {
                         marginBottom: '15px'
                     }}>
                         <div>
-                            <ColorButton bgColor="#FF9800" fontColor="#FFFFFF" onClick={() => {
-                                console.log(clue.clueProcessData)
+                            <ColorButton bgColor="#FF9800" fontColor="#FFFFFF" onClick={async () => {
+                                if (_.isNil(clue.clueProcessData.rate)) {
+                                    message.warning("请完成线索评级！");
+                                    return;
+                                }
+                                if (_.isNil(clue.clueProcessData.processedDate)) {
+                                    message.warning("请填写处理时间！");
+                                    return;
+                                }
+                                if (_.isNil(clue.clueProcessData.caseBriefInfo) || _.isEmpty(clue.clueProcessData.caseBriefInfo)) {
+                                    message.warning("请填写简要案情！");
+                                    return;
+                                }
+                                if (_.isNil(clue.clueProcessData.executorComment) || _.isEmpty(clue.clueProcessData.executorComment)) {
+                                    message.warning("请填写承办人意见！");
+                                    return;
+                                }
+                                await clue.addClueDataProcessInfo(parseInt(this.props.match.params.clueId), clue.clueProcessData);
+                                message.success("提交成功！")
+                                window.history.go(-2);
                             }}>提交</ColorButton>
                             <ColorButton bgColor="#FFFFFF" fontColor="#1E1E1E" onClick={() => window.history.back()}>取消</ColorButton>
                         </div>

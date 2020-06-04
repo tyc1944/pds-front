@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import { inject, observer } from "mobx-react";
 import { RouteComponentProps } from "react-router-dom";
-import ClueStore, { CaseData } from "stores/clueStore";
+import ClueStore, { CaseData, ClueData } from "stores/clueStore";
 import Breadscrum from "components/breadscrum";
 import { BoxContainer, BoxContainerInner } from "components/layout";
 import { DataDetail, DataProcessStep, CloseableDataTable } from "components/dataDetail";
@@ -30,7 +30,8 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
         clueRelatedCases: [] as CaseData[],
         dataFlow: [] as { flowType: string, createdTime: number }[],
         showAddressModal: false,
-        currentSelectAddress: ""
+        currentSelectAddress: "",
+        clueData: {} as ClueData
     }
 
     componentDidMount() {
@@ -40,6 +41,9 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
         clue.getClueData(clueId)
             .then(res => {
                 let tmp = res.data;
+                this.setState({
+                    clueData: tmp
+                })
                 let detail = [] as { [key: string]: string }[];
                 if (tmp) {
                     clue.setBaseStepData(tmp.belongToUnit)
@@ -195,7 +199,9 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
                                 window.location.href = `/index/clue/judge/${params.status}/${params.clueId}/submit`
                             }
                             }>处理</ColorButton>
-                            <ColorButton bgColor="#FF3F11" fontColor="#FFFFFF">退回</ColorButton>
+                            {
+                                this.state.clueData.statusAction !== "SELF" && <ColorButton bgColor="#FF3F11" fontColor="#FFFFFF">退回</ColorButton>
+                            }
                             <ColorButton bgColor="#FFFFFF" fontColor="#1E1E1E" onClick={() => window.history.back()}>取消</ColorButton>
                         </div>
                         <div style={{

@@ -28,7 +28,7 @@ export interface CaseData {
 export interface ClueData {
   id?: number;
   statusAction: string;
-  processedDate: number;
+  processedDate?: number;
   reportDate: number;
   caseCategory: string;
   caseArea: string;
@@ -38,6 +38,8 @@ export interface ClueData {
   caseBriefInfo: string;
   executorComment?: string;
   executor?: string;
+  rate?: number;
+  rateParams?: string;
 }
 
 export default class ClueStore {
@@ -118,5 +120,9 @@ export default class ClueStore {
   getClueProcessData(clueId: number) {
     axios.get(`/api/clue/${clueId}/process`)
       .then(res => this.clueProcessData = res.data)
+  }
+
+  async addClueDataProcessInfo(clueId: number, clueProcessData: ClueData) {
+    await axios.post(`/api/clue/${clueId}/process`, clueProcessData)
   }
 }
