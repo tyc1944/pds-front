@@ -39,7 +39,7 @@ class ExecutorClueJudgePendingExamine extends React.Component<ClueJudgeProps> {
     }
 
     onDetailClick = (clueId: number) => {
-        window.location.href = `/index/clue/executor/judge/pendingExamine/${clueId}`
+        window.location.href = `/index/clue/judge/${clueId}`
     }
 
     render() {

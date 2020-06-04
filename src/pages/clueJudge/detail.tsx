@@ -10,6 +10,7 @@ import { ColorButton } from "components/buttons";
 import { formatTimeYMDHMS } from "utils/TimeUtil";
 import { CASE_CATEGORY, CLUE_SOURCE } from "common";
 import { AddressMapModal } from "./modals";
+import { ClueProcessInfo } from "./processInfo";
 
 interface MatchParams {
     clueId: string;
@@ -71,6 +72,7 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
         clue.getClueDataFlow(clueId).then(res => this.setState({
             dataFlow: res.data
         }))
+        this.props.clue.getClueProcessData(parseInt(this.props.match.params.clueId));
     }
 
     generateDataTableFormatDataFromString = (str: string): { [key: string]: string }[] => {
@@ -155,6 +157,9 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
                             )
                         }
                     </DataDetail>
+                    <DataDetail header="线索处理信息">
+                        <ClueProcessInfo readonly></ClueProcessInfo>
+                    </DataDetail>
                     <div style={{
                         display: "flex",
                         alignItems: "center",
@@ -162,14 +167,18 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
                         marginBottom: '15px'
                     }}>
                         <div>
-                            <ColorButton bgColor="#FF9800" fontColor="#FFFFFF">分析报告</ColorButton>
-                            <ColorButton bgColor="#4084F0" fontColor="#FFFFFF" onClick={() => {
-                                const { params } = this.props.match
-                                window.location.href = `/index/clue/executor/judge/pendingProcess/${params.clueId}/submit`
-                            }
-                            }>处理</ColorButton>
                             {
-                                this.state.clueData.statusAction !== "SELF" && <ColorButton bgColor="#FF3F11" fontColor="#FFFFFF">退回</ColorButton>
+                                this.state.clueData.status === "pendingProcess" && <>
+                                    <ColorButton bgColor="#FF9800" fontColor="#FFFFFF">分析报告</ColorButton>
+                                    <ColorButton bgColor="#4084F0" fontColor="#FFFFFF" onClick={() => {
+                                        const { params } = this.props.match
+                                        window.location.href = `/index/clue/executor/judge/pendingProcess/${params.clueId}/submit`
+                                    }
+                                    }>处理</ColorButton>
+                                    {
+                                        this.state.clueData.statusAction !== "SELF" && <ColorButton bgColor="#FF3F11" fontColor="#FFFFFF">退回</ColorButton>
+                                    }
+                                </>
                             }
                             <ColorButton bgColor="#FFFFFF" fontColor="#1E1E1E" onClick={() => window.history.back()}>取消</ColorButton>
                         </div>

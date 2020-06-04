@@ -27,6 +27,7 @@ export interface CaseData {
 
 export interface ClueData {
   id?: number;
+  status: string;
   statusAction: string;
   processedDate?: number;
   reportDate: number;
