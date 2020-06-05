@@ -1,6 +1,10 @@
 import React, { useState } from "react";
-import { Table } from "antd";
+import { Table, Select, InputNumber } from "antd";
 import { ColumnProps } from "antd/lib/table";
+import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import "./index.less";
+
+const { Option } = Select;
 
 export interface TableListProps {
   title: string;
@@ -48,7 +52,6 @@ export const TableList = ({
   columns,
   data = [],
   tableSearchOps,
-  pageSize = 10,
   total = 0,
   onChange,
   scroll,
@@ -56,6 +59,8 @@ export const TableList = ({
   showHeader = true,
 }: TableListProps) => {
   const [current, setCurrent] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(20);
 
   return (
     <div>
@@ -67,19 +72,7 @@ export const TableList = ({
         rowKey="id"
         columns={columns}
         dataSource={data}
-        pagination={
-          onChange
-            ? {
-              current,
-              onChange: (page, pageSize) => {
-                setCurrent(page);
-                onChange(page, pageSize);
-              },
-              pageSize,
-              total
-            }
-            : false
-        }
+        pagination={false}
         size={window.innerWidth > 1366 ? "middle" : "small"}
         locale={{ emptyText: "没有数据" }}
         scroll={
@@ -90,6 +83,34 @@ export const TableList = ({
               : ({ y: 340 } as any)
         }
       />
+      <div className="tablelist-pagination">
+        <div>共{total}条</div>
+        <div>每页
+          <Select defaultValue={pageSize} onChange={val => setPageSize(val)}>
+            <Option value={10}>10</Option>
+            <Option value={20}>20</Option>
+            <Option value={30}>30</Option>
+          </Select>
+        </div>
+        <div>
+          <LeftOutlined translate="true" onClick={() => {
+            setCurrentPage(currentPage - 1)
+            onChange && onChange(currentPage - 1, pageSize)
+          }} />
+          <span>{currentPage}</span>
+          <RightOutlined translate="true" onClick={() => {
+            setCurrentPage(currentPage + 1)
+            onChange && onChange(currentPage + 1, pageSize)
+          }} />
+        </div>
+        <div>
+          前往<InputNumber step={1} min={1} style={{ width: '68px' }} onPressEnter={e => {
+            let tmp = parseInt(e.currentTarget.value);
+            setCurrentPage(tmp)
+            onChange && onChange(tmp, pageSize)
+          }} />页
+        </div>
+      </div>
     </div>
   );
 };

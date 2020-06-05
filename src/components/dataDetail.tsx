@@ -5,8 +5,9 @@ import { DownOutlined, UpOutlined } from "@ant-design/icons";
 
 export interface ProcessStep {
     index: string,
-    baseInfo?: string[]
-    stepDate?: number
+    baseInfo?: string[];
+    stepDate?: number;
+    optional?: boolean;//意味着该流程为可选流程
 }
 
 export const DataDetail = (props: {
@@ -34,6 +35,7 @@ export const DataProcessStep = (props: {
         {
             props.baseStepData.map((item, index) => {
                 let tmp = props.steps && props.steps[index];
+                let nextTmp = props.steps && props.steps[index + 1];
                 return <div key={index} className={`data-process-step-item `}>
                     <div className={tmp ? 'active' : ''}>{index + 1}</div>
                     <div>
@@ -42,7 +44,14 @@ export const DataProcessStep = (props: {
                         }
                         <div>{tmp ? formatTimeYMDHMS(tmp.stepDate as number) : ' '}</div>
                     </div>
-                    <div className={`data-process-step-line ${tmp ? 'active' : ''}`}></div>
+                    {
+                        index !== 0 &&
+                        <div className={`data-process-step-line left ${tmp ? 'active' : ''} ${item.optional ? 'dashed' : ''}`} ></div>
+                    }
+                    {
+                        index !== (props.baseStepData.length - 1) &&
+                        <div className={`data-process-step-line right ${nextTmp ? 'active' : ''} ${props.baseStepData[index + 1] && props.baseStepData[index + 1].optional ? 'dashed' : ''}`}></div>
+                    }
                 </div>
             })
         }

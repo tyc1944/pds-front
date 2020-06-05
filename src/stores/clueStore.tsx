@@ -4,6 +4,7 @@ import { ProcessStep } from "components/dataDetail";
 
 export interface ClueDataSearchModel {
   page: number;
+  pageSize: number;
   reportDateStart: string;
   reportDateEnd: string;
   caseCategory: string;
@@ -55,7 +56,7 @@ export default class ClueStore {
 
 
   @observable
-  searchModel = {} as ClueDataSearchModel
+  searchModel = { page: 1, pageSize: 20 } as ClueDataSearchModel
 
   @observable
   baseStepData = [] as ProcessStep[];
@@ -66,7 +67,7 @@ export default class ClueStore {
 
   @action
   resetSearchModal() {
-    this.searchModel = { page: 1 } as ClueDataSearchModel
+    this.searchModel = { page: 1, pageSize: 20 } as ClueDataSearchModel
   }
 
   @action
@@ -88,7 +89,8 @@ export default class ClueStore {
       baseInfo: ["院领导", "审批通过"]
     }, {
       index: "STEP_6",
-      baseInfo: ["承办人", "转案件监督"]
+      baseInfo: ["承办人", "转案件监督"],
+      optional: true
     }, {
       index: "STEP_7",
       baseInfo: ["承办人", "反馈结果"]
