@@ -13,7 +13,7 @@ export default class Breadscrum extends React.Component<BreadscrumProps> {
       <div
         style={{
           fontSize: "14px",
-          padding: "0px 0px 0px 25px",
+          padding: "10px 0px 10px 25px",
           backgroundColor: '#F6F7F9',
           height: "39px",
           width: "100%",

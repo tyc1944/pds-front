@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { MyModal } from "components/modal";
 import { Select, Form, Input, Row, Col } from "antd";
 import { Store } from "antd/lib/form/interface";
@@ -6,7 +6,8 @@ import { ValidateErrorEntity } from "rc-field-form/lib/interface";
 import { ColorButton } from "components/buttons";
 import { ALL_PROCURATORATE, ALL_DEPARTMENT } from "common";
 import { SelectValue } from "antd/lib/select";
-import { UserAccount } from "stores/mainStore";
+import { UserAccount, UserProfile } from "stores/mainStore";
+import { useParams } from "react-router-dom";
 
 const { Option } = Select;
 
@@ -25,12 +26,22 @@ const tailLayout = {
 export const CreateAccountModal = (props: {
     visiable: boolean;
     onCancel: () => void;
+    userProfile: UserProfile;
     title: string;
     onFinish?: (values: Store) => void;
     onFinishFailed?: (errorInfo: ValidateErrorEntity) => void;
 }) => {
 
     const [departmentList, setDeparmentList] = React.useState([] as string[]);
+
+    useEffect(() => {
+        if (props.userProfile.role === "MANAGER") {
+            if (ALL_PROCURATORATE.indexOf(props.userProfile.unit) !== -1) {
+                setDeparmentList(ALL_DEPARTMENT[ALL_PROCURATORATE.indexOf(props.userProfile.unit)])
+            }
+        }
+    }, [props.userProfile])
+
 
     return (
         <MyModal
@@ -41,11 +52,9 @@ export const CreateAccountModal = (props: {
         >
             <Form
                 {...layout}
-                initialValues={{
-                    parentId: "",
-                    searchable: true,
-                    documentType: -1
-                }}
+                initialValues={props.userProfile.role === "MANAGER" ? {
+                    unit: props.userProfile.unit
+                } : {}}
                 onFinish={props.onFinish}
                 onFinishFailed={props.onFinishFailed}
             >
@@ -72,13 +81,15 @@ export const CreateAccountModal = (props: {
                                 rules={[
                                     { required: true, message: "请选择归属检察院" },]}
                             >
-                                <Select onChange={(val: SelectValue) => {
-                                    if (ALL_PROCURATORATE.indexOf(val as string) !== -1) {
-                                        setDeparmentList(ALL_DEPARTMENT[ALL_PROCURATORATE.indexOf(val as string)])
-                                    } else {
-                                        setDeparmentList([])
-                                    }
-                                }}>
+                                <Select
+                                    disabled={props.userProfile.role === "MANAGER"}
+                                    onChange={(val: SelectValue) => {
+                                        if (ALL_PROCURATORATE.indexOf(val as string) !== -1) {
+                                            setDeparmentList(ALL_DEPARTMENT[ALL_PROCURATORATE.indexOf(val as string)])
+                                        } else {
+                                            setDeparmentList([])
+                                        }
+                                    }}>
                                     <Option value="">请选择</Option>
                                     {ALL_PROCURATORATE.map(item => (
                                         <Option value={item}>{item}</Option>
@@ -96,6 +107,10 @@ export const CreateAccountModal = (props: {
                             >
                                 <Select>
                                     <Option value="">请选择</Option>
+                                    {
+                                        props.userProfile.role === "ADMIN" &&
+                                        < Option value="MANAGER">管理员</Option>
+                                    }
                                     <Option value="LEADERSHIP">院领导</Option>
                                     <Option value="DEPARTMENT_LEADER">部门领导</Option>
                                     <Option value="NORMAL_USER">承办人</Option>
@@ -159,7 +174,7 @@ export const CreateAccountModal = (props: {
                     </div>
                 </Form.Item>
             </Form>
-        </MyModal>
+        </MyModal >
     )
 };
 

@@ -6,6 +6,7 @@ export interface UserProfile {
   id: number;
   name: string;
   role: string;
+  unit: string;
 }
 
 export interface UserAccount {

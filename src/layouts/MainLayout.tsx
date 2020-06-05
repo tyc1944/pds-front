@@ -27,6 +27,10 @@ import ExecutorClueJudge from "pages/clueJudge/executor/pendingProcess";
 import ExecutorSubmitClueJudge from "pages/clueJudge/executor/pendingProcess/submit";
 import ClueJudgeDetail from "pages/clueJudge/detail";
 import ExecutorClueJudgePendingExamine from "pages/clueJudge/executor/pendingExamine";
+import DepartmentLeaderPendingAppointClueJudge from "pages/clueJudge/departmentLeader/pendingAppoint";
+import DepartmentLeaderPendingExamineClueJudge from "pages/clueJudge/departmentLeader/pendingExamine";
+import DepartmentLeaderAllClueJudge from "pages/clueJudge/all";
+import AllClueJudge from "pages/clueJudge/all";
 
 const { Header, Sider, Content } = Layout;
 
@@ -150,7 +154,7 @@ class MainLayout extends Component<MainLayoutProps, object> {
                     {
                       name: "全部线索",
                       count: 0,
-                      activeUrl: "/index/clue/executor/judge/all",
+                      activeUrl: "/index/clue/all/judge/all",
                     }]
                 case "DEPARTMENT_LEADER":
                   return [
@@ -165,7 +169,7 @@ class MainLayout extends Component<MainLayoutProps, object> {
                     }, {
                       name: "全部线索",
                       count: 0,
-                      activeUrl: "/index/clue/departmentLeader/judge/all",
+                      activeUrl: "/index/clue/all/judge/all",
                     }]
                 case "LEADERSHIP":
                   return [
@@ -176,7 +180,7 @@ class MainLayout extends Component<MainLayoutProps, object> {
                     }, {
                       name: "全部线索",
                       count: 0,
-                      activeUrl: "/index/clue/leader/judge/all",
+                      activeUrl: "/index/clue/all/judge/all",
                     }]
               }
               return []
@@ -249,15 +253,25 @@ class MainLayout extends Component<MainLayoutProps, object> {
               count: 0,
               activeUrl: '/index/data/retrieval/wuxiCases'
             }]} />
-            <MenuItem name="系统设置" icon={<SettingOutlined translate="true" />} subItems={[{
-              name: "账户管理",
-              count: 0,
-              activeUrl: "/index/setting/account"
-            }, {
-              name: "修改密码",
-              count: 0,
-              activeUrl: "/index/setting/password"
-            }]} />
+            <MenuItem name="系统设置" icon={<SettingOutlined translate="true" />} subItems={async () => {
+              if (main.userProfile.role === "ADMIN" || main.userProfile.role === "MANAGER") {
+                return [{
+                  name: "账户管理",
+                  count: 0,
+                  activeUrl: "/index/setting/account"
+                }, {
+                  name: "修改密码",
+                  count: 0,
+                  activeUrl: "/index/setting/password"
+                }]
+              } else {
+                return [{
+                  name: "修改密码",
+                  count: 0,
+                  activeUrl: "/index/setting/password"
+                }]
+              }
+            }} />
           </Sider>
           <Content>
             <Switch>
@@ -266,20 +280,23 @@ class MainLayout extends Component<MainLayoutProps, object> {
               </Route>
               <Route path="/index/main" exact component={Main} />
               <Route path="/index/clue/analysis" exact component={ClueAnalysis} />
-              <Route path="/index/clue/judge/:clueId" exact component={ClueJudgeDetail} />
+              <Route path="/index/clue/all/judge/all" exact component={AllClueJudge} />
               {/* 承办人线索 */}
               <Route path="/index/clue/executor/judge/pendingProcess" exact component={ExecutorClueJudge} />
+              <Route path="/index/clue/executor/judge/pendingProcess/:clueId" exact component={ClueJudgeDetail} />
               <Route path="/index/clue/executor/judge/pendingProcess/:clueId/submit" exact component={ExecutorSubmitClueJudge} />
               <Route path="/index/clue/executor/judge/pendingExamine" exact component={ExecutorClueJudgePendingExamine} />
+              <Route path="/index/clue/executor/judge/pendingExamine/:clueId" exact component={ClueJudgeDetail} />
               <Route path="/index/clue/executor/judge/examined" exact component={ExecutorClueJudge} />
-              <Route path="/index/clue/executor/judge/all" exact component={ExecutorClueJudge} />
+              <Route path="/index/clue/executor/judge/examined/:clueId" exact component={ClueJudgeDetail} />
               {/* 部门领导线索 */}
-              <Route path="/index/clue/departmentLeader/judge/pendingAppoint" exact component={ExecutorClueJudge} />
-              <Route path="/index/clue/departmentLeader/judge/pendingExamine" exact component={ExecutorClueJudge} />
-              <Route path="/index/clue/departmentLeader/judge/all" exact component={ExecutorClueJudge} />
+              <Route path="/index/clue/departmentLeader/judge/pendingAppoint" exact component={DepartmentLeaderPendingAppointClueJudge} />
+              <Route path="/index/clue/departmentLeader/judge/pendingAppoint/:clueId" exact component={ClueJudgeDetail} />
+              <Route path="/index/clue/departmentLeader/judge/pendingExamine" exact component={DepartmentLeaderPendingExamineClueJudge} />
+              <Route path="/index/clue/departmentLeader/judge/pendingExamine/:clueId" exact component={ClueJudgeDetail} />
               {/* 院领导线索*/}
               <Route path="/index/clue/leader/judge/pendingExamine" exact component={ExecutorClueJudge} />
-              <Route path="/index/clue/leader/judge/all" exact component={ExecutorClueJudge} />
+              <Route path="/index/clue/leader/judge/pendingExamine/:clueId" exact component={ClueJudgeDetail} />
 
               <Route path="/index/case/supervise/:status" exact component={CaseSupervise} />
               <Route path="/index/data/analysis" exact component={DataAnalysis} />

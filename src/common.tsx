@@ -48,6 +48,14 @@ export const CLUE_SOURCE: { [key: string]: string } = {
   "HOTLINE": "政风热线",
   "P_12315": "12315"
 }
+export const CLUE_STATUS: { [key: string]: string } = {
+  "pendingExamine": '待审批',
+  "pendingAppoint": '待指派',
+  "finishClue": '已完成',
+  "pendingSupervise": '待监督',
+  "examined": '已审批',
+
+}
 export interface UserAccountInfo {
   id: number;
   accountName: string;

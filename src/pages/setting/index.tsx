@@ -69,6 +69,7 @@ class Setting extends React.Component<SettingProps> {
         }}>
             {
                 this.state.showCreateAccountModal && <CreateAccountModal
+                    userProfile={main.userProfile}
                     onCancel={() => this.setState({
                         showCreateAccountModal: false
                     })}
@@ -104,8 +105,8 @@ class Setting extends React.Component<SettingProps> {
 
             <Breadscrum data={["系统设置", "账户管理"]}></Breadscrum>
             <BoxContainer>
-                <BoxContainerInner flex={0.4}>
-                    <TableSearch onSearch={changed => { }}></TableSearch>
+                <BoxContainerInner flex={main.userProfile.role === "ADMIN" ? 0.4 : 0.2}>
+                    <TableSearch onSearch={changed => { }} userProfile={main.userProfile}></TableSearch>
                 </BoxContainerInner>
                 <BoxContainerInner flex={1} noPadding>
                     <TableList

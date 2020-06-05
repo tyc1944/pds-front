@@ -1,14 +1,11 @@
 import React from "react";
 import { TableListOpsHelper } from "components/table/tableListOpsContext";
-import { TableListOpsValueType, InputWithoutIcon, SingleSelectionGroup } from "components/table/tableListOpsComponents";
+import { TableListOpsValueType, InputWithoutIcon, SingleSelectionGroup, MultiSelectionGroup, OptionsDateRangePicker } from "components/table/tableListOpsComponents";
 import { Row, Col } from "antd";
 import { ColorButton } from "components/buttons";
-import { ALL_PROCURATORATE } from "common";
-import { UserProfile } from "stores/mainStore";
 
 export const TableSearch = (props: {
     onSearch: (changed: TableListOpsValueType[]) => void;
-    userProfile: UserProfile;
 }) => {
 
     const [changed, setChanged] = React.useState([] as TableListOpsValueType[])
@@ -22,7 +19,7 @@ export const TableSearch = (props: {
         initData={changed}
     >
         <div style={{
-            margin: '10px 0px',
+            margin: '18px 0px',
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
@@ -44,30 +41,27 @@ export const TableSearch = (props: {
                     </Col>
                 </Row>
             </div>
-            {
-                props.userProfile.role === "ADMIN" &&
-                <div>
-                    <Row>
-                        <Col xl={2} xs={4} style={{ color: '#9099A2' }}>归属检察院</Col>
-                        <Col xl={22} xs={20}>
-                            <SingleSelectionGroup name="belongTo" defaultValue="不限" selectItems={["不限"].concat(ALL_PROCURATORATE)}></SingleSelectionGroup>
-                        </Col>
-                    </Row>
-                </div>
-            }
             <div>
-                <Row>
-                    <Col xl={2} xs={4} style={{ color: '#9099A2' }}>角色</Col>
-                    <Col xl={22} xs={20}>
-                        <SingleSelectionGroup name="role" defaultValue="不限" selectItems={["不限", "院领导", "部门领导", "承办人"]}></SingleSelectionGroup>
+                <Row >
+                    <Col xl={2} xs={4} style={{ color: '#9099A2' }}>处理日期</Col>
+                    <Col>
+                        <OptionsDateRangePicker name={["processedDateStart", "processedDateEnd"]}></OptionsDateRangePicker>
                     </Col>
                 </Row>
             </div>
             <div>
                 <Row>
-                    <Col xl={2} xs={4} style={{ color: '#9099A2' }}>账号状态</Col>
+                    <Col xl={2} xs={4} style={{ color: '#9099A2' }}>案件类别</Col>
                     <Col xl={22} xs={20}>
-                        <SingleSelectionGroup name="status" defaultValue="不限" selectItems={["不限", "正常", "冻结"]}></SingleSelectionGroup>
+                        <SingleSelectionGroup name="caseCategory" defaultValue="不限" selectItems={["不限", "商标", "专利", "版权", "其他"]}></SingleSelectionGroup>
+                    </Col>
+                </Row>
+            </div>
+            <div>
+                <Row>
+                    <Col xl={2} xs={4} style={{ color: '#9099A2' }}>线索评级</Col>
+                    <Col xl={22} xs={20}>
+                        <SingleSelectionGroup name="rate" defaultValue="不限" selectItems={["不限", "5级", "4级", "3级", "2级", "1级"]}></SingleSelectionGroup>
                     </Col>
                 </Row>
             </div>

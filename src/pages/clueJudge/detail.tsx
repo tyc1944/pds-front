@@ -11,16 +11,19 @@ import { formatTimeYMDHMS } from "utils/TimeUtil";
 import { CASE_CATEGORY, CLUE_SOURCE } from "common";
 import { AddressMapModal } from "./modals";
 import { ClueProcessInfo } from "./processInfo";
+import MainStore from "stores/mainStore";
+import { ExamineComment } from "./components";
 
 interface MatchParams {
     clueId: string;
 }
 
 interface ClueJudgeDetailProps extends RouteComponentProps<MatchParams> {
-    clue: ClueStore
+    clue: ClueStore,
+    main: MainStore
 }
 
-@inject("clue")
+@inject("clue", "main")
 @observer
 class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
 
@@ -107,7 +110,8 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
 
 
     render() {
-        const { clue } = this.props;
+        const { clue, main } = this.props;
+        const { clueData } = this.state;
         return <div style={{
             display: "flex",
             height: "100%",
@@ -160,6 +164,12 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
                     <DataDetail header="线索处理信息">
                         <ClueProcessInfo readonly></ClueProcessInfo>
                     </DataDetail>
+                    {
+                        (main.userProfile.role === "DEPARTMENT_LEADER" && clueData.status === "pendingExamine") &&
+                        <DataDetail header="部门领导审批意见">
+                            <ExamineComment onChange={val => { }}></ExamineComment>
+                        </DataDetail>
+                    }
                     <div style={{
                         display: "flex",
                         alignItems: "center",
@@ -168,7 +178,7 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
                     }}>
                         <div>
                             {
-                                this.state.clueData.status === "pendingProcess" && <>
+                                clueData.status === "pendingProcess" && <>
                                     <ColorButton bgColor="#FF9800" fontColor="#FFFFFF">分析报告</ColorButton>
                                     <ColorButton bgColor="#4084F0" fontColor="#FFFFFF" onClick={() => {
                                         const { params } = this.props.match
@@ -176,8 +186,15 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
                                     }
                                     }>处理</ColorButton>
                                     {
-                                        this.state.clueData.statusAction !== "SELF" && <ColorButton bgColor="#FF3F11" fontColor="#FFFFFF">退回</ColorButton>
+                                        clueData.statusAction !== "SELF" && <ColorButton bgColor="#FF3F11" fontColor="#FFFFFF">退回</ColorButton>
                                     }
+                                </>
+                            }
+                            {
+                                (main.userProfile.role === "DEPARTMENT_LEADER" && clueData.status === "pendingExamine") &&
+                                <>
+                                    <ColorButton bgColor="#4084F0" fontColor="#FFFFFF">提交</ColorButton>
+                                    <ColorButton bgColor="#FF3F11" fontColor="#FFFFFF">驳回</ColorButton>
                                 </>
                             }
                             <ColorButton bgColor="#FFFFFF" fontColor="#1E1E1E" onClick={() => window.history.back()}>取消</ColorButton>
