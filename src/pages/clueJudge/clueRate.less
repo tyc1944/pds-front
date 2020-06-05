@@ -90,3 +90,45 @@
         }
     }
 }
+
+.clue-rate-info {
+    display        : flex;
+    width          : 350px;
+    justify-content: space-around;
+    align-items    : center;
+
+    &>div:first-child {
+        &>span {
+            color    : #FF9800;
+            font-size: 20px;
+        }
+    }
+
+    &>div:nth-child(2) {
+        &>span {
+            padding: 0 5px;
+        }
+    }
+}
+
+.clue-rate-modal {
+    &>div:first-child {
+        color       : #101010;
+        padding-left: 0px;
+    }
+
+    &>div {
+        display     : flex;
+        width       : 90%;
+        margin      : 0 auto 17px auto;
+        padding-left: 10px;
+    }
+
+    &>div>div:nth-child(odd) {
+        width: 100px;
+    }
+
+    &>div>div:nth-child(even) {
+        flex: 1
+    }
+}

@@ -11,10 +11,18 @@ export interface ProcessStep {
 
 export const DataDetail = (props: {
     children: React.ReactNode,
-    header: string
+    header: string,
+    headerOps?: React.ReactNode
 }) =>
     <div className="data-detail">
-        <div className="data-detail-header">{props.header}</div>
+        <div className="data-detail-header">
+            <div>
+                {props.header}
+            </div>
+            <div>
+                {props.headerOps}
+            </div>
+        </div>
         {props.children}
     </div>
 

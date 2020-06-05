@@ -4,7 +4,6 @@ import ClueStore from "stores/clueStore";
 import TextArea from "antd/lib/input/TextArea";
 import { DatePicker, Select } from "antd";
 import { ALL_CASE_CATEGORY, DATA_STATUS_ACTION, CASE_CATEGORY } from "common";
-import moment from "moment";
 import { inject, useObserver } from "mobx-react";
 import { formatTimeYMDHMS } from "utils/TimeUtil";
 

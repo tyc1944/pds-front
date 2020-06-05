@@ -13,6 +13,7 @@ import { AddressMapModal } from "./modals";
 import { ClueProcessInfo } from "./processInfo";
 import MainStore from "stores/mainStore";
 import { ExamineComment } from "./components";
+import { ClueRateInfo } from "./clueRate";
 
 interface MatchParams {
     clueId: string;
@@ -161,7 +162,7 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
                             )
                         }
                     </DataDetail>
-                    <DataDetail header="线索处理信息">
+                    <DataDetail header="线索处理信息" headerOps={<ClueRateInfo />}>
                         <ClueProcessInfo readonly></ClueProcessInfo>
                     </DataDetail>
                     {

@@ -3,9 +3,12 @@ import "./clueRate.less"
 import { ColorButton } from "components/buttons";
 import { Radio, Checkbox } from "antd";
 import { StarFilled, DeleteFilled } from "@ant-design/icons";
+import { MyModal } from "components/modal";
+import { inject } from "mobx-react";
+import ClueStore from "stores/clueStore";
 
 const ClueRateStar = ({ rate = 0 }: {
-    rate: number
+    rate?: number
 }) =>
     <>
         {
@@ -349,4 +352,104 @@ export const ClueRate = (props: {
         </div>
     </div>
 }
+
+
+const ClueRateModal = (props: {
+    visiable: boolean;
+    onCancel: () => void;
+    rate?: number;
+    rateParams?: string;
+}) => {
+    let rateJson = (props.rateParams ? JSON.parse(props.rateParams) : {}) as any
+    return (
+        <MyModal
+            visiable={props.visiable}
+            onCancel={props.onCancel}
+            title={"评级详情"}
+            width={644}
+        >
+
+            <div className="clue-rate-info">
+                <div>线索评级：<span>{props.rate ? props.rate : '--'}</span></div>
+                <div>
+                    <ClueRateStar rate={props.rate}></ClueRateStar>
+                </div>
+            </div>
+            <div style={{
+                borderTop: '1px solid #CECECE',
+                marginTop: '10px'
+            }} className="clue-rate-modal">
+                <div>报案信息</div>
+                <div>
+                    <div>举报方式：</div>
+                    <div>{reportWayOptions.filter(item => item.index === rateJson.reportWay).map(item => item.name).join(",")}</div>
+                    <div>举报材料：</div>
+                    <div>{reportContentOptions.filter(item => item.index === rateJson.reportContent).map(item => item.name).join(",")}</div>
+                </div>
+                <div>
+                    <div>侵权人：</div>
+                    <div>{infringerOptions.filter(item => item.index === rateJson.infringer).map(item => item.name).join(",")}</div>
+                    <div>侵权行为：</div>
+                    <div>{infringerOptions.filter(item => item.index === rateJson.infringementAct).map(item => item.name).join(",")}</div>
+                </div>
+                <div>
+                    <div>涉案金额：</div>
+                    <div>{amountInvolvedOptions.filter(item => item.index === rateJson.amountInvolved).map(item => item.name).join(",")}</div>
+                </div>
+            </div>
+            <div className="clue-rate-modal">
+                <div>风险信息</div>
+                <div>
+                    <div>线索来源：</div>
+                    <div>{clueSourceOptions.filter(item => rateJson.clueSource.indexOf(item.value) !== -1).map(item => item.label).join("，")}</div>
+                    <div>人身风险：</div>
+                    <div>{personalRiskOptions.filter(item => rateJson.personalRisk.indexOf(item.value) !== -1).map(item => item.label).join("，")}</div>
+                </div>
+                <div>
+                    <div>身份情况：</div>
+                    <div>{statusOptions.filter(item => rateJson.status.indexOf(item.value) !== -1).map(item => item.label).join("，")}</div>
+                </div>
+                <div>
+                    <div>舆情风险：</div>
+                    <div>{publicOpinionRiskOptions.filter(item => rateJson.publicOpinionRisk.indexOf(item.value) !== -1).map(item => item.label).join("，")}</div>
+                </div>
+                <div>
+                    <div>上访风险：</div>
+                    <div>{petitionRiskOptions.filter(item => rateJson.petitionRisk.indexOf(item.value) !== -1).map(item => item.label).join("，")}</div>
+                </div>
+            </div>
+        </MyModal>
+    )
+};
+
+export const ClueRateInfo = inject("clue")((props: {
+    clue?: ClueStore
+}) => {
+    const [showClueRate, setShowClueRate] = React.useState(false)
+    const { clueProcessData } = props.clue!
+    return <>
+        {
+            showClueRate && <ClueRateModal
+                visiable={showClueRate}
+                onCancel={() => setShowClueRate(false)}
+                rate={clueProcessData.rate}
+                rateParams={clueProcessData.rateParams}
+            ></ClueRateModal>
+        }
+        <div className="clue-rate-info">
+            <div>线索评级：<span>{clueProcessData.rate ? clueProcessData.rate : '--'}</span></div>
+            <div>
+                <ClueRateStar rate={clueProcessData.rate}></ClueRateStar>
+            </div>
+            <div style={{
+                textDecoration: "underline",
+                color: "#4084F0",
+                cursor: "pointer"
+            }} onClick={() => setShowClueRate(true)}>
+                查看评级详情
+        </div>
+        </div>
+    </>
+})
+
 
