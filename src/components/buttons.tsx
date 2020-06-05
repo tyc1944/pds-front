@@ -28,8 +28,10 @@ export const ColorButton = (props: {
   fontColor?: string;
   disabled?: boolean;
   width?: string;
+  icon?: React.ReactNode
 }) => (
     <Button
+      icon={props.icon}
       disabled={props.disabled}
       htmlType={props.htmlType ? props.htmlType : "button"}
       onClick={props.onClick}

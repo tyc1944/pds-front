@@ -10,11 +10,14 @@ export const RateField = (props: {
     }}>{props.rate}级</span>
 
 export const ExamineComment = (props: {
-    onChange: (val: string) => void
+    onChange?: (val: string) => void,
+    comment?: string;
 }) =>
     <div className="examine-comment">
         <div>审批意见</div>
         <div>
-            <TextArea onChange={e => props.onChange(e.currentTarget.value)}></TextArea>
+            {
+                props.comment ? props.comment : <TextArea onChange={e => props.onChange && props.onChange(e.currentTarget.value)}></TextArea>
+            }
         </div>
     </div>

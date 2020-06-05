@@ -41,6 +41,14 @@ export interface ClueData {
   executor?: string;
   rate?: number;
   rateParams?: string;
+  departmentComment?: string;
+  leaderComment?: string;
+}
+
+export interface ClueDataExamineInfo {
+  comment: string;
+  status: string;
+  dataFlowType: string;
 }
 
 export default class ClueStore {
@@ -125,5 +133,9 @@ export default class ClueStore {
 
   async addClueDataProcessInfo(clueId: number, clueProcessData: ClueData) {
     await axios.post(`/api/clue/${clueId}/process`, clueProcessData)
+  }
+
+  async addClueDataExamineInfo(clueId: number, examineInfo: ClueDataExamineInfo) {
+    await axios.post(`/api/clue/${clueId}/examine`, examineInfo)
   }
 }

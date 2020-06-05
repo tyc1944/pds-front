@@ -6,6 +6,8 @@ import { DatePicker, Select } from "antd";
 import { ALL_CASE_CATEGORY, DATA_STATUS_ACTION, CASE_CATEGORY } from "common";
 import { inject, useObserver } from "mobx-react";
 import { formatTimeYMDHMS } from "utils/TimeUtil";
+import { ColorButton } from "components/buttons";
+import { EyeFilled, VerticalAlignBottomOutlined } from "@ant-design/icons";
 
 const RedMark = () => <span style={{ color: "#FF2828" }}>*</span>
 const { Option } = Select;
@@ -94,6 +96,16 @@ export const ClueProcessInfo = inject("clue")((props: {
                     }
                 </div>
             </div>
+            {
+                props.readonly &&
+                <div className="clue-process-analysis-report">
+                    <div>分析报告</div>
+                    <div>
+                        <ColorButton icon={<EyeFilled translate="true" />} bgColor="#FF9800" fontColor="#FFFFFF">预览</ColorButton>
+                        <ColorButton icon={<VerticalAlignBottomOutlined translate="true" />} bgColor="#64B78B" fontColor="#FFFFFF">下载</ColorButton>
+                    </div>
+                </div>
+            }
         </div>
     })
 })

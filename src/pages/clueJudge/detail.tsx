@@ -14,6 +14,8 @@ import { ClueProcessInfo } from "./processInfo";
 import MainStore from "stores/mainStore";
 import { ExamineComment } from "./components";
 import { ClueRateInfo } from "./clueRate";
+import { message, Modal } from "antd";
+import _ from "lodash";
 
 interface MatchParams {
     clueId: string;
@@ -35,7 +37,8 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
         dataFlow: [] as { flowType: string, createdTime: number }[],
         showAddressModal: false,
         currentSelectAddress: "",
-        clueData: {} as ClueData
+        clueData: {} as ClueData,
+        comment: ""
     }
 
     componentDidMount() {
@@ -168,8 +171,36 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
                     {
                         (main.userProfile.role === "DEPARTMENT_LEADER" && clueData.status === "pendingExamine") &&
                         <DataDetail header="部门领导审批意见">
-                            <ExamineComment onChange={val => { }}></ExamineComment>
+                            <ExamineComment onChange={comment => {
+                                this.setState({
+                                    comment
+                                })
+                            }}></ExamineComment>
                         </DataDetail>
+                    }
+                    {
+                        (main.userProfile.role === "LEADERSHIP" && clueData.status === "pendingExamine") &&
+                        <>
+                            <DataDetail header="部门领导审批意见">
+                                <ExamineComment comment={clue.clueProcessData.departmentComment}></ExamineComment>
+                            </DataDetail>
+                            <DataDetail header="院领导审批意见">
+                                <ExamineComment onChange={comment => this.setState({
+                                    comment
+                                })}></ExamineComment>
+                            </DataDetail>
+                        </>
+                    }
+                    {
+                        (clueData.status === "examined") &&
+                        <>
+                            <DataDetail header="部门领导审批意见">
+                                <ExamineComment comment={clue.clueProcessData.departmentComment}></ExamineComment>
+                            </DataDetail>
+                            <DataDetail header="院领导审批意见">
+                                <ExamineComment comment={clue.clueProcessData.leaderComment}></ExamineComment>
+                            </DataDetail>
+                        </>
                     }
                     <div style={{
                         display: "flex",
@@ -192,10 +223,82 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
                                 </>
                             }
                             {
-                                (main.userProfile.role === "DEPARTMENT_LEADER" && clueData.status === "pendingExamine") &&
+                                ((main.userProfile.role === "DEPARTMENT_LEADER" || main.userProfile.role === "LEADERSHIP") && clueData.status === "pendingExamine") &&
                                 <>
-                                    <ColorButton bgColor="#4084F0" fontColor="#FFFFFF">提交</ColorButton>
-                                    <ColorButton bgColor="#FF3F11" fontColor="#FFFFFF">驳回</ColorButton>
+                                    <ColorButton bgColor="#4084F0" fontColor="#FFFFFF" onClick={() => {
+                                        if (_.isEmpty(this.state.comment)) {
+                                            message.warning("请填写审批意见")
+                                            return
+                                        }
+                                        Modal.confirm({
+                                            title: '确认操作',
+                                            content: '是否提交？',
+                                            okText: '是',
+                                            cancelText: '否',
+                                            onOk: async () => {
+                                                if (main.userProfile.role === "DEPARTMENT_LEADER") {
+                                                    await clue.addClueDataExamineInfo(parseInt(this.props.match.params.clueId),
+                                                        {
+                                                            comment: this.state.comment,
+                                                            status: "pendingExamine",
+                                                            dataFlowType: "STEP_4"
+                                                        })
+                                                } else {
+                                                    await clue.addClueDataExamineInfo(parseInt(this.props.match.params.clueId),
+                                                        {
+                                                            comment: this.state.comment,
+                                                            status: "examined",
+                                                            dataFlowType: "STEP_5"
+                                                        })
+                                                }
+                                                message.success("提交成功！")
+                                                window.history.back()
+                                            },
+                                            onCancel() {
+                                                console.log('Cancel');
+                                            },
+                                        })
+                                    }}>提交</ColorButton>
+                                    <ColorButton bgColor="#FF3F11" fontColor="#FFFFFF" onClick={() => {
+                                        if (_.isEmpty(this.state.comment)) {
+                                            message.warning("请填写审批意见")
+                                            return
+                                        }
+                                        Modal.confirm({
+                                            title: '确认操作',
+                                            content: '是否驳回？',
+                                            okText: '是',
+                                            cancelText: '否',
+                                            onOk: async () => {
+                                                if (main.userProfile.role === "DEPARTMENT_LEADER") {
+                                                    await clue.addClueDataExamineInfo(parseInt(this.props.match.params.clueId),
+                                                        {
+                                                            comment: this.state.comment,
+                                                            status: "pendingProcess",
+                                                            dataFlowType: "STEP_3"
+                                                        })
+                                                } else {
+                                                    await clue.addClueDataExamineInfo(parseInt(this.props.match.params.clueId),
+                                                        {
+                                                            comment: this.state.comment,
+                                                            status: "pendingExamine",
+                                                            dataFlowType: "STEP_3"
+                                                        })
+                                                }
+                                                message.success("驳回成功！")
+                                                window.history.back()
+                                            },
+                                            onCancel() {
+                                                console.log('Cancel');
+                                            },
+                                        })
+                                    }}>驳回</ColorButton>
+                                </>
+                            }
+                            {
+                                clueData.status === "examined" && <>
+                                    <ColorButton bgColor="#4084F0" fontColor="#FFFFFF">研判完成</ColorButton>
+                                    <ColorButton bgColor="#FF9800" fontColor="#FFFFFF" onClick={() => { }}>转案件监督</ColorButton>
                                 </>
                             }
                             <ColorButton bgColor="#FFFFFF" fontColor="#1E1E1E" onClick={() => window.history.back()}>取消</ColorButton>

@@ -29,8 +29,9 @@ import ClueJudgeDetail from "pages/clueJudge/detail";
 import ExecutorClueJudgePendingExamine from "pages/clueJudge/executor/pendingExamine";
 import DepartmentLeaderPendingAppointClueJudge from "pages/clueJudge/departmentLeader/pendingAppoint";
 import DepartmentLeaderPendingExamineClueJudge from "pages/clueJudge/departmentLeader/pendingExamine";
-import DepartmentLeaderAllClueJudge from "pages/clueJudge/all";
 import AllClueJudge from "pages/clueJudge/all";
+import LeaderPendingExamineClueJudge from "pages/clueJudge/leader/pendingExamine";
+import ExecutorExaminedClueJudge from "pages/clueJudge/executor/examined";
 
 const { Header, Sider, Content } = Layout;
 
@@ -128,7 +129,7 @@ class MainLayout extends Component<MainLayoutProps, object> {
                 statusCount.pendingExamineCount = res.data.pendingExamineCount;
                 statusCount.pendingSuperviseCount = res.data.pendingSuperviseCount;
                 statusCount.pendingProcessCount = res.data.pendingProcessCount;
-                statusCount.examinedCount = 0;
+                statusCount.examinedCount = res.data.examinedCount;
               }
               switch (main.userProfile.role) {
                 case "NORMAL_USER":
@@ -287,7 +288,7 @@ class MainLayout extends Component<MainLayoutProps, object> {
               <Route path="/index/clue/executor/judge/pendingProcess/:clueId/submit" exact component={ExecutorSubmitClueJudge} />
               <Route path="/index/clue/executor/judge/pendingExamine" exact component={ExecutorClueJudgePendingExamine} />
               <Route path="/index/clue/executor/judge/pendingExamine/:clueId" exact component={ClueJudgeDetail} />
-              <Route path="/index/clue/executor/judge/examined" exact component={ExecutorClueJudge} />
+              <Route path="/index/clue/executor/judge/examined" exact component={ExecutorExaminedClueJudge} />
               <Route path="/index/clue/executor/judge/examined/:clueId" exact component={ClueJudgeDetail} />
               {/* 部门领导线索 */}
               <Route path="/index/clue/departmentLeader/judge/pendingAppoint" exact component={DepartmentLeaderPendingAppointClueJudge} />
@@ -295,7 +296,7 @@ class MainLayout extends Component<MainLayoutProps, object> {
               <Route path="/index/clue/departmentLeader/judge/pendingExamine" exact component={DepartmentLeaderPendingExamineClueJudge} />
               <Route path="/index/clue/departmentLeader/judge/pendingExamine/:clueId" exact component={ClueJudgeDetail} />
               {/* 院领导线索*/}
-              <Route path="/index/clue/leader/judge/pendingExamine" exact component={ExecutorClueJudge} />
+              <Route path="/index/clue/leader/judge/pendingExamine" exact component={LeaderPendingExamineClueJudge} />
               <Route path="/index/clue/leader/judge/pendingExamine/:clueId" exact component={ClueJudgeDetail} />
 
               <Route path="/index/case/supervise/:status" exact component={CaseSupervise} />

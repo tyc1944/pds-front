@@ -43,9 +43,9 @@ export const TableSearch = (props: {
             </div>
             <div>
                 <Row >
-                    <Col xl={2} xs={4} style={{ color: '#9099A2' }}>最早报案日期</Col>
+                    <Col xl={2} xs={4} style={{ color: '#9099A2' }}>处理日期</Col>
                     <Col>
-                        <OptionsDateRangePicker name={["reportDateStart", "reportDateEnd"]}></OptionsDateRangePicker>
+                        <OptionsDateRangePicker name={["processedDateStart", "processedDateEnd"]}></OptionsDateRangePicker>
                     </Col>
                 </Row>
             </div>
@@ -59,44 +59,9 @@ export const TableSearch = (props: {
             </div>
             <div>
                 <Row>
-                    <Col xl={2} xs={4} style={{ color: '#9099A2' }}>线索来源</Col>
-                    <Col>
-                        <MultiSelectionGroup name="clueSource" selectItems={[{
-                            label: '网上报案', value: '网上报案'
-                        },
-                        {
-                            label: '舆情线索', value: '舆情线索'
-                        },
-                        {
-                            label: '公安线索', value: '公安线索'
-                        },
-                        {
-                            label: '法院线索', value: '法院线索'
-                        },
-                        {
-                            label: '网格化线索', value: '网格化线索'
-                        },
-                        {
-                            label: '自行发现', value: '自行发现'
-                        },
-                        {
-                            label: '12345', value: '12345'
-                        },
-                        {
-                            label: '政风热线', value: '政风热线'
-                        },
-                        {
-                            label: '12315', value: '12315'
-                        }
-                        ]}></MultiSelectionGroup>
-                    </Col>
-                </Row>
-            </div>
-            <div>
-                <Row>
-                    <Col xl={2} xs={4} style={{ color: '#9099A2' }}>案件来源</Col>
+                    <Col xl={2} xs={4} style={{ color: '#9099A2' }}>线索评级</Col>
                     <Col xl={22} xs={20}>
-                        <SingleSelectionGroup name="caseSource" defaultValue="不限" selectItems={["不限", "驳回", "指派"]}></SingleSelectionGroup>
+                        <SingleSelectionGroup name="rate" defaultValue="不限" selectItems={["不限", "5级", "4级", "3级", "2级", "1级"]}></SingleSelectionGroup>
                     </Col>
                 </Row>
             </div>
