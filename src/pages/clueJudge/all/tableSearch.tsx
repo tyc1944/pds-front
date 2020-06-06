@@ -19,7 +19,7 @@ export const TableSearch = (props: {
         initData={changed}
     >
         <div style={{
-            margin: '18px 0px',
+            margin: '18px 0px 0px 0px',
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",

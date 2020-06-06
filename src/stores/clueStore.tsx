@@ -49,7 +49,7 @@ export interface ClueData {
 export interface ClueDataExamineInfo {
   comment: string;
   status: string;
-  dataFlowType: string;
+  dataFlowType?: string;
 }
 
 export default class ClueStore {

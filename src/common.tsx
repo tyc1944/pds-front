@@ -51,7 +51,8 @@ export const CLUE_SOURCE: { [key: string]: string } = {
 export const CLUE_STATUS: { [key: string]: string } = {
   "pendingExamine": '待审批',
   "pendingAppoint": '待指派',
-  "finishClue": '已完成',
+  "pendingProcess": '待处理',
+  "done": '已完成',
   "pendingSupervise": '待监督',
   "examined": '已审批',
 

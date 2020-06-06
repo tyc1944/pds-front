@@ -8,8 +8,6 @@ import { ColorButton } from "components/buttons";
 import { inject, observer } from "mobx-react";
 import ClueStore, { ClueDataSearchModel } from "stores/clueStore";
 import { fillObjectFromOpsValue } from "components/table/tableListOpsComponents";
-import { Moment } from "moment";
-import { message } from "antd";
 
 interface ClueJudgeProps {
     clue: ClueStore
@@ -18,14 +16,12 @@ interface ClueJudgeProps {
 
 @inject("clue")
 @observer
-class ExecutorClueJudge extends React.Component<ClueJudgeProps> {
+class ExecutorPendingSuperviseClueJudge extends React.Component<ClueJudgeProps> {
 
     state = {
         breadscrumData: [],
         clueDataList: [],
         clueDataTotalCount: 0,
-        showCreateSelfFoundClueModal: false,
-        showReturnClueModal: false
     }
 
     componentDidMount() {
@@ -33,7 +29,7 @@ class ExecutorClueJudge extends React.Component<ClueJudgeProps> {
     }
 
     getClueDataList = () => {
-        this.props.clue.getClueDataList("pendingProcess").then(res => {
+        this.props.clue.getClueDataList("pendingSupervise").then(res => {
             this.setState({
                 clueDataList: res.data.records,
                 clueDataTotalCount: res.data.total
@@ -42,17 +38,7 @@ class ExecutorClueJudge extends React.Component<ClueJudgeProps> {
     }
 
     onDetailClick = (clueId: number) => {
-        window.location.href = `/index/clue/executor/judge/pendingProcess/${clueId}`
-    }
-
-    onReturnClick = (clueId: number) => {
-
-    }
-
-    onSelfFoundClick = () => {
-        this.setState({
-            showCreateSelfFoundClueModal: true
-        })
+        window.location.href = `/index/clue/executor/judge/pendingSupervise/${clueId}`
     }
 
 
@@ -76,9 +62,8 @@ class ExecutorClueJudge extends React.Component<ClueJudgeProps> {
                     <TableList
                         title="线索列表"
                         total={this.state.clueDataTotalCount}
-                        tableSearchOps={<ColorButton bgColor="#4084F0" onClick={this.onSelfFoundClick}>+自行发现</ColorButton>}
                         data={this.state.clueDataList}
-                        columns={TableColumn(this.onDetailClick, this.onReturnClick)}
+                        columns={TableColumn(this.onDetailClick )}
                         onChange={(page, pageSize) => {
                             clue.searchModel.page = page;
                             this.getClueDataList();
@@ -90,4 +75,4 @@ class ExecutorClueJudge extends React.Component<ClueJudgeProps> {
     }
 }
 
-export default ExecutorClueJudge;
+export default ExecutorPendingSuperviseClueJudge;

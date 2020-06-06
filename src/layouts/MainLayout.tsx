@@ -32,6 +32,7 @@ import DepartmentLeaderPendingExamineClueJudge from "pages/clueJudge/departmentL
 import AllClueJudge from "pages/clueJudge/all";
 import LeaderPendingExamineClueJudge from "pages/clueJudge/leader/pendingExamine";
 import ExecutorExaminedClueJudge from "pages/clueJudge/executor/examined";
+import ExecutorPendingSuperviseClueJudge from "pages/clueJudge/executor/pendingSupervise";
 
 const { Header, Sider, Content } = Layout;
 
@@ -288,6 +289,8 @@ class MainLayout extends Component<MainLayoutProps, object> {
               <Route path="/index/clue/executor/judge/pendingProcess/:clueId/submit" exact component={ExecutorSubmitClueJudge} />
               <Route path="/index/clue/executor/judge/pendingExamine" exact component={ExecutorClueJudgePendingExamine} />
               <Route path="/index/clue/executor/judge/pendingExamine/:clueId" exact component={ClueJudgeDetail} />
+              <Route path="/index/clue/executor/judge/pendingSupervise" exact component={ExecutorPendingSuperviseClueJudge} />
+              <Route path="/index/clue/executor/judge/pendingSupervise/:clueId" exact component={ClueJudgeDetail} />
               <Route path="/index/clue/executor/judge/examined" exact component={ExecutorExaminedClueJudge} />
               <Route path="/index/clue/executor/judge/examined/:clueId" exact component={ClueJudgeDetail} />
               {/* 部门领导线索 */}

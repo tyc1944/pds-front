@@ -9,7 +9,7 @@ import { ExceptionOutlined } from "@ant-design/icons";
 import { ColorButton } from "components/buttons";
 import { formatTimeYMDHMS } from "utils/TimeUtil";
 import { CASE_CATEGORY, CLUE_SOURCE } from "common";
-import { AddressMapModal } from "./modals";
+import { AddressMapModal, FinishJudgeModal } from "./modals";
 import { ClueProcessInfo } from "./processInfo";
 import MainStore from "stores/mainStore";
 import { ExamineComment } from "./components";
@@ -38,7 +38,8 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
         showAddressModal: false,
         currentSelectAddress: "",
         clueData: {} as ClueData,
-        comment: ""
+        comment: "",
+        showFinishJudgeModal: false,
     }
 
     componentDidMount() {
@@ -130,6 +131,27 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
                     visiable={this.state.showAddressModal}
                     address={this.state.currentSelectAddress}
                 ></AddressMapModal>
+            }
+            {
+                this.state.showFinishJudgeModal && <FinishJudgeModal
+                    title="研判完成"
+                    visiable={this.state.showFinishJudgeModal}
+                    onCancel={() => this.setState({
+                        showFinishJudgeModal: false
+                    })}
+                    onConfirm={async comment => {
+                        await clue.addClueDataExamineInfo(parseInt(this.props.match.params.clueId), {
+                            comment,
+                            status: "done",
+                        })
+                        this.setState({
+                            showFinishJudgeModal: true
+                        }, () => {
+                            message.success("研判完成！")
+                            window.history.back();
+                        })
+                    }}
+                ></FinishJudgeModal>
             }
             <Breadscrum data={["线索研判", "待处理数据", "线索详情"]}></Breadscrum>
             <BoxContainer>
@@ -297,7 +319,9 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
                             }
                             {
                                 clueData.status === "examined" && <>
-                                    <ColorButton bgColor="#4084F0" fontColor="#FFFFFF">研判完成</ColorButton>
+                                    <ColorButton bgColor="#4084F0" fontColor="#FFFFFF" onClick={() => this.setState({
+                                        showFinishJudgeModal: true
+                                    })}>研判完成</ColorButton>
                                     <ColorButton bgColor="#FF9800" fontColor="#FFFFFF" onClick={() => { }}>转案件监督</ColorButton>
                                 </>
                             }
