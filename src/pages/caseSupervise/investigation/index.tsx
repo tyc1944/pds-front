@@ -4,7 +4,7 @@ import { TableList } from "components/table";
 import { TableSearch } from "./tableSearch";
 import { TableColumn } from "./tableConfig";
 
-export const TabContent = (
+export const InvestigationTabContent = (
     props: {
         onDetailClick: () => void;
         onRejectClick: () => void;

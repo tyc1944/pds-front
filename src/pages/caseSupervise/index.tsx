@@ -4,7 +4,10 @@ import { BoxContainer } from "components/layout";
 import { RouteComponentProps } from "react-router-dom";
 import { Tabs } from 'antd';
 import { TableNameWithNumber } from "components/tabs";
-import { TabContent } from "./tabContent";
+import { InvestigationTabContent } from "./investigation";
+import { TrialTabContent } from "./trial";
+import { ExecutionTabContent } from "./execution";
+import { AdministrationTabContent } from "./administration";
 
 const { TabPane } = Tabs;
 
@@ -77,16 +80,16 @@ class CaseSupervise extends React.Component<CaseSuperviseProps> {
             <BoxContainer>
                 <Tabs defaultActiveKey="1" onChange={this.onTabChange}>
                     <TabPane tab={<TableNameWithNumber name="侦查监督" count={0} />} key="1">
-                        <TabContent onDetailClick={this.onDetailClick} onRejectClick={this.onRejectClick}></TabContent>
+                        <InvestigationTabContent onDetailClick={this.onDetailClick} onRejectClick={this.onRejectClick}></InvestigationTabContent>
                     </TabPane>
                     <TabPane tab={<TableNameWithNumber name="审判监督" count={0} />} key="2">
-                        <TabContent onDetailClick={this.onDetailClick} onRejectClick={this.onRejectClick}></TabContent>
+                        <TrialTabContent onDetailClick={this.onDetailClick} onRejectClick={this.onRejectClick}></TrialTabContent>
                     </TabPane>
                     <TabPane tab={<TableNameWithNumber name="执行监督" count={0} />} key="3">
-                        <TabContent onDetailClick={this.onDetailClick} onRejectClick={this.onRejectClick}></TabContent>
+                        <ExecutionTabContent onDetailClick={this.onDetailClick} onRejectClick={this.onRejectClick}></ExecutionTabContent>
                     </TabPane>
                     <TabPane tab={<TableNameWithNumber name="行政监督" count={0} />} key="4">
-                        <TabContent onDetailClick={this.onDetailClick} onRejectClick={this.onRejectClick}></TabContent>
+                        <AdministrationTabContent onDetailClick={this.onDetailClick} onRejectClick={this.onRejectClick}></AdministrationTabContent>
                     </TabPane>
                 </Tabs>
             </BoxContainer>

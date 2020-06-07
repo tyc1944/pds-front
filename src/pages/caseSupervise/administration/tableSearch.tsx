@@ -43,9 +43,9 @@ export const TableSearch = (props: {
             </div>
             <div>
                 <Row >
-                    <Col xl={2} xs={4} style={{ color: '#9099A2' }}>报案日期</Col>
+                    <Col xl={2} xs={4} style={{ color: '#9099A2' }}>立案日期</Col>
                     <Col>
-                        <OptionsDateRangePicker name={["reportDateStart", "reportDateEnd"]}></OptionsDateRangePicker>
+                        <OptionsDateRangePicker name={["caseCreatedDateStart", "caseCreatedDateEnd"]}></OptionsDateRangePicker>
                     </Col>
                 </Row>
             </div>
@@ -53,15 +53,8 @@ export const TableSearch = (props: {
                 <Row>
                     <Col xl={2} xs={4} style={{ color: '#9099A2' }}>异常结果</Col>
                     <Col xl={22} xs={20}>
-                        <SingleSelectionGroup name="caseCategory" defaultValue="不限" selectItems={["不限", "未采取强制措施", "未移送审查起诉"]}></SingleSelectionGroup>
-                    </Col>
-                </Row>
-            </div>
-            <div>
-                <Row>
-                    <Col xl={2} xs={4} style={{ color: '#9099A2' }}>案件来源</Col>
-                    <Col xl={22} xs={20}>
-                        <SingleSelectionGroup name="caseSource" defaultValue="不限" selectItems={["不限", "自动分流", "退回", "移交"]}></SingleSelectionGroup>
+                        <SingleSelectionGroup name="exceptionResult" defaultValue="不限"
+                            selectItems={["不限", "涉嫌犯罪未移送", "无立案/结案时间", "案件处理超期"]}></SingleSelectionGroup>
                     </Col>
                 </Row>
             </div>

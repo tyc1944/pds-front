@@ -12,40 +12,46 @@ export const TableColumn = (
       key: "id"
     },
     {
-      title: "案件编号",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "报案时间",
-      dataIndex: "dataCount",
-      key: "dataCount",
+      title: "立案时间",
+      dataIndex: "filingTime",
+      key: "filingTime",
       render: (val: string) => (val ? formatTimeYMD(val) : "")
     },
     {
-      title: "案件类别",
-      dataIndex: "createdTime",
-      key: "createdTime",
+      title: "结案时间",
+      dataIndex: "closingTime",
+      key: "closingTime",
+      render: (val: string) => (val ? formatTimeYMD(val) : "")
     },
     {
-      title: "案件名称",
-      dataIndex: "createdTime",
-      key: "createdTime",
+      title: "处罚决定书文号",
+      dataIndex: "punishmentDecisionNo",
+      key: "punishmentDecisionNo",
     },
     {
-      title: "受理单位",
-      dataIndex: "createdTime",
-      key: "createdTime",
+      title: "当事人",
+      dataIndex: "party",
+      key: "party",
+    },
+    {
+      title: "违法性质",
+      dataIndex: "illegalNature",
+      key: "illegalNature",
+    },
+    {
+      title: "案件货值",
+      dataIndex: "caseValue",
+      key: "caseValue",
     },
     {
       title: "异常结果",
-      dataIndex: "createdTime",
-      key: "createdTime",
+      dataIndex: "execptionResult",
+      key: "execptionResult",
     },
     {
       title: "案件来源",
-      dataIndex: "createdTime",
-      key: "createdTime",
+      dataIndex: "statusAction",
+      key: "statusAction",
     },
     {
       title: "操作",
