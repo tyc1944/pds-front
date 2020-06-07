@@ -9,12 +9,14 @@ import { browserHistory } from "./routing";
 import { RouterStore, syncHistoryWithStore } from "mobx-react-router";
 import Login from "./pages/login";
 import ClueStore from "stores/clueStore";
+import SuperviseStore from "stores/superviseStore";
 
 const routingStore = new RouterStore();
 
 const stores = {
   main: new MainStore(),
-  clue: new ClueStore()
+  clue: new ClueStore(),
+  supervise: new SuperviseStore()
 };
 
 export const history = syncHistoryWithStore(browserHistory, routingStore);
