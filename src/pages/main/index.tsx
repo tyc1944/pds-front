@@ -105,22 +105,77 @@ class Main extends React.Component<Props> {
               }}>
                 <div className="global-info-panel">
                   <div className="global-info-title">待办事项</div>
-                  <div className="global-info-category">
-                    <div>
-                      <div>5</div>
-                      <div>带处理线索</div>
+                  {
+                    main.userProfile.role === "NORMAL_USER" &&
+                    <div className="global-info-category">
+                      <div>
+                        <div>5</div>
+                        <div>待处理线索</div>
+                      </div>
+                      <div>
+                        <div>5</div>
+                        <div>侦查监督</div>
+                      </div>
+                      <div>
+                        <div>5</div>
+                        <div>审判监督</div>
+                      </div>
+                      <div>
+                        <div>5</div>
+                        <div>执行监督</div>
+                      </div>
+                      <div>
+                        <div>5</div>
+                        <div>行政监督</div>
+                      </div>
                     </div>
-                    <div>
-                      <div>5</div>
-                      <div>带处理线索</div>
+                  }
+                  {
+                    main.userProfile.role === "DEPARTMENT_LEADER" &&
+                    <div className="global-info-category">
+                      <div>
+                        <div>5</div>
+                        <div>待指派线索</div>
+                      </div>
+                      <div>
+                        <div>5</div>
+                        <div>待审批线索</div>
+                      </div>
+                      <div>
+                        <div>5</div>
+                        <div>待指派监督</div>
+                      </div>
+                      <div>
+                        <div>5</div>
+                        <div>待审批监督</div>
+                      </div>
                     </div>
-                  </div>
+                  }
                   <div className="global-info-message">
                     <div>
                       <div style={{ color: "#4084F0" }}>有一条侦查监督异常案件，请及时处理！</div>
                       <div style={{ color: "#A6A6A6" }}>2018-11-11 12:21:12</div>
                     </div>
-                    <div></div>
+                    <div>
+                      <div style={{ color: "#4084F0" }}>有一条侦查监督异常案件，请及时处理！</div>
+                      <div style={{ color: "#A6A6A6" }}>2018-11-11 12:21:12</div>
+                    </div>
+                    <div>
+                      <div style={{ color: "#4084F0" }}>有一条侦查监督异常案件，请及时处理！</div>
+                      <div style={{ color: "#A6A6A6" }}>2018-11-11 12:21:12</div>
+                    </div>
+                    <div>
+                      <div style={{ color: "#4084F0" }}>有一条侦查监督异常案件，请及时处理！</div>
+                      <div style={{ color: "#A6A6A6" }}>2018-11-11 12:21:12</div>
+                    </div>
+                    <div>
+                      <div style={{ color: "#4084F0" }}>有一条侦查监督异常案件，请及时处理！</div>
+                      <div style={{ color: "#A6A6A6" }}>2018-11-11 12:21:12</div>
+                    </div>
+                    <div>
+                      <div style={{ color: "#4084F0" }}>有一条侦查监督异常案件，请及时处理！</div>
+                      <div style={{ color: "#A6A6A6" }}>2018-11-11 12:21:12</div>
+                    </div>
                   </div>
                 </div>
               </div>
