@@ -6,7 +6,6 @@ import { BoxContainer, BoxContainerInner } from "components/layout";
 import ExecutorMainDataList from "./executor";
 import DepartmentLeaderMainDataList from "./departmentLeader";
 import LeaderMainDataList from "./leader";
-import { Row, Col } from "antd";
 import { GroupedColumn } from '@antv/g2plot';
 import "./index.less"
 

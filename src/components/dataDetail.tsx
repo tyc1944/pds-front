@@ -34,7 +34,7 @@ export const DataProcessStep = (props: {
     return <div className="data-process-step">
         {
             props.baseStepData.map((item, index) => {
-                let tmp = props.steps && props.steps[index];
+                let tmp = props.steps && props.steps.filter(s => s.index === item.index)[0];
                 let nextTmp = props.steps && props.steps[index + 1];
                 return <div key={index} className={`data-process-step-item `}>
                     <div className={tmp ? 'active' : ''}>{index + 1}</div>

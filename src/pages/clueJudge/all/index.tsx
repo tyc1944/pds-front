@@ -37,7 +37,7 @@ class AllClueJudge extends React.Component<ClueJudgeProps> {
     }
 
     onDetailClick = (clueId: number) => {
-        window.location.href = `/index/clue/judge/${clueId}`
+        window.location.href = `/index/clue/all/judge/all/${clueId}`
     }
 
     render() {

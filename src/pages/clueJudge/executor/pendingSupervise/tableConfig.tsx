@@ -47,8 +47,8 @@ export const TableColumn = (
     },
     {
       title: "转监督日期",
-      dataIndex: "transferToSupverviseDate",
-      key: "transferToSupverviseDate",
+      dataIndex: "transferToSuperviseDate",
+      key: "transferToSuperviseDate",
       render: (val: number) => formatTimeYMD(val)
     },
     {

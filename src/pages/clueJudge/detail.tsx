@@ -5,7 +5,7 @@ import ClueStore, { CaseData, ClueData } from "stores/clueStore";
 import Breadscrum from "components/breadscrum";
 import { BoxContainer, BoxContainerInner } from "components/layout";
 import { DataDetail, DataProcessStep, CloseableDataTable } from "components/dataDetail";
-import { ExceptionOutlined } from "@ant-design/icons";
+import { ExceptionOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import { ColorButton } from "components/buttons";
 import { formatTimeYMDHMS } from "utils/TimeUtil";
 import { CASE_CATEGORY, CLUE_SOURCE } from "common";
@@ -16,6 +16,7 @@ import { ExamineComment } from "./components";
 import { ClueRateInfo } from "./clueRate";
 import { message, Modal } from "antd";
 import _ from "lodash";
+const { confirm } = Modal;
 
 interface MatchParams {
     clueId: string;
@@ -187,9 +188,12 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
                             )
                         }
                     </DataDetail>
-                    <DataDetail header="线索处理信息" headerOps={<ClueRateInfo />}>
-                        <ClueProcessInfo readonly></ClueProcessInfo>
-                    </DataDetail>
+                    {
+                        clue.clueProcessData.status !== "pendingProcess" &&
+                        <DataDetail header="线索处理信息" headerOps={<ClueRateInfo />}>
+                            <ClueProcessInfo readonly></ClueProcessInfo>
+                        </DataDetail>
+                    }
                     {
                         (main.userProfile.role === "DEPARTMENT_LEADER" && clueData.status === "pendingExamine") &&
                         <DataDetail header="部门领导审批意见">
@@ -318,11 +322,29 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
                                 </>
                             }
                             {
-                                clueData.status === "examined" && <>
+                                (clueData.status === "examined" || clueData.status === "pendingSupervise") && <>
                                     <ColorButton bgColor="#4084F0" fontColor="#FFFFFF" onClick={() => this.setState({
                                         showFinishJudgeModal: true
                                     })}>研判完成</ColorButton>
-                                    <ColorButton bgColor="#FF9800" fontColor="#FFFFFF" onClick={() => { }}>转案件监督</ColorButton>
+                                </>
+                            }
+                            {
+                                clueData.status === "examined" && <>
+                                    <ColorButton bgColor="#FF9800" fontColor="#FFFFFF" onClick={() => {
+                                        confirm({
+                                            title: '转案件监督',
+                                            icon: <ExclamationCircleOutlined translate="true" />,
+                                            content: '是否确认转案件监督继续观察？',
+                                            onOk: async () => {
+                                                await clue.addClueDataSuperviseInfo(parseInt(this.props.match.params.clueId));
+                                                message.success("转案件监督成功！")
+                                                window.history.back();
+                                            },
+                                            onCancel() {
+                                                console.log('Cancel');
+                                            },
+                                        });
+                                    }}>转案件监督</ColorButton>
                                 </>
                             }
                             <ColorButton bgColor="#FFFFFF" fontColor="#1E1E1E" onClick={() => window.history.back()}>取消</ColorButton>

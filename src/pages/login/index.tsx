@@ -23,12 +23,16 @@ class Login extends React.Component<MainLayoutProps> {
     const { main } = this.props;
     return (
       <div className="login-container">
-        <div></div>
+        <div>
+          <img alt="" src="img/header_gh.png" width="132px" height="135px"></img>
+          <div>无锡市人民检察院知识产权检察监督信息平台</div>
+        </div>
         <div>
           <div>
             <div>
               <Input
                 placeholder="请输入用户名"
+                style={{ width: "398px", height: "42px" }}
                 prefix={<UserOutlined translate="true" />}
                 onChange={e =>
                   this.setState({
@@ -40,6 +44,8 @@ class Login extends React.Component<MainLayoutProps> {
             <div>
               <Input
                 type="password"
+                onPressEnter={() => main.doLogin(this.state.username, this.state.password)}
+                style={{ width: "398px", height: "42px" }}
                 placeholder="请输入密码"
                 prefix={<UserOutlined translate="true" />}
                 onChange={e =>
@@ -50,6 +56,7 @@ class Login extends React.Component<MainLayoutProps> {
               />
             </div>
             <ColorButton
+              width="398px"
               onClick={() =>
                 main.doLogin(this.state.username, this.state.password)
               }

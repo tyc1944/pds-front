@@ -140,4 +140,8 @@ export default class ClueStore {
   async addClueDataExamineInfo(clueId: number, examineInfo: ClueDataExamineInfo) {
     await axios.post(`/api/clue/${clueId}/examine`, examineInfo)
   }
+
+  async addClueDataSuperviseInfo(clueId: number) {
+    await axios.post(`/api/clue/${clueId}/supervise`)
+  }
 }

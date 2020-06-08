@@ -283,6 +283,7 @@ class MainLayout extends Component<MainLayoutProps, object> {
               <Route path="/index/main" exact component={Main} />
               <Route path="/index/clue/analysis" exact component={ClueAnalysis} />
               <Route path="/index/clue/all/judge/all" exact component={AllClueJudge} />
+              <Route path="/index/clue/all/judge/all/:clueId" exact component={ClueJudgeDetail} />
               {/* 承办人线索 */}
               <Route path="/index/clue/executor/judge/pendingProcess" exact component={ExecutorClueJudge} />
               <Route path="/index/clue/executor/judge/pendingProcess/:clueId" exact component={ClueJudgeDetail} />
