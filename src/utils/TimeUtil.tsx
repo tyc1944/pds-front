@@ -1,6 +1,6 @@
 import moment, { Moment } from "moment";
 
-const formatTimeYMD = (dateString: number | string | Date) => {
+const formatTimeYMD = (dateString: number | string | Date | null | undefined) => {
   if (dateString) {
     return moment(dateString).format("YYYY-MM-DD");
   } else {

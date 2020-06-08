@@ -2,10 +2,11 @@ import React from "react";
 import { Space } from "antd";
 import { formatTimeYMD } from "utils/TimeUtil";
 import { DATA_STATUS_ACTION, ALL_CASE_CATEGORY, CLUE_SOURCE } from "common";
+import { ClueData } from "stores/clueStore";
 
 export const TableColumn = (
   onDetailClick: (id: number) => void,
-  onAppointClick: (id: number) => void
+  onAppointClick: (clueData: ClueData) => void
 ) => [
     {
       title: "序号",
@@ -73,7 +74,7 @@ export const TableColumn = (
             style={{
               cursor: "pointer"
             }}
-            onClick={() => onAppointClick(row.id)}
+            onClick={() => onAppointClick(row as ClueData)}
           >
             指派
         </span>

@@ -5,8 +5,10 @@ import { TableSearch } from "./tableSearch";
 import { TableColumn } from "./tableConfig";
 import { TableList } from "components/table";
 import { inject, observer } from "mobx-react";
-import ClueStore, { ClueDataSearchModel } from "stores/clueStore";
+import ClueStore, { ClueDataSearchModel, ClueData } from "stores/clueStore";
 import { fillObjectFromOpsValue } from "components/table/tableListOpsComponents";
+import { AssignClueModal } from "pages/clueJudge/modals";
+import { message } from "antd";
 
 interface ClueJudgeProps {
     clue: ClueStore
@@ -21,6 +23,8 @@ class DepartmentLeaderPendingAppointClueJudge extends React.Component<ClueJudgeP
         breadscrumData: [],
         clueDataList: [],
         clueDataTotalCount: 0,
+        showAssignClueModal: false,
+        clueData: {} as ClueData
     }
 
     componentDidMount() {
@@ -40,8 +44,11 @@ class DepartmentLeaderPendingAppointClueJudge extends React.Component<ClueJudgeP
         window.location.href = `/index/clue/departmentLeader/judge/pendingAppoint/${clueId}`
     }
 
-    onAppointClick = (clueId: number) => {
-
+    onAppointClick = (clueData: ClueData) => {
+        this.setState({
+            clueData,
+            showAssignClueModal: true
+        })
     }
 
     onSelfFoundClick = () => {
@@ -58,6 +65,34 @@ class DepartmentLeaderPendingAppointClueJudge extends React.Component<ClueJudgeP
             height: "100%",
             flexDirection: 'column'
         }}>
+            {
+                this.state.showAssignClueModal && <AssignClueModal
+                    clueData={this.state.clueData}
+                    title="指派线索"
+                    visiable={this.state.showAssignClueModal}
+                    onCancel={() => this.setState({
+                        showAssignClueModal: false
+                    })}
+                    onConfirm={async res => {
+                        if (res.transfer) {
+                            await clue.transferClueData(this.state.clueData.id!, {
+                                comment: res.comment,
+                                unit: res.departmentName.split(",")[0],
+                                department: res.departmentName.split(",")[1]
+                            });
+                        } else {
+                            await clue.assignClueData(this.state.clueData.id!, {
+                                accountId: res.executorId
+                            });
+                        }
+                        message.success("操作完成！")
+                        this.getClueDataList();
+                        this.setState({
+                            showAssignClueModal: false
+                        })
+                    }}
+                ></AssignClueModal>
+            }
             <Breadscrum data={["线索研判", "待指派数据"]}></Breadscrum>
             <BoxContainer>
                 <BoxContainerInner flex={0.5}>

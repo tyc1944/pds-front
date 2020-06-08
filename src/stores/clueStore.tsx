@@ -31,6 +31,7 @@ export interface ClueData {
   status: string;
   statusAction: string;
   processedDate?: number;
+  clueCode: string;
   reportDate: number;
   caseCategory: string;
   caseArea: string;
@@ -44,12 +45,23 @@ export interface ClueData {
   rateParams?: string;
   departmentComment?: string;
   leaderComment?: string;
+  earliestReportedDate?: number;
 }
 
 export interface ClueDataExamineInfo {
   comment: string;
   status: string;
   dataFlowType?: string;
+}
+
+export interface AssignClueData {
+  accountId: number;
+}
+
+export interface TransferClueData {
+  unit: string;
+  department: string;
+  comment: string;
 }
 
 export default class ClueStore {
@@ -143,5 +155,13 @@ export default class ClueStore {
 
   async addClueDataSuperviseInfo(clueId: number) {
     await axios.post(`/api/clue/${clueId}/supervise`)
+  }
+
+  async assignClueData(clueId: number, assignClueData: AssignClueData) {
+    await axios.post(`/api/clue/${clueId}/assign`, assignClueData)
+  }
+
+  async transferClueData(clueId: number, transferClueData: TransferClueData) {
+    await axios.post(`/api/clue/${clueId}/transfer`, transferClueData)
   }
 }
