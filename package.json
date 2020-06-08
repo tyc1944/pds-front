@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@ant-design/icons": "^4.1.0",
+    "@antv/g2": "^4.0.9",
+    "@antv/g2plot": "^1.1.6",
     "@tinymce/tinymce-react": "^3.6.0",
     "@types/lodash": "^4.14.151",
     "@types/node": "12.11.7",
