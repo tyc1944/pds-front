@@ -1,24 +1,23 @@
 import React from "react";
 import Breadscrum from "components/breadscrum";
 import { BoxContainer } from "components/layout";
-import { RouteComponentProps } from "react-router-dom";
 import { Tabs } from 'antd';
 import { TableNameWithNumber } from "components/tabs";
 import { InvestigationTabContent } from "./investigation";
 import { TrialTabContent } from "./trial";
 import { ExecutionTabContent } from "./execution";
 import { AdministrationTabContent } from "./administration";
+import { inject, observer } from "mobx-react";
+import SuperviseStore from "stores/superviseStore";
 
 const { TabPane } = Tabs;
 
-interface MatchParams {
-    status: string;
+interface CaseSuperviseProps {
+    supervise: SuperviseStore;
 }
 
-interface CaseSuperviseProps extends RouteComponentProps<MatchParams> {
-
-}
-
+@inject("supervise")
+@observer
 class AllCaseSupervise extends React.Component<CaseSuperviseProps> {
 
     state = {
@@ -26,7 +25,6 @@ class AllCaseSupervise extends React.Component<CaseSuperviseProps> {
     }
 
     componentDidMount() {
-        this.getBreadscrumData(this.props.match.params.status)
     }
 
     onDetailClick = () => {
@@ -38,36 +36,7 @@ class AllCaseSupervise extends React.Component<CaseSuperviseProps> {
     }
 
     onTabChange(key: string) {
-        console.log(key);
-    }
-
-    getBreadscrumData = (status: string) => {
-        switch (status) {
-            case "pendingAppoint":
-                this.setState({
-                    breadscrumData: ["案件监督", "待指派案件"]
-                })
-                break;
-            case "pendingExamine":
-                this.setState({
-                    breadscrumData: ["案件监督", "待审批案件"]
-                })
-                break;
-            case "pendingProcess":
-                this.setState({
-                    breadscrumData: ["案件监督", "待处理案件"]
-                })
-                break;
-            case "examined":
-                this.setState({
-                    breadscrumData: ["案件监督", "已审批案件"]
-                })
-                break;
-            default:
-                this.setState({
-                    breadscrumData: ["案件监督", "全部案件"]
-                })
-        }
+        this.props.supervise.activeTabIndex = key;
     }
 
     render() {
