@@ -1,5 +1,6 @@
 import React from "react";
 import { Space } from "antd";
+import { PendingExamineForDepartmentLeaderTempTableColum, PendingExamineForLeaderTempTableColum, PendingExamineTempTableColum } from "../components";
 
 const tmpTableColum = [
   {
@@ -71,6 +72,91 @@ export const PendingProcessCivilCaseTableColumn = (
             onClick={() => onReturnClick(row.id)}
           >
             退回
+        </span>
+        </Space>
+      )
+    }
+  ];
+
+export const PendingAppointCivilCaseTableColumn = (
+  onDetailClick: (caseId: number) => void,
+  onAppointClick: (caseId: number) => void
+) => [
+    ...tmpTableColum
+    ,
+    {
+      title: "案件来源",
+      dataIndex: "statusAction",
+      key: "statusAction",
+    },
+    {
+      title: "操作",
+      dataIndex: "operation",
+      key: "operation",
+      render: (val: any, row: any) => (
+        <Space style={{ color: "#2687FF" }}>
+          <span
+            style={{
+              cursor: "pointer"
+            }}
+            onClick={() => onAppointClick(row.id)}
+          >
+            指派
+        </span>
+          <span
+            style={{
+              cursor: "pointer"
+            }}
+            onClick={() => onDetailClick(row.id)}
+          >
+            查看
+        </span>
+        </Space>
+      )
+    }
+  ];
+
+export const PendingExamineForLeaderCivilCaseTableColumn = (
+  onDetailClick: (caseId: number) => void
+) => [
+    ...tmpTableColum,
+    ...PendingExamineForLeaderTempTableColum,
+    {
+      title: "操作",
+      dataIndex: "operation",
+      key: "operation",
+      render: (val: any, row: any) => (
+        <Space style={{ color: "#2687FF" }}>
+          <span
+            style={{
+              cursor: "pointer"
+            }}
+            onClick={() => onDetailClick(row.id)}
+          >
+            查看
+        </span>
+        </Space>
+      )
+    }
+  ];
+export const PendingExamineForDepartmentLeaderCivilCaseTableColumn = (
+  onDetailClick: (caseId: number) => void
+) => [
+    ...tmpTableColum,
+    ...PendingExamineForDepartmentLeaderTempTableColum,
+    {
+      title: "操作",
+      dataIndex: "operation",
+      key: "operation",
+      render: (val: any, row: any) => (
+        <Space style={{ color: "#2687FF" }}>
+          <span
+            style={{
+              cursor: "pointer"
+            }}
+            onClick={() => onDetailClick(row.id)}
+          >
+            查看
         </span>
         </Space>
       )
@@ -181,6 +267,43 @@ const criminalCaseTempTableColum = [
   }
 ]
 
+export const PendingAppointCriminalCaseTableColumn = (
+  onDetailClick: (caseId: number) => void,
+  onAppointClick: (caseId: number) => void
+) => [
+    ...criminalCaseTempTableColum,
+    {
+      title: "案件来源",
+      dataIndex: "statusAction",
+      key: "statusAction",
+    },
+    {
+      title: "操作",
+      dataIndex: "operation",
+      key: "operation",
+      render: (val: any, row: any) => (
+        <Space style={{ color: "#2687FF" }}>
+          <span
+            style={{
+              cursor: "pointer"
+            }}
+            onClick={() => onAppointClick(row.id)}
+          >
+            指派
+        </span>
+          <span
+            style={{
+              cursor: "pointer"
+            }}
+            onClick={() => onDetailClick(row.id)}
+          >
+            查看
+        </span>
+        </Space>
+      )
+    }
+  ];
+
 export const PendingProcessCriminalCaseTableColumn = (
   onDetailClick: (caseId: number) => void,
   onReturnClick: (caseId: number) => void
@@ -219,20 +342,58 @@ export const PendingProcessCriminalCaseTableColumn = (
   ];
 
 
+export const PendingExamineForLeaderCriminalCaseTableColumn = (
+  onDetailClick: (caseId: number) => void,
+) => [
+    ...criminalCaseTempTableColum,
+    ...PendingExamineForLeaderTempTableColum,
+    {
+      title: "操作",
+      dataIndex: "operation",
+      key: "operation",
+      render: (val: any, row: any) => (
+        <Space style={{ color: "#2687FF" }}>
+          <span
+            style={{
+              cursor: "pointer"
+            }}
+            onClick={() => onDetailClick(row.id)}
+          >
+            查看
+        </span>
+        </Space>
+      )
+    }
+  ];
+export const PendingExamineForDepartmentLeaderCriminalCaseTableColumn = (
+  onDetailClick: (caseId: number) => void,
+) => [
+    ...criminalCaseTempTableColum,
+    ...PendingExamineForDepartmentLeaderTempTableColum,
+    {
+      title: "操作",
+      dataIndex: "operation",
+      key: "operation",
+      render: (val: any, row: any) => (
+        <Space style={{ color: "#2687FF" }}>
+          <span
+            style={{
+              cursor: "pointer"
+            }}
+            onClick={() => onDetailClick(row.id)}
+          >
+            查看
+        </span>
+        </Space>
+      )
+    }
+  ];
+
 export const PendingExamineCriminalCaseTableColumn = (
   onDetailClick: (caseId: number) => void,
 ) => [
     ...criminalCaseTempTableColum,
-    {
-      title: "承办人意见",
-      dataIndex: "executorComment",
-      key: "executorComment",
-    },
-    {
-      title: "待审批程序",
-      dataIndex: "examineStep",
-      key: "examineStep",
-    },
+    ...PendingExamineTempTableColum,
     {
       title: "操作",
       dataIndex: "operation",

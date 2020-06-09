@@ -38,6 +38,42 @@ export const PendingExamineTempTableColum = [
     },
 ]
 
+export const PendingExamineForDepartmentLeaderTempTableColum = [
+    {
+        title: "承办人意见",
+        dataIndex: "executorComment",
+        key: "executorComment",
+    },
+    {
+        title: "承办人",
+        dataIndex: "executor",
+        key: "executor",
+    },
+]
+
+export const PendingExamineForLeaderTempTableColum = [
+    {
+        title: "承办人意见",
+        dataIndex: "executorComment",
+        key: "executorComment",
+    },
+    {
+        title: "承办人",
+        dataIndex: "executor",
+        key: "executor",
+    },
+    {
+        title: "部门领导",
+        dataIndex: "departmentLeader",
+        key: "departmentLeader",
+    },
+    {
+        title: "部门领导审批日期",
+        dataIndex: "departmentLeaderExamineTime",
+        key: "departmentLeaderExamineTime",
+    },
+]
+
 export const PendingProcessTempTableColum = [
     {
         title: "案件来源",

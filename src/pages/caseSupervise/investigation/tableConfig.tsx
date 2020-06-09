@@ -1,6 +1,7 @@
 import React from "react";
 import { Space } from "antd";
 import { formatTimeYMD } from "utils/TimeUtil";
+import { PendingExamineForDepartmentLeaderTempTableColum, PendingExamineForLeaderTempTableColum } from "../components";
 
 const tmpTableColum = [
   {
@@ -76,7 +77,104 @@ export const PendingProcessTableColumn = (
   )
 }];
 
+export const PendingAppointTableColumn = (
+  onAssignClick: (caseId: number) => void,
+  onDetailClick: (caseId: number) => void
+) => [...tmpTableColum,
+{
+  title: "受理单位",
+  dataIndex: "createdTime",
+  key: "createdTime",
+},
+{
+  title: "异常结果",
+  dataIndex: "createdTime",
+  key: "createdTime",
+},
+{
+  title: "案件来源",
+  dataIndex: "statusAction",
+  key: "statusAction",
+},
+{
+  title: "操作",
+  dataIndex: "operation",
+  key: "operation",
+  render: (val: any, row: any) => (
+    <Space style={{ color: "#2687FF" }}>
+      <span
+        style={{
+          cursor: "pointer"
+        }}
+        onClick={() => onAssignClick(row.id)}
+      >
+        指派
+        </span>
+      <span
+        style={{
+          cursor: "pointer"
+        }}
+        onClick={() => onDetailClick(row.id)}
+      >
+        查看
+        </span>
+    </Space>
+  )
+}];
 
+
+export const PendingExamineForLeaderTableColumn = (
+  onDetailClick: (caseId: number) => void,
+) => [...tmpTableColum,
+{
+  title: "异常结果",
+  dataIndex: "createdTime",
+  key: "createdTime",
+},
+...PendingExamineForLeaderTempTableColum,
+{
+  title: "操作",
+  dataIndex: "operation",
+  key: "operation",
+  render: (val: any, row: any) => (
+    <Space style={{ color: "#2687FF" }}>
+      <span
+        style={{
+          cursor: "pointer"
+        }}
+        onClick={() => onDetailClick(row.id)}
+      >
+        查看
+        </span>
+    </Space>
+  )
+}];
+export const PendingExamineForDepartmentLeaderTableColumn = (
+  onDetailClick: (caseId: number) => void,
+) => [...tmpTableColum,
+{
+  title: "异常结果",
+  dataIndex: "createdTime",
+  key: "createdTime",
+},
+...PendingExamineForDepartmentLeaderTempTableColum,
+{
+  title: "操作",
+  dataIndex: "operation",
+  key: "operation",
+  render: (val: any, row: any) => (
+    <Space style={{ color: "#2687FF" }}>
+      <span
+        style={{
+          cursor: "pointer"
+        }}
+        onClick={() => onDetailClick(row.id)}
+      >
+        查看
+        </span>
+    </Space>
+  )
+}];
 export const PendingExamineTableColumn = (
   onDetailClick: (caseId: number) => void,
 ) => [...tmpTableColum,

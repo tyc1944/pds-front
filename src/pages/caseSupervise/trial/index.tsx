@@ -2,19 +2,22 @@ import React, { useEffect } from "react";
 import { BoxContainer, BoxContainerInner } from "components/layout";
 import { TableList } from "components/table";
 import { CivilCaseTableSearch, CriminalCaseTableSearch } from "./tableSearch";
-import { PendingProcessCivilCaseTableColumn, PendingExamineCivilCaseTableColumn, ExaminedCivilCaseTableColumn, PendingProcessCriminalCaseTableColumn, PendingExamineCriminalCaseTableColumn, ExaminedCriminalCaseTableColumn } from "./tableConfig";
+import { PendingProcessCivilCaseTableColumn, PendingExamineCivilCaseTableColumn, ExaminedCivilCaseTableColumn, PendingProcessCriminalCaseTableColumn, PendingExamineCriminalCaseTableColumn, ExaminedCriminalCaseTableColumn, PendingAppointCivilCaseTableColumn, PendingAppointCriminalCaseTableColumn, PendingExamineForLeaderCriminalCaseTableColumn, PendingExamineForDepartmentLeaderCriminalCaseTableColumn, PendingExamineForDepartmentLeaderCivilCaseTableColumn, PendingExamineForLeaderCivilCaseTableColumn } from "./tableConfig";
 import { Row, Col } from "antd";
 import "pages/caseSupervise/index.less";
 import { inject, useObserver } from "mobx-react";
 import SuperviseStore from "stores/superviseStore";
+import MainStore from "stores/mainStore";
 
-export const TrialTabContent = inject("supervise")((
+export const TrialTabContent = inject("supervise", "main")((
     props: {
         role: string;
         status: string;
         supervise?: SuperviseStore;
+        main?: MainStore;
         onDetailClick: () => void;
         onRejectClick: () => void;
+        onAppointClick: () => void;
     }
 ) => {
 
@@ -60,9 +63,17 @@ export const TrialTabContent = inject("supervise")((
                                 case "pendingProcess":
                                     return PendingProcessCivilCaseTableColumn(props.onDetailClick, props.onRejectClick)
                                 case "pendingExamine":
-                                    return PendingExamineCivilCaseTableColumn(props.onDetailClick)
+                                    if (props.main!.userProfile.role === "DEPARTMENT_USER") {
+                                        return PendingExamineForDepartmentLeaderCivilCaseTableColumn(props.onDetailClick)
+                                    } else if (props.main!.userProfile.role === "LEADERSHIP") {
+                                        return PendingExamineForLeaderCivilCaseTableColumn(props.onDetailClick)
+                                    } else {
+                                        return PendingExamineCivilCaseTableColumn(props.onDetailClick)
+                                    }
                                 case "examined":
                                     return ExaminedCivilCaseTableColumn(props.onDetailClick)
+                                case "pendingAppoint":
+                                    return PendingAppointCivilCaseTableColumn(props.onDetailClick, props.onAppointClick)
                                 default:
                                     return []
                             }
@@ -82,9 +93,17 @@ export const TrialTabContent = inject("supervise")((
                                 case "pendingProcess":
                                     return PendingProcessCriminalCaseTableColumn(props.onDetailClick, props.onRejectClick)
                                 case "pendingExamine":
-                                    return PendingExamineCriminalCaseTableColumn(props.onDetailClick)
+                                    if (props.main!.userProfile.role === "DEPARTMENT_USER") {
+                                        return PendingExamineForDepartmentLeaderCriminalCaseTableColumn(props.onDetailClick)
+                                    } else if (props.main!.userProfile.role === "LEADERSHIP") {
+                                        return PendingExamineForLeaderCriminalCaseTableColumn(props.onDetailClick)
+                                    } else {
+                                        return PendingExamineCriminalCaseTableColumn(props.onDetailClick)
+                                    }
                                 case "examined":
                                     return ExaminedCriminalCaseTableColumn(props.onDetailClick)
+                                case "pendingAppoint":
+                                    return PendingAppointCriminalCaseTableColumn(props.onDetailClick, props.onAppointClick)
                                 default:
                                     return []
                             }

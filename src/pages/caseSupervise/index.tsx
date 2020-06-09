@@ -38,6 +38,10 @@ class CaseSupervise extends React.Component<CaseSuperviseProps> {
 
     }
 
+    onAppointClick = () => {
+
+    }
+
     onTabChange(key: string) {
         console.log(key);
     }
@@ -84,16 +88,24 @@ class CaseSupervise extends React.Component<CaseSuperviseProps> {
             <BoxContainer>
                 <Tabs defaultActiveKey="1" onChange={this.onTabChange}>
                     <TabPane tab={<TableNameWithNumber name="侦查监督" count={0} />} key="1">
-                        <InvestigationTabContent role={role} status={status} onDetailClick={this.onDetailClick} onRejectClick={this.onRejectClick}></InvestigationTabContent>
+                        <InvestigationTabContent
+                            onAppointClick={this.onAppointClick}
+                            role={role} status={status} onDetailClick={this.onDetailClick} onRejectClick={this.onRejectClick}></InvestigationTabContent>
                     </TabPane>
                     <TabPane tab={<TableNameWithNumber name="审判监督" count={0} />} key="2">
-                        <TrialTabContent role={role} status={status} onDetailClick={this.onDetailClick} onRejectClick={this.onRejectClick}></TrialTabContent>
+                        <TrialTabContent
+                            onAppointClick={this.onAppointClick}
+                            role={role} status={status} onDetailClick={this.onDetailClick} onRejectClick={this.onRejectClick}></TrialTabContent>
                     </TabPane>
                     <TabPane tab={<TableNameWithNumber name="执行监督" count={0} />} key="3">
-                        <ExecutionTabContent role={role} status={status} onDetailClick={this.onDetailClick} onRejectClick={this.onRejectClick}></ExecutionTabContent>
+                        <ExecutionTabContent
+                            onAppointClick={this.onAppointClick}
+                            role={role} status={status} onDetailClick={this.onDetailClick} onRejectClick={this.onRejectClick}></ExecutionTabContent>
                     </TabPane>
                     <TabPane tab={<TableNameWithNumber name="行政监督" count={0} />} key="4">
-                        <AdministrationTabContent role={role} status={status} onDetailClick={this.onDetailClick} onRejectClick={this.onRejectClick}></AdministrationTabContent>
+                        <AdministrationTabContent
+                            onAppointClick={this.onAppointClick}
+                            role={role} status={status} onDetailClick={this.onDetailClick} onRejectClick={this.onRejectClick}></AdministrationTabContent>
                     </TabPane>
                 </Tabs>
             </BoxContainer>

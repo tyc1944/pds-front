@@ -31,7 +31,7 @@ class AllCaseSupervise extends React.Component<CaseSuperviseProps> {
 
     }
 
-    onTabChange(key: string) {
+    onTabChange = (key: string) => {
         this.props.supervise.activeTabIndex = key;
     }
 
