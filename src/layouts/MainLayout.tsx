@@ -33,14 +33,9 @@ import LeaderPendingExamineClueJudge from "pages/clueJudge/leader/pendingExamine
 import ExecutorExaminedClueJudge from "pages/clueJudge/executor/examined";
 import ExecutorPendingSuperviseClueJudge from "pages/clueJudge/executor/pendingSupervise";
 import SuperviseStore from "stores/superviseStore";
-import ExecutorPendingProcessCaseSupervise from "pages/caseSupervise/executor/pendingProcess";
 import CaseSuperviseDetail from "pages/caseSupervise/detail";
-import ExecutorPendingExamineCaseSupervise from "pages/caseSupervise/executor/pendingExamine";
-import ExecutorExaminedCaseSupervise from "pages/caseSupervise/executor/examined";
-import DepartmentLeaderPendingAppointCaseSupervise from "pages/caseSupervise/departmentLeader/pendingAppoint";
-import DepartmentLeaderPendingExamineCaseSupervise from "pages/caseSupervise/departmentLeader/pendingExamine";
-import LeaderPendingExamineCaseSupervise from "pages/caseSupervise/leader/pendingExamine";
 import AllCaseSupervise from "pages/caseSupervise/all";
+import CaseSupervise from "pages/caseSupervise";
 
 const { Header, Sider, Content } = Layout;
 
@@ -350,23 +345,9 @@ class MainLayout extends Component<MainLayoutProps, object> {
               {/* 院领导线索*/}
               <Route path="/index/clue/leader/judge/pendingExamine" exact component={LeaderPendingExamineClueJudge} />
               <Route path="/index/clue/leader/judge/pendingExamine/:clueId" exact component={ClueJudgeDetail} />
-
-              {/* 承办人案件 */}
-              <Route path="/index/supervise/executor/pendingProcess" exact component={ExecutorPendingProcessCaseSupervise} />
-              <Route path="/index/supervise/executor/pendingProcess/:clueId" exact component={CaseSuperviseDetail} />
-              <Route path="/index/supervise/executor/pendingExamine" exact component={ExecutorPendingExamineCaseSupervise} />
-              <Route path="/index/supervise/executor/pendingExamine/:clueId" exact component={CaseSuperviseDetail} />
-              <Route path="/index/supervise/executor/examined" exact component={ExecutorExaminedCaseSupervise} />
-              <Route path="/index/supervise/executor/examined/:clueId" exact component={CaseSuperviseDetail} />
-              {/* 部门领导案件 */}
-              <Route path="/index/supervise/departmentLeader/pendingAppoint" exact component={DepartmentLeaderPendingAppointCaseSupervise} />
-              <Route path="/index/supervise/departmentLeader/pendingAppoint/:clueId" exact component={CaseSuperviseDetail} />
-              <Route path="/index/supervise/departmentLeader/pendingExamine" exact component={DepartmentLeaderPendingExamineCaseSupervise} />
-              <Route path="/index/supervise/departmentLeader/pendingExamine/:clueId" exact component={CaseSuperviseDetail} />
-              {/* 院领导案件*/}
-              <Route path="/index/supervise/leader/pendingExamine" exact component={LeaderPendingExamineCaseSupervise} />
-              <Route path="/index/supervise/leader/pendingExamine/:clueId" exact component={CaseSuperviseDetail} />
-
+              {/* 案件*/}
+              <Route path="/index/supervise/:role/:status" exact component={CaseSupervise} />
+              <Route path="/index/supervise/:role/:status/:clueId" exact component={CaseSuperviseDetail} />
               {/* 全部案件*/}
               <Route path="/index/supervise/all" exact component={AllCaseSupervise} />
               <Route path="/index/supervise/all/:clueId" exact component={CaseSuperviseDetail} />

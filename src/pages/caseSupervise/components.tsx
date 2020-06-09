@@ -11,3 +11,37 @@ export const CaseStatus = (props: {
         justifyContent: 'center',
         display: 'flex', alignItems: "center"
     }}>{props.status}</div>
+
+export const ExaminedTempTableColum = [
+    {
+        title: "承办人意见",
+        dataIndex: "executorComment",
+        key: "executorComment",
+    },
+    {
+        title: "院领导审批时间",
+        dataIndex: "leaderExamineTime",
+        key: "leaderExamineTime",
+    },
+]
+
+export const PendingExamineTempTableColum = [
+    {
+        title: "承办人意见",
+        dataIndex: "executorComment",
+        key: "executorComment",
+    },
+    {
+        title: "待审批程序",
+        dataIndex: "examineStep",
+        key: "examineStep",
+    },
+]
+
+export const PendingProcessTempTableColum = [
+    {
+        title: "案件来源",
+        dataIndex: "statusAction",
+        key: "statusAction",
+    }
+]
