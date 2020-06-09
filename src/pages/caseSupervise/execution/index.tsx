@@ -16,18 +16,21 @@ export const ExecutionTabContent = inject("supervise", "main")((
         status: string;
         supervise?: SuperviseStore;
         main?: MainStore;
-        onDetailClick: () => void;
-        onRejectClick: () => void;
-        onAppointClick: () => void;
+        activeTabIndex: string;
+        onDetailClick: (caseId: number) => void;
+        onRejectClick: (caseId: number) => void;
+        onAppointClick: (caseId: number) => void;
     }
 ) => {
     const [caseCategory, setCaseCategory] = React.useState("civil")
     const [dataList, setDataList] = React.useState([])
 
     useEffect(() => {
-        props.supervise!.getSuperviseDataList("execution", props.status)
-            .then(res => setDataList(res.data.records))
-    }, [props.supervise, props.status])
+        if (props.activeTabIndex === "3") {
+            props.supervise!.getSuperviseDataList("execution", props.status)
+                .then(res => setDataList(res.data.records))
+        }
+    }, [props.supervise, props.status, props.activeTabIndex])
 
     return useObserver(() =>
         <BoxContainer noPadding>

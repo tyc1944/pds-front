@@ -15,9 +15,10 @@ export const TrialTabContent = inject("supervise", "main")((
         status: string;
         supervise?: SuperviseStore;
         main?: MainStore;
-        onDetailClick: () => void;
-        onRejectClick: () => void;
-        onAppointClick: () => void;
+        activeTabIndex: string;
+        onDetailClick: (caseId: number) => void;
+        onRejectClick: (caseId: number) => void;
+        onAppointClick: (caseId: number) => void;
     }
 ) => {
 
@@ -25,9 +26,11 @@ export const TrialTabContent = inject("supervise", "main")((
     const [dataList, setDataList] = React.useState([])
 
     useEffect(() => {
-        props.supervise!.getSuperviseDataList("trial", props.status)
-            .then(res => setDataList(res.data.records))
-    }, [props.supervise, props.status])
+        if (props.activeTabIndex === "2") {
+            props.supervise!.getSuperviseDataList("trial", props.status)
+                .then(res => setDataList(res.data.records))
+        }
+    }, [props.supervise, props.status, props.activeTabIndex])
 
     return useObserver(() =>
         <BoxContainer noPadding>

@@ -1,7 +1,8 @@
 import React from "react";
 import { Space } from "antd";
 import { formatTimeYMD } from "utils/TimeUtil";
-import { PendingExamineForDepartmentLeaderTempTableColum, PendingExamineForLeaderTempTableColum } from "../components";
+import { PendingExamineForDepartmentLeaderTempTableColum, PendingExamineForLeaderTempTableColum, PendingExamineTempTableColum, ExaminedTempTableColum, PendingProcessTempTableColum } from "../components";
+import { DATA_STATUS_ACTION } from "common";
 
 const tmpTableColum = [
   {
@@ -11,24 +12,24 @@ const tmpTableColum = [
   },
   {
     title: "案件编号",
-    dataIndex: "name",
-    key: "name",
+    dataIndex: ["investigationSuperviseDetailData", "caseCode"],
+    key: "caseCode",
   },
   {
     title: "报案时间",
-    dataIndex: "dataCount",
-    key: "dataCount",
-    render: (val: string) => (val ? formatTimeYMD(val) : "")
+    dataIndex: ["investigationSuperviseDetailData", "reportDate"],
+    key: "reportDate",
+    render: (val: number) => formatTimeYMD(val)
   },
   {
     title: "案件类别",
-    dataIndex: "createdTime",
-    key: "createdTime",
+    dataIndex: ["investigationSuperviseDetailData", "caseCategory"],
+    key: "caseCategory",
   },
   {
     title: "案件名称",
-    dataIndex: "createdTime",
-    key: "createdTime",
+    dataIndex: ["investigationSuperviseDetailData", "caseName"],
+    key: "caseName",
   }
 ]
 
@@ -38,19 +39,15 @@ export const PendingProcessTableColumn = (
 ) => [...tmpTableColum,
 {
   title: "受理单位",
-  dataIndex: "createdTime",
-  key: "createdTime",
+  dataIndex: ["investigationSuperviseDetailData", "acceptingUnit"],
+  key: "acceptingUnit",
 },
 {
   title: "异常结果",
-  dataIndex: "createdTime",
-  key: "createdTime",
+  dataIndex: "exceptionResult",
+  key: "exceptionResult",
 },
-{
-  title: "案件来源",
-  dataIndex: "statusAction",
-  key: "statusAction",
-},
+...PendingProcessTempTableColum,
 {
   title: "操作",
   dataIndex: "operation",
@@ -91,11 +88,7 @@ export const PendingAppointTableColumn = (
   dataIndex: "createdTime",
   key: "createdTime",
 },
-{
-  title: "案件来源",
-  dataIndex: "statusAction",
-  key: "statusAction",
-},
+...PendingProcessTempTableColum,
 {
   title: "操作",
   dataIndex: "operation",
@@ -183,16 +176,7 @@ export const PendingExamineTableColumn = (
   dataIndex: "createdTime",
   key: "createdTime",
 },
-{
-  title: "承办人意见",
-  dataIndex: "executorComment",
-  key: "executorComment",
-},
-{
-  title: "待审批程序",
-  dataIndex: "examineStep",
-  key: "examineStep",
-},
+...PendingExamineTempTableColum,
 {
   title: "操作",
   dataIndex: "operation",
@@ -220,16 +204,7 @@ export const ExaminedTableColumn = (
   dataIndex: "createdTime",
   key: "createdTime",
 },
-{
-  title: "承办人意见",
-  dataIndex: "executorComment",
-  key: "executorComment",
-},
-{
-  title: "院领导审批时间",
-  dataIndex: "leaderExamineTime",
-  key: "leaderExamineTime",
-},
+...ExaminedTempTableColum,
 {
   title: "操作",
   dataIndex: "operation",

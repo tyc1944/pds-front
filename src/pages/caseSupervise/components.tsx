@@ -1,4 +1,6 @@
 import React from "react";
+import { DATA_STATUS_ACTION } from "common";
+import { formatTimeYMD } from "utils/TimeUtil";
 
 export const CaseStatus = (props: {
     status: string
@@ -22,6 +24,7 @@ export const ExaminedTempTableColum = [
         title: "院领导审批时间",
         dataIndex: "leaderExamineTime",
         key: "leaderExamineTime",
+        render: (val: number) => formatTimeYMD(val)
     },
 ]
 
@@ -71,6 +74,7 @@ export const PendingExamineForLeaderTempTableColum = [
         title: "部门领导审批日期",
         dataIndex: "departmentLeaderExamineTime",
         key: "departmentLeaderExamineTime",
+        render: (val: number) => formatTimeYMD(val)
     },
 ]
 
@@ -79,5 +83,6 @@ export const PendingProcessTempTableColum = [
         title: "案件来源",
         dataIndex: "statusAction",
         key: "statusAction",
+        render: (val: string) => DATA_STATUS_ACTION[val]
     }
 ]

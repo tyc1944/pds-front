@@ -13,21 +13,23 @@ export const InvestigationTabContent = inject("supervise", "main")((
         status: string;
         supervise?: SuperviseStore;
         main?: MainStore;
-        onDetailClick: () => void;
-        onRejectClick: () => void;
-        onAppointClick: () => void;
+        activeTabIndex: string;
+        onDetailClick: (caseId: number) => void;
+        onRejectClick: (caseId: number) => void;
+        onAppointClick: (caseId: number) => void;
     }
 ) => {
 
     const [dataList, setDataList] = React.useState([])
-
     useEffect(() => {
-        props.supervise!.getSuperviseDataList("investigation", props.status)
-            .then(res => setDataList(res.data.records))
-    }, [props.supervise, props.status])
+        if (props.activeTabIndex === "1") {
+            props.supervise!.getSuperviseDataList("investigation", props.status)
+                .then(res => setDataList(res.data.records))
+        }
+    }, [props.supervise, props.status, props.activeTabIndex])
 
-    return useObserver(() =>
-        <BoxContainer noPadding>
+    return useObserver(() => {
+        return <BoxContainer noPadding>
             <BoxContainerInner flex={0.3}>
                 <TableSearch status={props.status} onSearch={changed => { }}></TableSearch>
             </BoxContainerInner>
@@ -59,5 +61,6 @@ export const InvestigationTabContent = inject("supervise", "main")((
                 />
             </BoxContainerInner>
         </BoxContainer>
+    }
     )
 })

@@ -13,18 +13,21 @@ export const AdministrationTabContent = inject("supervise", "main")((
         status: string;
         supervise?: SuperviseStore;
         main?: MainStore;
-        onDetailClick: () => void;
-        onRejectClick: () => void;
-        onAppointClick: () => void;
+        activeTabIndex: string;
+        onDetailClick: (caseId: number) => void;
+        onRejectClick: (caseId: number) => void;
+        onAppointClick: (caseId: number) => void;
     }
 ) => {
 
     const [dataList, setDataList] = React.useState([])
 
     useEffect(() => {
-        props.supervise!.getSuperviseDataList("administration", props.status)
-            .then(res => setDataList(res.data.records))
-    }, [props.supervise, props.status])
+        if (props.activeTabIndex === "4") {
+            props.supervise!.getSuperviseDataList("administration", props.status)
+                .then(res => setDataList(res.data.records))
+        }
+    }, [props.supervise, props.status, props.activeTabIndex])
 
     return <BoxContainer noPadding>
         <BoxContainerInner flex={0.3}>

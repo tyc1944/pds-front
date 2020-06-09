@@ -29,10 +29,12 @@ class CaseSuperviseDetail extends React.Component<ClueJudgeDetailProps> {
 
     state = {
         breadscrumData: [],
+        dataFlow: [] as { flowType: string, createdTime: number }[],
     }
 
     componentDidMount() {
         const { supervise } = this.props;
+        supervise.setBaseStepData("")
     }
 
     generateDataTableFormatDataFromString = (str: string): { [key: string]: string }[] => {
@@ -65,6 +67,35 @@ class CaseSuperviseDetail extends React.Component<ClueJudgeDetailProps> {
         })
     }
 
+    getBreadscrumData = (status: string) => {
+        switch (status) {
+            case "pendingAppoint":
+                this.setState({
+                    breadscrumData: ["案件监督", "待指派案件", "案件详情"]
+                })
+                break;
+            case "pendingExamine":
+                this.setState({
+                    breadscrumData: ["案件监督", "待审批案件", "案件详情"]
+                })
+                break;
+            case "pendingProcess":
+                this.setState({
+                    breadscrumData: ["案件监督", "待处理案件", "案件详情"]
+                })
+                break;
+            case "examined":
+                this.setState({
+                    breadscrumData: ["案件监督", "已审批案件", "案件详情"]
+                })
+                break;
+            default:
+                this.setState({
+                    breadscrumData: ["案件监督", "全部案件", "案件详情"]
+                })
+        }
+    }
+
 
     render() {
         const { supervise, main } = this.props;
@@ -73,9 +104,39 @@ class CaseSuperviseDetail extends React.Component<ClueJudgeDetailProps> {
             height: "100%",
             flexDirection: 'column'
         }}>
-            <Breadscrum data={["线索研判", "待处理数据", "线索详情"]}></Breadscrum>
+            <Breadscrum data={this.state.breadscrumData}></Breadscrum>
             <BoxContainer>
                 <BoxContainerInner flex={1} noPadding>
+                    <DataDetail header="线索处理进度">
+                        <DataProcessStep baseStepData={supervise.baseStepData} steps={this.state.dataFlow.map(item => ({
+                            index: item.flowType,
+                            stepDate: item.createdTime
+                        }))}></DataProcessStep>
+                    </DataDetail>
+                    <DataDetail header="异常结果" headerOps={<div></div>}>
+
+                    </DataDetail>
+                    <DataDetail header="案件数据">
+
+                    </DataDetail>
+                    <DataDetail header="监督处理信息">
+
+                    </DataDetail>
+                    <div style={{
+                        display: "flex",
+                        alignItems: "center",
+                        maxWidth: "1373px",
+                        marginBottom: '15px'
+                    }}>
+                        <div>
+                            <ColorButton bgColor="#FFFFFF" fontColor="#1E1E1E" onClick={() => window.history.back()}>取消</ColorButton>
+                        </div>
+                        <div style={{
+                            flex: 1,
+                            textAlign: "right",
+                            marginRight: '12px'
+                        }}><ExceptionOutlined translate="true" />操作记录</div>
+                    </div>
                 </BoxContainerInner>
             </BoxContainer>
         </div >

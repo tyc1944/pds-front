@@ -1,5 +1,5 @@
 import { observable, action } from "mobx";
-import { axios, TOKEN_KEY } from "../utils/RequestUtil";
+import { axios } from "../utils/RequestUtil";
 import { ProcessStep } from "components/dataDetail";
 
 export interface SuperviseDataSearchModel {
