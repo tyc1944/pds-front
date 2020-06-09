@@ -63,7 +63,7 @@ export const ExecutionTabContent = inject("supervise", "main")((
                                 case "pendingProcess":
                                     return PendingProcessCivilCaseTableColumn(props.onDetailClick, props.onRejectClick)
                                 case "pendingExamine":
-                                    if (props.main!.userProfile.role === "DEPARTMENT_USER") {
+                                    if (props.main!.userProfile.role === "DEPARTMENT_LEADER") {
                                         return PendingExamineForDepartmentLeaderCivilCaseTableColumn(props.onDetailClick)
                                     } else if (props.main!.userProfile.role === "LEADERSHIP") {
                                         return PendingExamineForLeaderCivilCaseTableColumn(props.onDetailClick)
@@ -93,7 +93,7 @@ export const ExecutionTabContent = inject("supervise", "main")((
                                 case "pendingProcess":
                                     return PendingProcessCriminalCaseTableColumn(props.onDetailClick, props.onRejectClick)
                                 case "pendingExamine":
-                                    if (props.main!.userProfile.role === "DEPARTMENT_USER") {
+                                    if (props.main!.userProfile.role === "DEPARTMENT_LEADER") {
                                         return PendingExamineForDepartmentLeaderCriminalCaseTableColumn(props.onDetailClick)
                                     } else if (props.main!.userProfile.role === "LEADERSHIP") {
                                         return PendingExamineForLeaderCriminalCaseTableColumn(props.onDetailClick)

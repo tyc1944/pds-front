@@ -3,10 +3,13 @@ import { TableListOpsHelper } from "components/table/tableListOpsContext";
 import { TableListOpsValueType, InputWithoutIcon, SingleSelectionGroup, OptionsDateRangePicker } from "components/table/tableListOpsComponents";
 import { Row, Col } from "antd";
 import { ColorButton } from "components/buttons";
+import { inject } from "mobx-react";
+import MainStore from "stores/mainStore";
 
-export const TableSearch = (props: {
+export const TableSearch = inject("main")((props: {
     onSearch: (changed: TableListOpsValueType[]) => void;
     status: string;
+    main?: MainStore;
 }) => {
 
     const [changed, setChanged] = React.useState([] as TableListOpsValueType[])
@@ -59,7 +62,7 @@ export const TableSearch = (props: {
                 </Row>
             </div>
             {
-                props.status === "pendingExamine" &&
+                (props.status === "pendingExamine" && props.main!.userProfile.role === "NORMAL_USER") &&
                 <div>
                     <Row>
                         <Col xl={2} xs={4} style={{ color: '#9099A2' }}>待审批程序</Col>
@@ -71,4 +74,4 @@ export const TableSearch = (props: {
             }
         </div>
     </TableListOpsHelper>
-}
+})
