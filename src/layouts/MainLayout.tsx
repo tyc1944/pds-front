@@ -17,7 +17,6 @@ import {
 import { TOKEN_KEY } from "utils/RequestUtil";
 import { MenuItem } from "components/menu";
 import DataAnalysis from "pages/dataAnalysis";
-import CaseSupervise from "pages/caseSupervise";
 import DataRetrieval from "pages/dataRetrieval";
 import Setting from "pages/setting";
 import ModifyPassword from "pages/setting/modifyPassword";
@@ -33,15 +32,25 @@ import AllClueJudge from "pages/clueJudge/all";
 import LeaderPendingExamineClueJudge from "pages/clueJudge/leader/pendingExamine";
 import ExecutorExaminedClueJudge from "pages/clueJudge/executor/examined";
 import ExecutorPendingSuperviseClueJudge from "pages/clueJudge/executor/pendingSupervise";
+import SuperviseStore from "stores/superviseStore";
+import ExecutorPendingProcessCaseSupervise from "pages/caseSupervise/executor/pendingProcess";
+import CaseSuperviseDetail from "pages/caseSupervise/detail";
+import ExecutorPendingExamineCaseSupervise from "pages/caseSupervise/executor/pendingExamine";
+import ExecutorExaminedCaseSupervise from "pages/caseSupervise/executor/examined";
+import DepartmentLeaderPendingAppointCaseSupervise from "pages/caseSupervise/departmentLeader/pendingAppoint";
+import DepartmentLeaderPendingExamineCaseSupervise from "pages/caseSupervise/departmentLeader/pendingExamine";
+import LeaderPendingExamineCaseSupervise from "pages/caseSupervise/leader/pendingExamine";
+import AllCaseSupervise from "pages/caseSupervise/all";
 
 const { Header, Sider, Content } = Layout;
 
 export interface MainLayoutProps extends RouteComponentProps {
   main: MainStore;
   clue: ClueStore;
+  supervise: SuperviseStore;
 }
 
-@inject("main", "clue")
+@inject("main", "clue", "supervise")
 @observer
 class MainLayout extends Component<MainLayoutProps, object> {
   componentDidMount() {
@@ -52,6 +61,7 @@ class MainLayout extends Component<MainLayoutProps, object> {
     const {
       main,
       clue,
+      supervise,
       location: { pathname }
     } = this.props;
     return (
@@ -187,32 +197,70 @@ class MainLayout extends Component<MainLayoutProps, object> {
               }
               return []
             }} />
-            <MenuItem name="案件监督" icon={<FileDoneOutlined translate="true" />} subItems={[
-              {
-                name: "待审批",
-                count: 12,
-                activeUrl: "/index/case/supervise/pendingExamine"
-              },
-              {
-                name: "待处理",
-                count: 12,
-                activeUrl: "/index/case/supervise/pendingProcess"
-              },
-              {
-                name: "已审批",
-                count: 12,
-                activeUrl: "/index/case/supervise/examined"
-              },
-              {
-                name: "待指派",
-                count: 12,
-                activeUrl: "/index/case/supervise/pendingAppoint"
-              },
-              {
-                name: "全部案件",
-                count: 0,
-                activeUrl: "/index/case/supervise/all",
-              }]} />
+            <MenuItem name="案件监督" icon={<FileDoneOutlined translate="true" />} subItems={async () => {
+              let statusCount = {
+                pendingProcessCount: 0,
+                pendingAppointCount: 0,
+                pendingExamineCount: 0,
+                examinedCount: 0
+              }
+              let res = await supervise.getSuperviseStatusCount();
+              if (res.data) {
+                statusCount.pendingAppointCount = res.data.pendingAppointCount;
+                statusCount.pendingExamineCount = res.data.pendingExamineCount;
+                statusCount.pendingProcessCount = res.data.pendingProcessCount;
+                statusCount.examinedCount = res.data.examinedCount;
+              }
+              switch (main.userProfile.role) {
+                case "NORMAL_USER":
+                  return [
+                    {
+                      name: "待处理",
+                      count: statusCount.pendingProcessCount,
+                      activeUrl: "/index/supervise/executor/pendingProcess",
+                    }, {
+                      name: "待审批",
+                      count: statusCount.pendingExamineCount,
+                      activeUrl: "/index/supervise/executor/pendingExamine",
+                    }, {
+                      name: "已审批",
+                      count: statusCount.examinedCount,
+                      activeUrl: "/index/supervise/executor/examined",
+                    },
+                    {
+                      name: "全部案件",
+                      count: 0,
+                      activeUrl: "/index/supervise/all",
+                    }]
+                case "DEPARTMENT_LEADER":
+                  return [
+                    {
+                      name: "待指派",
+                      count: statusCount.pendingAppointCount,
+                      activeUrl: "/index/supervise/departmentleader/pendingAppoint",
+                    }, {
+                      name: "待审批",
+                      count: statusCount.pendingExamineCount,
+                      activeUrl: "/index/supervise/departmentleader/pendingExamine",
+                    }, {
+                      name: "全部案件",
+                      count: 0,
+                      activeUrl: "/index/supervise/all",
+                    }]
+                case "LEADERSHIP":
+                  return [
+                    {
+                      name: "待审批",
+                      count: statusCount.pendingExamineCount,
+                      activeUrl: "/index/supervise/leader/pendingExamine",
+                    }, {
+                      name: "全部案件",
+                      count: 0,
+                      activeUrl: "/index/supervise/all",
+                    }]
+              }
+              return []
+            }} />
 
             <MenuItem name="决策辅助" icon={<AreaChartOutlined translate="true" />} subItems={[{
               name: "全国案例数据分析",
@@ -303,7 +351,26 @@ class MainLayout extends Component<MainLayoutProps, object> {
               <Route path="/index/clue/leader/judge/pendingExamine" exact component={LeaderPendingExamineClueJudge} />
               <Route path="/index/clue/leader/judge/pendingExamine/:clueId" exact component={ClueJudgeDetail} />
 
-              <Route path="/index/case/supervise/:status" exact component={CaseSupervise} />
+              {/* 承办人案件 */}
+              <Route path="/index/supervise/executor/pendingProcess" exact component={ExecutorPendingProcessCaseSupervise} />
+              <Route path="/index/supervise/executor/pendingProcess/:clueId" exact component={CaseSuperviseDetail} />
+              <Route path="/index/supervise/executor/pendingExamine" exact component={ExecutorPendingExamineCaseSupervise} />
+              <Route path="/index/supervise/executor/pendingExamine/:clueId" exact component={CaseSuperviseDetail} />
+              <Route path="/index/supervise/executor/examined" exact component={ExecutorExaminedCaseSupervise} />
+              <Route path="/index/supervise/executor/examined/:clueId" exact component={CaseSuperviseDetail} />
+              {/* 部门领导案件 */}
+              <Route path="/index/supervise/departmentLeader/pendingAppoint" exact component={DepartmentLeaderPendingAppointCaseSupervise} />
+              <Route path="/index/supervise/departmentLeader/pendingAppoint/:clueId" exact component={CaseSuperviseDetail} />
+              <Route path="/index/supervise/departmentLeader/pendingExamine" exact component={DepartmentLeaderPendingExamineCaseSupervise} />
+              <Route path="/index/supervise/departmentLeader/pendingExamine/:clueId" exact component={CaseSuperviseDetail} />
+              {/* 院领导案件*/}
+              <Route path="/index/supervise/leader/pendingExamine" exact component={LeaderPendingExamineCaseSupervise} />
+              <Route path="/index/supervise/leader/pendingExamine/:clueId" exact component={CaseSuperviseDetail} />
+
+              {/* 全部案件*/}
+              <Route path="/index/supervise/all" exact component={AllCaseSupervise} />
+              <Route path="/index/supervise/all/:clueId" exact component={CaseSuperviseDetail} />
+
               <Route path="/index/data/analysis" exact component={DataAnalysis} />
               <Route path="/index/data/retrieval" exact component={DataRetrieval} />
               <Route path="/index/setting/account" exact component={Setting} />
