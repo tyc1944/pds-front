@@ -31,6 +31,11 @@ export const TableColumn = (
       key: "summary",
     },
     {
+      title: "原告",
+      dataIndex: "plaintiff",
+      key: "plaintiff",
+    },
+    {
       title: "被告",
       dataIndex: "defendant",
       key: "defendant",

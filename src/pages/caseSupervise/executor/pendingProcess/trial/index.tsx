@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { BoxContainer, BoxContainerInner } from "components/layout";
 import { TableList } from "components/table";
-import { TableSearch } from "./tableSearch";
-import { TableColumn } from "./tableConfig";
+import { CivilCaseTableSearch, CriminalCaseTableSearch } from "./tableSearch";
+import { CivilCaseTableColumn, CriminalCaseTableColumn } from "./tableConfig";
 import { Row, Col } from "antd";
-import "./index.less";
+import "pages/caseSupervise/index.less";
 import { inject, useObserver } from "mobx-react";
 import SuperviseStore from "stores/superviseStore";
 
@@ -38,15 +38,34 @@ export const TrialTabContent = inject("supervise")((
                     </Col>
                     <Col span={18}></Col>
                 </Row>
-                <TableSearch onSearch={changed => { }}></TableSearch>
+                {
+                    caseCategory === "civil" &&
+                    <CivilCaseTableSearch onSearch={changed => { }}></CivilCaseTableSearch>
+                }
+                {
+                    caseCategory === "criminal" &&
+                    <CriminalCaseTableSearch onSearch={changed => { }}></CriminalCaseTableSearch>
+                }
             </BoxContainerInner>
             <BoxContainerInner flex={1} noPadding>
-                <TableList
-                    title="案件列表"
-                    data={dataList}
-                    columns={TableColumn(props.onDetailClick, props.onRejectClick)}
-                    onChange={(page, pageSize) => { console.log(page) }}
-                />
+                {
+                    caseCategory === "civil" &&
+                    <TableList
+                        title="案件列表"
+                        data={dataList}
+                        columns={CivilCaseTableColumn(props.onDetailClick, props.onRejectClick)}
+                        onChange={(page, pageSize) => { console.log(page) }}
+                    />
+                }
+                {
+                    caseCategory === "criminal" &&
+                    <TableList
+                        title="案件列表"
+                        data={dataList}
+                        columns={CriminalCaseTableColumn(props.onDetailClick, props.onRejectClick)}
+                        onChange={(page, pageSize) => { console.log(page) }}
+                    />
+                }
             </BoxContainerInner>
         </BoxContainer>
     )

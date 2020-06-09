@@ -10,7 +10,6 @@ export const InvestigationTabContent = inject("supervise")((
     props: {
         supervise?: SuperviseStore;
         onDetailClick: () => void;
-        onRejectClick: () => void;
     }
 ) => {
     const [dataList, setDataList] = React.useState([])
@@ -27,7 +26,7 @@ export const InvestigationTabContent = inject("supervise")((
             <TableList
                 title="案件列表"
                 data={dataList}
-                columns={TableColumn(props.onDetailClick, props.onRejectClick)}
+                columns={TableColumn(props.onDetailClick)}
                 onChange={(page, pageSize) => { console.log(page) }}
             />
         </BoxContainerInner>

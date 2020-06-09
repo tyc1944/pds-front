@@ -58,6 +58,29 @@ export const TableSearch = (props: {
                     </Col>
                 </Row>
             </div>
+            <div>
+                <Row>
+                    <Col xl={2} xs={4} style={{ color: '#9099A2' }}>案件状态</Col>
+                    <Col xl={22} xs={20}>
+                        <MultiSelectionGroup name="status" selectItems={[
+                            {
+                                label: '待处理', value: 'pendingProcess'
+                            },
+                            {
+                                label: '待审批', value: 'pendingExamine'
+                            },
+                            {
+                                label: '已审批', value: 'examined'
+                            },
+                            {
+                                label: '已退回', value: 'return'
+                            },
+                            {
+                                label: '已完成', value: 'done'
+                            }]}></MultiSelectionGroup>
+                    </Col>
+                </Row>
+            </div>
         </div>
     </TableListOpsHelper>
 }

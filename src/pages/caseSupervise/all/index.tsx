@@ -31,10 +31,6 @@ class AllCaseSupervise extends React.Component<CaseSuperviseProps> {
 
     }
 
-    onRejectClick = () => {
-
-    }
-
     onTabChange(key: string) {
         this.props.supervise.activeTabIndex = key;
     }
@@ -49,16 +45,16 @@ class AllCaseSupervise extends React.Component<CaseSuperviseProps> {
             <BoxContainer>
                 <Tabs defaultActiveKey="1" onChange={this.onTabChange}>
                     <TabPane tab={<TableNameWithNumber name="侦查监督" count={0} />} key="1">
-                        <InvestigationTabContent onDetailClick={this.onDetailClick} onRejectClick={this.onRejectClick}></InvestigationTabContent>
+                        <InvestigationTabContent onDetailClick={this.onDetailClick}></InvestigationTabContent>
                     </TabPane>
                     <TabPane tab={<TableNameWithNumber name="审判监督" count={0} />} key="2">
-                        <TrialTabContent onDetailClick={this.onDetailClick} onRejectClick={this.onRejectClick}></TrialTabContent>
+                        <TrialTabContent onDetailClick={this.onDetailClick}></TrialTabContent>
                     </TabPane>
                     <TabPane tab={<TableNameWithNumber name="执行监督" count={0} />} key="3">
-                        <ExecutionTabContent onDetailClick={this.onDetailClick} onRejectClick={this.onRejectClick}></ExecutionTabContent>
+                        <ExecutionTabContent onDetailClick={this.onDetailClick}></ExecutionTabContent>
                     </TabPane>
                     <TabPane tab={<TableNameWithNumber name="行政监督" count={0} />} key="4">
-                        <AdministrationTabContent onDetailClick={this.onDetailClick} onRejectClick={this.onRejectClick}></AdministrationTabContent>
+                        <AdministrationTabContent onDetailClick={this.onDetailClick}></AdministrationTabContent>
                     </TabPane>
                 </Tabs>
             </BoxContainer>

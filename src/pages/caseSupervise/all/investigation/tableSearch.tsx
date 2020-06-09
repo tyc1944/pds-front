@@ -1,6 +1,6 @@
 import React from "react";
 import { TableListOpsHelper } from "components/table/tableListOpsContext";
-import { TableListOpsValueType, InputWithoutIcon, SingleSelectionGroup, OptionsDateRangePicker } from "components/table/tableListOpsComponents";
+import { TableListOpsValueType, InputWithoutIcon, SingleSelectionGroup, OptionsDateRangePicker, MultiSelectionGroup } from "components/table/tableListOpsComponents";
 import { Row, Col } from "antd";
 import { ColorButton } from "components/buttons";
 
@@ -54,6 +54,29 @@ export const TableSearch = (props: {
                     <Col xl={2} xs={4} style={{ color: '#9099A2' }}>异常结果</Col>
                     <Col xl={22} xs={20}>
                         <SingleSelectionGroup name="caseCategory" defaultValue="不限" selectItems={["不限", "未采取强制措施", "未移送审查起诉"]}></SingleSelectionGroup>
+                    </Col>
+                </Row>
+            </div>
+            <div>
+                <Row>
+                    <Col xl={2} xs={4} style={{ color: '#9099A2' }}>案件状态</Col>
+                    <Col xl={22} xs={20}>
+                        <MultiSelectionGroup name="status" selectItems={[
+                        {
+                            label: '待处理', value: 'pendingProcess'
+                        },
+                        {
+                            label: '待审批', value: 'pendingExamine'
+                        },
+                        {
+                            label: '已审批', value: 'examined'
+                        },
+                        {
+                            label: '已退回', value: 'return'
+                        },
+                        {
+                            label: '已完成', value: 'done'
+                        }]}></MultiSelectionGroup>
                     </Col>
                 </Row>
             </div>

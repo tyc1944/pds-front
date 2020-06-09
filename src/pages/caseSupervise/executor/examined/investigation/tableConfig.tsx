@@ -38,9 +38,15 @@ export const TableColumn = (
       key: "createdTime",
     },
     {
-      title: "异常结果",
-      dataIndex: "createdTime",
-      key: "createdTime",
+      title: "承办人意见",
+      dataIndex: "executorComment",
+      key: "executorComment",
+    },
+    {
+      title: "院领导审批日期",
+      dataIndex: "leaderExaminedTime",
+      key: "leaderExaminedTime",
+      render: (val: number) => formatTimeYMD(val)
     },
     {
       title: "操作",

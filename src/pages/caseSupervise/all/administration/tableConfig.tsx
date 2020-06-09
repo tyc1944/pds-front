@@ -1,10 +1,11 @@
 import React from "react";
 import { Space } from "antd";
 import { formatTimeYMD } from "utils/TimeUtil";
+import { CaseStatus } from "pages/caseSupervise/components";
+import { CLUE_STATUS } from "common";
 
 export const TableColumn = (
-  onDeleteClick: () => void,
-  onEditClick: () => void
+  onDetailClick: (caseId: number) => void,
 ) => [
     {
       title: "序号",
@@ -49,9 +50,10 @@ export const TableColumn = (
       key: "execptionResult",
     },
     {
-      title: "案件来源",
-      dataIndex: "statusAction",
-      key: "statusAction",
+      title: "案件状态",
+      dataIndex: "status",
+      key: "status",
+      render: (val: string) => <CaseStatus status={CLUE_STATUS[val]}></CaseStatus>
     },
     {
       title: "操作",
@@ -63,17 +65,9 @@ export const TableColumn = (
             style={{
               cursor: "pointer"
             }}
-            onClick={() => onEditClick()}
+            onClick={() => onDetailClick(row.id)}
           >
             查看
-        </span>
-          <span
-            style={{
-              cursor: "pointer"
-            }}
-            onClick={() => onDeleteClick()}
-          >
-            退回
         </span>
         </Space>
       )

@@ -1,5 +1,6 @@
 import React from "react";
 import { Space } from "antd";
+import { formatTimeYMD } from "utils/TimeUtil";
 
 export const TableColumn = (
   onDeleteClick: () => void,
@@ -41,9 +42,15 @@ export const TableColumn = (
       key: "execptionResult",
     },
     {
-      title: "案件来源",
-      dataIndex: "statusAction",
-      key: "statusAction",
+      title: "承办人意见",
+      dataIndex: "executorComment",
+      key: "executorComment",
+    },
+    {
+      title: "院领导审批日期",
+      dataIndex: "leaderExaminedTime",
+      key: "leaderExaminedTime",
+      render: (val: number) => formatTimeYMD(val)
     },
     {
       title: "操作",

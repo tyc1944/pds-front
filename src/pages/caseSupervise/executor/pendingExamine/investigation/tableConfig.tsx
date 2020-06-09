@@ -13,34 +13,39 @@ export const TableColumn = (
     },
     {
       title: "案件编号",
-      dataIndex: "name",
-      key: "name",
+      dataIndex: "investigationSuperviseDetailData.caseCode",
+      key: "caseCode",
     },
     {
       title: "报案时间",
-      dataIndex: "dataCount",
-      key: "dataCount",
+      dataIndex: "investigationSuperviseDetailData.reportDate",
+      key: "reportDate",
       render: (val: string) => (val ? formatTimeYMD(val) : "")
     },
     {
       title: "案件类别",
-      dataIndex: "createdTime",
-      key: "createdTime",
+      dataIndex: "investigationSuperviseDetailData.caseCategory",
+      key: "caseCategory",
     },
     {
       title: "案件名称",
-      dataIndex: "createdTime",
-      key: "createdTime",
-    },
-    {
-      title: "受理单位",
-      dataIndex: "createdTime",
-      key: "createdTime",
+      dataIndex: "investigationSuperviseDetailData.caseName",
+      key: "caseName",
     },
     {
       title: "异常结果",
-      dataIndex: "createdTime",
-      key: "createdTime",
+      dataIndex: "exceptionResult",
+      key: "exceptionResult",
+    },
+    {
+      title: "承办人意见",
+      dataIndex: "executorComment",
+      key: "executorComment",
+    },
+    {
+      title: "待审批程序",
+      dataIndex: "examineStep",
+      key: "examineStep",
     },
     {
       title: "操作",

@@ -42,9 +42,14 @@ export const TableColumn = (
       key: "exceptionResult",
     },
     {
-      title: "案件来源",
-      dataIndex: "statusAction",
-      key: "statusAction",
+      title: "承办人意见",
+      dataIndex: "executorComment",
+      key: "executorComment",
+    },
+    {
+      title: "待审批程序",
+      dataIndex: "examineStep",
+      key: "examineStep",
     },
     {
       title: "操作",

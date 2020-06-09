@@ -1,10 +1,11 @@
 import React from "react";
 import { Space } from "antd";
 import { formatTimeYMD } from "utils/TimeUtil";
+import { CLUE_STATUS } from "common";
+import { CaseStatus } from "pages/caseSupervise/components";
 
 export const TableColumn = (
-  onDeleteClick: () => void,
-  onEditClick: () => void
+  onDetailClick: (id: number) => void
 ) => [
     {
       title: "序号",
@@ -13,34 +14,35 @@ export const TableColumn = (
     },
     {
       title: "案件编号",
-      dataIndex: "name",
-      key: "name",
+      dataIndex: "caseCode",
+      key: "caseCode",
     },
     {
       title: "报案时间",
-      dataIndex: "dataCount",
-      key: "dataCount",
+      dataIndex: "reportDate",
+      key: "reportDate",
       render: (val: string) => (val ? formatTimeYMD(val) : "")
     },
     {
       title: "案件类别",
-      dataIndex: "createdTime",
-      key: "createdTime",
+      dataIndex: "caseCategory",
+      key: "caseCategory",
     },
     {
       title: "案件名称",
-      dataIndex: "createdTime",
-      key: "createdTime",
-    },
-    {
-      title: "受理单位",
-      dataIndex: "createdTime",
-      key: "createdTime",
+      dataIndex: "caseName",
+      key: "caseName",
     },
     {
       title: "异常结果",
-      dataIndex: "createdTime",
-      key: "createdTime",
+      dataIndex: "execptionResult",
+      key: "execptionResult",
+    },
+    {
+      title: "案件状态",
+      dataIndex: "status",
+      key: "status",
+      render: (val: string) => <CaseStatus status={CLUE_STATUS[val]}></CaseStatus>
     },
     {
       title: "操作",
@@ -52,17 +54,9 @@ export const TableColumn = (
             style={{
               cursor: "pointer"
             }}
-            onClick={() => onEditClick()}
+            onClick={() => onDetailClick(row.id)}
           >
             查看
-        </span>
-          <span
-            style={{
-              cursor: "pointer"
-            }}
-            onClick={() => onDeleteClick()}
-          >
-            退回
         </span>
         </Space>
       )
