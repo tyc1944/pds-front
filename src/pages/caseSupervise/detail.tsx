@@ -249,6 +249,20 @@ class CaseSuperviseDetail extends React.Component<ClueJudgeDetailProps> {
                             }
                         </>
                     }
+                    {
+                        (status === "done") &&
+                        <>
+                            <DataDetail header="部门领导审批意见">
+                                <ExamineComment comment={this.state.superviseData.departmentComment}></ExamineComment>
+                            </DataDetail>
+                            <DataDetail header="院领导审批意见">
+                                <ExamineComment comment={this.state.superviseData.leaderComment}></ExamineComment>
+                            </DataDetail>
+                            <DataDetail header="最终处理反馈">
+                                <ExamineComment title="承办人反馈" comment={this.state.superviseData.processFeedback}></ExamineComment>
+                            </DataDetail>
+                        </>
+                    }
                     <div style={{
                         display: "flex",
                         alignItems: "center",

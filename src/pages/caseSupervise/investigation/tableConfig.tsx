@@ -84,8 +84,8 @@ export const PendingAppointTableColumn = (
 },
 {
   title: "异常结果",
-  dataIndex: "createdTime",
-  key: "createdTime",
+  dataIndex: "exceptionResult",
+  key: "exceptionResult",
 },
 ...PendingProcessTempTableColum,
 {
@@ -120,8 +120,8 @@ export const PendingExamineForLeaderTableColumn = (
 ) => [...tmpTableColum,
 {
   title: "异常结果",
-  dataIndex: "createdTime",
-  key: "createdTime",
+  dataIndex: "exceptionResult",
+  key: "exceptionResult",
 },
 ...PendingExamineForLeaderTempTableColum,
 {
@@ -146,8 +146,8 @@ export const PendingExamineForDepartmentLeaderTableColumn = (
 ) => [...tmpTableColum,
 {
   title: "异常结果",
-  dataIndex: "createdTime",
-  key: "createdTime",
+  dataIndex: "exceptionResult",
+  key: "exceptionResult",
 },
 ...PendingExamineForDepartmentLeaderTempTableColum,
 {
@@ -172,8 +172,8 @@ export const PendingExamineTableColumn = (
 ) => [...tmpTableColum,
 {
   title: "异常结果",
-  dataIndex: "createdTime",
-  key: "createdTime",
+  dataIndex: "exceptionResult",
+  key: "exceptionResult",
 },
 ...PendingExamineTempTableColum,
 {
@@ -200,8 +200,8 @@ export const ExaminedTableColumn = (
 ) => [...tmpTableColum,
 {
   title: "异常结果",
-  dataIndex: "createdTime",
-  key: "createdTime",
+  dataIndex: "exceptionResult",
+  key: "exceptionResult",
 },
 ...ExaminedTempTableColum,
 {
@@ -228,8 +228,8 @@ export const AllTableColumn = (
 ) => [...tmpTableColum,
 {
   title: "异常结果",
-  dataIndex: "createdTime",
-  key: "createdTime",
+  dataIndex: "exceptionResult",
+  key: "exceptionResult",
 },
 ...AllTempTableColum,
 {

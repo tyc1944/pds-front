@@ -34,7 +34,6 @@ import ExecutorExaminedClueJudge from "pages/clueJudge/executor/examined";
 import ExecutorPendingSuperviseClueJudge from "pages/clueJudge/executor/pendingSupervise";
 import SuperviseStore from "stores/superviseStore";
 import CaseSuperviseDetail from "pages/caseSupervise/detail";
-import AllCaseSupervise from "pages/caseSupervise/all";
 import CaseSupervise from "pages/caseSupervise";
 
 const { Header, Sider, Content } = Layout;
@@ -225,7 +224,7 @@ class MainLayout extends Component<MainLayoutProps, object> {
                     {
                       name: "全部案件",
                       count: 0,
-                      activeUrl: "/index/supervise/all",
+                      activeUrl: "/index/supervise/all/all",
                     }]
                 case "DEPARTMENT_LEADER":
                   return [
@@ -240,7 +239,7 @@ class MainLayout extends Component<MainLayoutProps, object> {
                     }, {
                       name: "全部案件",
                       count: 0,
-                      activeUrl: "/index/supervise/all",
+                      activeUrl: "/index/supervise/all/all",
                     }]
                 case "LEADERSHIP":
                   return [
@@ -251,7 +250,7 @@ class MainLayout extends Component<MainLayoutProps, object> {
                     }, {
                       name: "全部案件",
                       count: 0,
-                      activeUrl: "/index/supervise/all",
+                      activeUrl: "/index/supervise/all/all",
                     }]
               }
               return []
@@ -349,8 +348,8 @@ class MainLayout extends Component<MainLayoutProps, object> {
               <Route path="/index/supervise/:role/:status" exact component={CaseSupervise} />
               <Route path="/index/supervise/:role/:status/:superviseId" exact component={CaseSuperviseDetail} />
               {/* 全部案件*/}
-              <Route path="/index/supervise/all" exact component={AllCaseSupervise} />
-              <Route path="/index/supervise/all/:superviseId" exact component={CaseSuperviseDetail} />
+              <Route path="/index/supervise/all/all" exact component={CaseSupervise} />
+              <Route path="/index/supervise/all/all/:superviseId" exact component={CaseSuperviseDetail} />
 
               <Route path="/index/data/analysis" exact component={DataAnalysis} />
               <Route path="/index/data/retrieval" exact component={DataRetrieval} />

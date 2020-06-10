@@ -37,7 +37,11 @@ class CaseSupervise extends React.Component<CaseSuperviseProps> {
 
     onDetailClick = (caseId: number) => {
         const { status, role } = this.props.match.params;
-        window.location.href = `/index/supervise/${role}/${status}/${caseId}`
+        if (role && status) {
+            window.location.href = `/index/supervise/${role}/${status}/${caseId}`
+        } else {
+            window.location.href = `/index/supervise/all/all/${caseId}`
+        }
     }
 
     onRejectClick = () => {

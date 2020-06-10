@@ -15,6 +15,7 @@ export interface SuperviseData {
     executorComment: string;
     departmentComment: string;
     leaderComment: string;
+    processFeedback: string;
 }
 
 export interface SuperviseProcessInfo {
@@ -58,7 +59,7 @@ export default class SuperviseStore {
             index: "STEP_5",
             baseInfo: ["院领导", "审批通过"]
         }, {
-            index: "STEP_7",
+            index: "STEP_6",
             baseInfo: ["承办人", "反馈结果"]
         }]
     }
