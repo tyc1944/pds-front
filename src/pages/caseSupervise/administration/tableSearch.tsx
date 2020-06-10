@@ -74,6 +74,17 @@ export const TableSearch = inject("main")((props: {
                     </Row>
                 </div>
             }
+            {
+                props.status === "all" &&
+                <div>
+                    <Row>
+                        <Col xl={2} xs={4} style={{ color: '#9099A2' }}>案件状态</Col>
+                        <Col xl={22} xs={20}>
+                            <SingleSelectionGroup name="status" defaultValue="不限" selectItems={["不限", "待处理", "待审批", "已审批", "已完成"]}></SingleSelectionGroup>
+                        </Col>
+                    </Row>
+                </div>
+            }
         </div>
     </TableListOpsHelper>
 })

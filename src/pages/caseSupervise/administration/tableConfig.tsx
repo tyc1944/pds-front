@@ -11,34 +11,34 @@ const tmpTableColum = [
   },
   {
     title: "立案时间",
-    dataIndex: "filingTime",
+    dataIndex: ["adminSuperviseDetailData", "filingTime"],
     key: "filingTime",
     render: (val: string) => (val ? formatTimeYMD(val) : "")
   },
   {
     title: "结案时间",
-    dataIndex: "closingTime",
+    dataIndex: ["adminSuperviseDetailData", "closingTime"],
     key: "closingTime",
     render: (val: string) => (val ? formatTimeYMD(val) : "")
   },
   {
     title: "处罚决定书文号",
-    dataIndex: "punishmentDecisionNo",
+    dataIndex: ["adminSuperviseDetailData", "punishmentDecisionNo"],
     key: "punishmentDecisionNo",
   },
   {
     title: "当事人",
-    dataIndex: "party",
+    dataIndex: ["adminSuperviseDetailData", "party"],
     key: "party",
   },
   {
     title: "违法性质",
-    dataIndex: "illegalNature",
+    dataIndex: ["adminSuperviseDetailData", "illegalNature"],
     key: "illegalNature",
   },
   {
     title: "案件货值",
-    dataIndex: "caseValue",
+    dataIndex: ["adminSuperviseDetailData", "caseValue"],
     key: "caseValue",
   },
   {

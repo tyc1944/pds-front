@@ -28,6 +28,7 @@ export interface SuperviseDataSearchModel {
     page: number;
     pageSize: number;
     status?: string;
+    caseType?: string;
 }
 
 export default class SuperviseStore {
@@ -69,10 +70,13 @@ export default class SuperviseStore {
         this.searchModel = { page: 1, pageSize: 20 } as SuperviseDataSearchModel
     }
 
-    getSuperviseDataList(dataType: string, status?: string) {
+    getSuperviseDataList(dataType: string, status?: string, caseCategory?: string) {
         let params = this.searchModel
         if (status && status !== "all") {
             params.status = status;
+        }
+        if (caseCategory) {
+            params.caseType = caseCategory;
         }
         return axios.get(`/api/supervise/${dataType}/list`, {
             params

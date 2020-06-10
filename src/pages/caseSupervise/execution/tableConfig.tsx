@@ -10,27 +10,27 @@ const civilCaseTempTableColmn = [
   },
   {
     title: "案号",
-    dataIndex: "caseCode",
+    dataIndex: ["executionSuperviseDetailData", "caseCode"],
     key: "caseCode",
   },
   {
     title: "案件名称",
-    dataIndex: "caseName",
+    dataIndex: ["executionSuperviseDetailData", "caseName"],
     key: "caseName"
   },
   {
     title: "申请执行人",
-    dataIndex: "executionApplicant",
+    dataIndex: ["executionSuperviseDetailData", "caseName"],
     key: "executionApplicant",
   },
   {
     title: "被执行人",
-    dataIndex: "executedPerson",
+    dataIndex: ["executionSuperviseDetailData", "executedPerson"],
     key: "executedPerson",
   },
   {
     title: "执行依据文号",
-    dataIndex: "executionBasis",
+    dataIndex: ["executionSuperviseDetailData", "executionBasis"],
     key: "executionBasis",
   },
   {
@@ -208,27 +208,27 @@ const criminalCaseTempTableColumn = [
   },
   {
     title: "案号",
-    dataIndex: "caseCode",
+    dataIndex: ["executionSuperviseDetailData", "caseCode"],
     key: "caseCode",
   },
   {
     title: "案件名称",
-    dataIndex: "caseName",
+    dataIndex: ["executionSuperviseDetailData", "caseName"],
     key: "caseName"
   },
   {
     title: "被执行人",
-    dataIndex: "executedPerson",
+    dataIndex: ["executionSuperviseDetailData", "executedPerson"],
     key: "executedPerson",
   },
   {
     title: "执行依据文号",
-    dataIndex: "executionBasis",
+    dataIndex: ["executionSuperviseDetailData", "executionBasis"],
     key: "executionBasis",
   },
   {
     title: "原审法院",
-    dataIndex: "firstCourt",
+    dataIndex: ["executionSuperviseDetailData", "firstCourt"],
     key: "firstCourt",
   },
   {

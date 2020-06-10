@@ -10,27 +10,32 @@ const tmpTableColum = [
   },
   {
     title: "案号",
-    dataIndex: "caseCode",
+    dataIndex: ["trialSuperviseDetailData", "caseCode"],
     key: "caseCode",
   },
   {
     title: "结案方式",
-    dataIndex: "settlementMethod",
+    dataIndex: ["trialSuperviseDetailData", "settlementMethod"],
     key: "settlementMethod"
   },
   {
     title: "适用程序",
-    dataIndex: "applicableProcedures",
+    dataIndex: ["trialSuperviseDetailData", "applicableProcedures"],
     key: "applicableProcedures",
   },
   {
     title: "案由",
-    dataIndex: "summary",
+    dataIndex: ["trialSuperviseDetailData", "summary"],
     key: "summary",
   },
   {
+    title: "原告",
+    dataIndex: ["trialSuperviseDetailData", "plaintiff"],
+    key: "plaintiff",
+  },
+  {
     title: "被告",
-    dataIndex: "defendant",
+    dataIndex: ["trialSuperviseDetailData", "defendant"],
     key: "defendant",
   },
   {
@@ -237,27 +242,27 @@ const criminalCaseTempTableColum = [
   },
   {
     title: "裁判日期",
-    dataIndex: "judgementDate",
+    dataIndex: ["trialSuperviseDetailData", "judgementDate"],
     key: "judgementDate",
   },
   {
     title: "案件名称",
-    dataIndex: "caseName",
+    dataIndex: ["trialSuperviseDetailData", "caseName"],
     key: "caseName"
   },
   {
     title: "起诉书文号",
-    dataIndex: "indictmentNo",
+    dataIndex: ["trialSuperviseDetailData", "indictmentNo"],
     key: "indictmentNo",
   },
   {
     title: "量刑建议书文号",
-    dataIndex: "sentencingProposalNo",
+    dataIndex: ["trialSuperviseDetailData", "sentencingProposalNo"],
     key: "sentencingProposalNo",
   },
   {
     title: "裁判书文号",
-    dataIndex: "refereeDocumentNumber",
+    dataIndex: ["trialSuperviseDetailData", "refereeDocumentNumber"],
     key: "refereeDocumentNumber",
   },
   {

@@ -73,7 +73,7 @@ export const TableSearch = inject("main")((props: {
                 </div>
             }
             {
-                !props.status &&
+                props.status === "all" &&
                 <div>
                     <Row>
                         <Col xl={2} xs={4} style={{ color: '#9099A2' }}>案件状态</Col>

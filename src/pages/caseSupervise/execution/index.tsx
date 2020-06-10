@@ -22,15 +22,15 @@ export const ExecutionTabContent = inject("supervise", "main")((
         onAppointClick: (caseId: number) => void;
     }
 ) => {
-    const [caseCategory, setCaseCategory] = React.useState("civil")
+    const [caseCategory, setCaseCategory] = React.useState("civil_case")
     const [dataList, setDataList] = React.useState([])
 
     useEffect(() => {
         if (props.activeTabIndex === "3") {
-            props.supervise!.getSuperviseDataList("execution", props.status)
+            props.supervise!.getSuperviseDataList("execution", props.status, caseCategory)
                 .then(res => setDataList(res.data.records))
         }
-    }, [props.supervise, props.status, props.activeTabIndex])
+    }, [props.supervise, props.status, props.activeTabIndex, caseCategory])
 
     return useObserver(() =>
         <BoxContainer noPadding>
@@ -39,25 +39,25 @@ export const ExecutionTabContent = inject("supervise", "main")((
                     marginTop: "14px"
                 }}>
                     <Col span={3}>
-                        <div className={`trial-case-supervise-category ${caseCategory === "civil" ? "active" : ""}`} onClick={() => setCaseCategory("civil")}>民事案件</div>
+                        <div className={`trial-case-supervise-category ${caseCategory === "civil_case" ? "active" : ""}`} onClick={() => setCaseCategory("civil_case")}>民事案件</div>
                     </Col>
                     <Col span={3}>
-                        <div className={`trial-case-supervise-category ${caseCategory === "criminal" ? "active" : ""}`} onClick={() => setCaseCategory("criminal")}>刑事案件</div>
+                        <div className={`trial-case-supervise-category ${caseCategory === "criminal_case" ? "active" : ""}`} onClick={() => setCaseCategory("criminal_case")}>刑事案件</div>
                     </Col>
                     <Col span={18}></Col>
                 </Row>
                 {
-                    caseCategory === "civil" &&
+                    caseCategory === "civil_case" &&
                     <CivilCaseTableSearch status={props.status} onSearch={changed => { }}></CivilCaseTableSearch>
                 }
                 {
-                    caseCategory === "criminal" &&
+                    caseCategory === "criminal_case" &&
                     <CriminalCaseTableSearch status={props.status} onSearch={changed => { }}></CriminalCaseTableSearch>
                 }
             </BoxContainerInner>
             <BoxContainerInner flex={1} noPadding>
                 {
-                    caseCategory === "civil" &&
+                    caseCategory === "civil_case" &&
                     <TableList
                         title="案件列表"
                         data={dataList}
@@ -86,7 +86,7 @@ export const ExecutionTabContent = inject("supervise", "main")((
                     />
                 }
                 {
-                    caseCategory === "criminal" &&
+                    caseCategory === "criminal_case" &&
                     <TableList
                         title="案件列表"
                         data={dataList}
