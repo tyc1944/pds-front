@@ -347,10 +347,10 @@ class MainLayout extends Component<MainLayoutProps, object> {
               <Route path="/index/clue/leader/judge/pendingExamine/:clueId" exact component={ClueJudgeDetail} />
               {/* 案件*/}
               <Route path="/index/supervise/:role/:status" exact component={CaseSupervise} />
-              <Route path="/index/supervise/:role/:status/:clueId" exact component={CaseSuperviseDetail} />
+              <Route path="/index/supervise/:role/:status/:superviseId" exact component={CaseSuperviseDetail} />
               {/* 全部案件*/}
               <Route path="/index/supervise/all" exact component={AllCaseSupervise} />
-              <Route path="/index/supervise/all/:clueId" exact component={CaseSuperviseDetail} />
+              <Route path="/index/supervise/all/:superviseId" exact component={CaseSuperviseDetail} />
 
               <Route path="/index/data/analysis" exact component={DataAnalysis} />
               <Route path="/index/data/retrieval" exact component={DataRetrieval} />

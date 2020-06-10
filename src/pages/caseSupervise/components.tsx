@@ -1,6 +1,7 @@
 import React from "react";
 import { DATA_STATUS_ACTION } from "common";
 import { formatTimeYMD } from "utils/TimeUtil";
+import { WarningOutlined } from "@ant-design/icons";
 
 export const CaseStatus = (props: {
     status: string
@@ -13,6 +14,36 @@ export const CaseStatus = (props: {
         justifyContent: 'center',
         display: 'flex', alignItems: "center"
     }}>{props.status}</div>
+
+export const ExceptionResultTitle = (props: {
+    result: string
+}) =>
+    <div style={{
+        backgroundColor: '#FFEDE8',
+        border: "1px solid #FF4416",
+        height: "36px",
+        display: "flex",
+        alignItems: "center",
+        borderRadius: "5px",
+        marginLeft: "15px"
+    }}>
+        <div style={{
+            margin: "0 20px"
+        }}>
+            <WarningOutlined translate="true" style={{
+                color: "#FF4416",
+                fontSize: "16px"
+            }} />
+        </div>
+        <div style={{
+            fontSize: "16px",
+            color: "#FF4416"
+        }}>
+            {
+                props.result
+            }
+        </div>
+    </div >
 
 export const ExaminedTempTableColum = [
     {

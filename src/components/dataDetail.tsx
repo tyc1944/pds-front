@@ -13,14 +13,19 @@ export interface ProcessStep {
 export const DataDetail = (props: {
     children: React.ReactNode,
     header: string,
-    headerOps?: React.ReactNode
+    headerOps?: React.ReactNode,
+    headerOpsWholeLine?: boolean
 }) =>
     <div className="data-detail">
         <div className="data-detail-header">
-            <div>
+            <div style={!props.headerOpsWholeLine ? {
+                flex: "1"
+            } : {}}>
                 {props.header}
             </div>
-            <div>
+            <div style={props.headerOpsWholeLine ? {
+                flex: "1"
+            } : {}}>
                 {props.headerOps}
             </div>
         </div>
@@ -104,6 +109,55 @@ export const CloseableDataTable = (props: {
     </div>
 }
 
+export const DataTable = (props: {
+    dataInfo: { [key: string]: string }[],
+    onAddressClick?: (address: string) => void
+}) => {
+    return <div className="closeable-data-table">
+        {
+            props.dataInfo.map((item, index) =>
+                <div className="closeable-data-table-row" key={index}>
+                    {
+                        (() => {
+                            let tmp = []
+                            for (let k in item) {
+                                tmp.push(
+                                    <Fragment key={k}>
+                                        <div style={{ width: "200px", justifyContent: "flex-end", paddingRight: "14px" }}>{k}</div>
+                                        <div style={{ flex: 1, paddingLeft: "14px" }}>{(k === "案发地址" || k === "发生地点") ? <span
+                                            style={{
+                                                textDecoration: "underline",
+                                                color: "#4084F0",
+                                                cursor: "pointer"
+                                            }}
+                                            onClick={() => props.onAddressClick && props.onAddressClick(item[k])}>{item[k]}</span> : item[k]}</div>
+                                    </Fragment>)
+                            }
+                            return tmp
+                        })()
+                    }
+                </div>
+            )
+        }
+    </div>
+}
 
+export const CloseableDataFile = (props: {
+    files: string[],
+    title: string,
+    headerInfo?: React.ReactNode,
+}) => {
+    const [closed, setClosed] = React.useState(true)
+    return <div className="closeable-data-table">
+        <div className="closeable-data-table-header" onClick={() => setClosed(!closed)}>
+            <div style={{ width: "24px", margin: "0px 12px", textAlign: "center" }}> {closed ? <UpOutlined translate="true" /> : <DownOutlined translate="true" />}</div>
+            <div style={{ flex: 1 }}>{props.title}</div>
+            <div style={{ marginRight: "19px" }}>{props.headerInfo}</div>
+        </div>
+        {
+            !closed && <div className="closeable-data-table-body">
 
-
+            </div>
+        }
+    </div>
+}

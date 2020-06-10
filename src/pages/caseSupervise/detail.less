@@ -1,0 +1,31 @@
+.supervise-process-info {
+    display       : flex;
+    flex-direction: column;
+    border        : 1px solid #D6DDE3;
+    border-bottom : none;
+
+    &>div {
+        display      : flex;
+        border-bottom: 1px solid #D6DDE3;
+        min-height   : 36px;
+
+        &>div {
+            display        : flex;
+            justify-content: center;
+            align-items    : center;
+            border-right   : 1px solid #D6DDE3;
+        }
+
+        &>div:last-child {
+            border-right: none;
+        }
+
+        &>div:nth-child(odd) {
+            width: 143px
+        }
+
+        &>div:nth-child(even) {
+            flex: 1
+        }
+    }
+}

@@ -2,6 +2,18 @@ import { observable, action } from "mobx";
 import { axios } from "../utils/RequestUtil";
 import { ProcessStep } from "components/dataDetail";
 
+export interface SuperviseData {
+    id: number;
+    status: string;
+    exceptionResult: string;
+    exceptionContent: string;
+    relatedDate: number;
+    relatedUnit: string;
+    receptionInformation: string;
+    dataType: string;
+    belongToUnit: string;
+}
+
 export interface SuperviseDataSearchModel {
     page: number;
     pageSize: number;
@@ -59,6 +71,26 @@ export default class SuperviseStore {
 
     getSuperviseStatusCount() {
         return axios.get("/api/supervise/count")
+    }
+
+    getSuperviseData(superviseId: string) {
+        return axios.get(`/api/supervise/${superviseId}/detail`)
+    }
+
+    getSuperviseDataFlow(superviseId: string) {
+        return axios.get(`/api/supervise/${superviseId}/flow`)
+    }
+
+    getSuperviseCaseData(superviseId: string) {
+        return axios.get(`/api/supervise/${superviseId}/case`)
+    }
+
+    getSupervisePartyData(superviseId: string) {
+        return axios.get(`/api/supervise/${superviseId}/party`)
+    }
+
+    getSuperviseDataFiles(superviseId: string) {
+        return axios.get(`/api/supervise/${superviseId}/files`)
     }
 
 }
