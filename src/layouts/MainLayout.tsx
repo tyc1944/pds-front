@@ -100,8 +100,8 @@ class MainLayout extends Component<MainLayoutProps, object> {
                 translate="true"
                 onClick={() => {
                   localStorage.removeItem(TOKEN_KEY);
-                  this.props.main.userProfile = {} as UserProfile;
                   window.location.replace("/login");
+                  this.props.main.userProfile = {} as UserProfile;
                 }}
               />
             </div>

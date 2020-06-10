@@ -4,14 +4,15 @@ import { RouteComponentProps } from "react-router-dom";
 import Breadscrum from "components/breadscrum";
 import { BoxContainer, BoxContainerInner } from "components/layout";
 import { DataDetail, DataProcessStep, CloseableDataTable, CloseableDataFile, DataTable } from "components/dataDetail";
-import { ExceptionOutlined } from "@ant-design/icons";
+import { VerticalAlignBottomOutlined, EyeFilled, ExclamationCircleOutlined, ExceptionOutlined } from "@ant-design/icons";
 import { ColorButton } from "components/buttons";
 import MainStore from "stores/mainStore";
 import { message, Modal, Input, DatePicker } from "antd";
 import _ from "lodash";
 import SuperviseStore, { SuperviseData } from "stores/superviseStore";
 import "./detail.less";
-import { ExceptionResultTitle } from "./components";
+import { ExceptionResultTitle, ExamineComment } from "./components";
+import { formatTimeYMD } from "utils/TimeUtil";
 
 const { confirm } = Modal;
 const { TextArea } = Input;
@@ -41,7 +42,7 @@ class CaseSuperviseDetail extends React.Component<ClueJudgeDetailProps> {
     state = {
         breadscrumData: [],
         dataFlow: [] as { flowType: string, createdTime: number }[],
-        supervieData: {} as SuperviseData,
+        superviseData: {} as SuperviseData,
         relatedUnit: "",
         processedDate: 0,
         comment: "",
@@ -141,7 +142,8 @@ class CaseSuperviseDetail extends React.Component<ClueJudgeDetailProps> {
 
     render() {
         const { supervise, main } = this.props;
-        const { exceptionContent, receptionInformation, exceptionResult } = this.state.supervieData;
+        const { status, exceptionContent, receptionInformation, exceptionResult } = this.state.superviseData;
+        const { superviseId } = this.props.match.params;
         return <div style={{
             display: "flex",
             height: "100%",
@@ -188,39 +190,65 @@ class CaseSuperviseDetail extends React.Component<ClueJudgeDetailProps> {
                         </DataDetail>
                     }
                     <DataDetail header="监督处理信息">
-                        <div className="supervise-process-info">
-                            <div>
-                                <div>{this.state.processInfoLabel}</div>
-                                <div><Input style={{
-                                    border: "none"
-                                }} onChange={e => this.setState({
-                                    relatedUnit: e.currentTarget.value
-                                })}></Input></div>
-                                <div>处理时间</div>
-                                <div>
-                                    <DatePicker style={{
-                                        border: "none",
-                                        width: "100%"
-                                    }} showTime={true} onChange={val => this.setState({
-                                        processedDate: val ? val.valueOf() : null
-                                    })}></DatePicker>
-                                </div>
-                            </div>
-                            <div>
-                                <div>承办人意见</div>
-                                <div>
-                                    <TextArea
-                                        style={{
-                                            height: "100px",
-                                            border: "none"
-                                        }}
-                                        onChange={e => this.setState({
-                                            comment: e.currentTarget.value
-                                        })}></TextArea>
-                                </div>
-                            </div>
-                        </div>
+                        <SuperviseProcessInfo
+                            superviseData={this.state.superviseData}
+                            readonly={status !== "pendingProcess"}
+                            processInfoLabel={this.state.processInfoLabel}
+                            onRelatedUnitChange={relatedUnit => this.setState({
+                                relatedUnit
+                            })}
+                            onProcessedDateChange={processedDate => this.setState({
+                                processedDate
+                            })}
+                            onCommentChange={comment => this.setState({
+                                comment
+                            })}
+                        ></SuperviseProcessInfo>
                     </DataDetail>
+                    {
+                        (main.userProfile.role === "DEPARTMENT_LEADER" && status === "pendingExamine") &&
+                        <DataDetail header="部门领导审批意见">
+                            <ExamineComment onChange={comment => {
+                                this.setState({
+                                    comment
+                                })
+                            }}></ExamineComment>
+                        </DataDetail>
+                    }
+                    {
+                        (main.userProfile.role === "LEADERSHIP" && status === "pendingExamine") &&
+                        <>
+                            <DataDetail header="部门领导审批意见">
+                                <ExamineComment comment={this.state.superviseData.departmentComment}></ExamineComment>
+                            </DataDetail>
+                            <DataDetail header="院领导审批意见">
+                                <ExamineComment onChange={comment => this.setState({
+                                    comment
+                                })}></ExamineComment>
+                            </DataDetail>
+                        </>
+                    }
+                    {
+                        (status === "examined") &&
+                        <>
+                            <DataDetail header="部门领导审批意见">
+                                <ExamineComment comment={this.state.superviseData.departmentComment}></ExamineComment>
+                            </DataDetail>
+                            <DataDetail header="院领导审批意见">
+                                <ExamineComment comment={this.state.superviseData.leaderComment}></ExamineComment>
+                            </DataDetail>
+                            {
+                                main.userProfile.role === "NORMAL_USER" &&
+                                <DataDetail header="最终处理反馈">
+                                    <ExamineComment
+                                        title="承办人反馈"
+                                        onChange={comment => this.setState({
+                                            comment
+                                        })}></ExamineComment>
+                                </DataDetail>
+                            }
+                        </>
+                    }
                     <div style={{
                         display: "flex",
                         alignItems: "center",
@@ -229,24 +257,90 @@ class CaseSuperviseDetail extends React.Component<ClueJudgeDetailProps> {
                     }}>
                         <div>
                             {
-
+                                status === "pendingProcess" && <>
+                                    <ColorButton bgColor="#FF9800" fontColor="#FFFFFF" onClick={() => { }}>分析报告</ColorButton>
+                                    <ColorButton bgColor="#4084F0" fontColor="#FFFFFF" onClick={() => {
+                                        if (_.isEmpty(this.state.comment)) {
+                                            message.warning("请填写承办人意见")
+                                            return
+                                        }
+                                        if (_.isNil(this.state.processedDate)) {
+                                            message.warning("请选择处理时间")
+                                            return
+                                        }
+                                        if (_.isEmpty(this.state.relatedUnit)) {
+                                            message.warning(`请填写${this.state.processInfoLabel}`)
+                                            return
+                                        }
+                                        confirm({
+                                            title: '操作确认',
+                                            icon: <ExclamationCircleOutlined translate="true" />,
+                                            content: '确认要提交吗？',
+                                            onOk: async () => {
+                                                await supervise.addSuperviseProcessData(superviseId, {
+                                                    relatedUnit: this.state.relatedUnit,
+                                                    comment: this.state.comment,
+                                                    processedDate: this.state.processedDate
+                                                })
+                                                message.success("提交成功！")
+                                                window.history.back();
+                                            },
+                                            onCancel() {
+                                                console.log('Cancel');
+                                            },
+                                        });
+                                    }}>提交</ColorButton>
+                                    <ColorButton bgColor="#FF3F11" fontColor="#FFFFFF" onClick={() => { }}>退回</ColorButton>
+                                </>
                             }
-                            <ColorButton bgColor="#FF9800" fontColor="#FFFFFF" onClick={() => { }}>分析报告</ColorButton>
-                            <ColorButton bgColor="#4084F0" fontColor="#FFFFFF" onClick={() => {
-                                if (_.isEmpty(this.state.comment)) {
-                                    message.warning("请填写承办人意见")
-                                    return
-                                }
-                                if (_.isNil(this.state.processedDate)) {
-                                    message.warning("请选择处理时间")
-                                    return
-                                }
-                                if (_.isEmpty(this.state.relatedUnit)) {
-                                    message.warning(`请填写${this.state.processInfoLabel}`)
-                                    return
-                                }
-                            }}>提交</ColorButton>
-                            <ColorButton bgColor="#FF3F11" fontColor="#FFFFFF" onClick={() => { }}>退回</ColorButton>
+                            {
+                                (status === "pendingExamine" && (main.userProfile.role === "DEPARTMENT_LEADER" || main.userProfile.role === "LEADERSHIP")) &&
+                                <ColorButton bgColor="#4084F0" fontColor="#FFFFFF" onClick={() => {
+                                    if (_.isEmpty(this.state.comment)) {
+                                        message.warning("请填写审批意见")
+                                        return
+                                    }
+                                    confirm({
+                                        title: '操作确认',
+                                        icon: <ExclamationCircleOutlined translate="true" />,
+                                        content: '确认要提交吗？',
+                                        onOk: async () => {
+                                            await supervise.addSuperviseProcessData(superviseId, {
+                                                comment: this.state.comment,
+                                            })
+                                            message.success("提交成功！")
+                                            window.history.back();
+                                        },
+                                        onCancel() {
+                                            console.log('Cancel');
+                                        },
+                                    });
+                                }}>提交</ColorButton>
+                            }
+                            {
+                                (status === "examined" && main.userProfile.role === "NORMAL_USER") &&
+                                <ColorButton bgColor="#4084F0" fontColor="#FFFFFF" onClick={() => {
+                                    if (_.isEmpty(this.state.comment)) {
+                                        message.warning("请填写承办人反馈")
+                                        return
+                                    }
+                                    confirm({
+                                        title: '操作确认',
+                                        icon: <ExclamationCircleOutlined translate="true" />,
+                                        content: '确认要提交吗？',
+                                        onOk: async () => {
+                                            await supervise.addSuperviseProcessData(superviseId, {
+                                                comment: this.state.comment,
+                                            })
+                                            message.success("提交成功！")
+                                            window.history.back();
+                                        },
+                                        onCancel() {
+                                            console.log('Cancel');
+                                        },
+                                    });
+                                }}>提交</ColorButton>
+                            }
                             <ColorButton bgColor="#FFFFFF" fontColor="#1E1E1E" onClick={() => window.history.back()}>取消</ColorButton>
                         </div>
                         <div style={{
@@ -270,5 +364,61 @@ class CaseSuperviseDetail extends React.Component<ClueJudgeDetailProps> {
         </div >
     }
 }
+
+const SuperviseProcessInfo = (props: {
+    readonly?: boolean;
+    superviseData: SuperviseData;
+    processInfoLabel: string,
+    onRelatedUnitChange: (val: string) => void;
+    onProcessedDateChange: (val: number | null) => void;
+    onCommentChange: (val: string) => void;
+}) =>
+    <div className="supervise-process-info">
+        <div className="supervise-process-row">
+            <div>{props.processInfoLabel}</div>
+            <div>
+                {
+                    props.readonly ? props.superviseData.relatedUnit :
+                        <Input style={{
+                            border: "none"
+                        }} onChange={e => props.onRelatedUnitChange(e.currentTarget.value)}></Input>
+                }
+            </div>
+            <div>处理时间</div>
+            <div>
+                {
+                    props.readonly ? formatTimeYMD(props.superviseData.relatedDate) :
+                        <DatePicker style={{
+                            border: "none",
+                            width: "100%"
+                        }} showTime={true} onChange={val => props.onProcessedDateChange(val ? val.valueOf() : null)}></DatePicker>
+                }
+            </div>
+        </div>
+        <div className="supervise-process-row">
+            <div>承办人意见</div>
+            <div>
+                {
+                    props.readonly ? props.superviseData.executorComment :
+                        <TextArea
+                            style={{
+                                height: "100px",
+                                border: "none"
+                            }}
+                            onChange={e => props.onCommentChange(e.currentTarget.value)}></TextArea>
+                }
+            </div>
+        </div>
+        {
+            props.readonly &&
+            <div className="supervise-process-report">
+                <div>分析报告</div>
+                <div>
+                    <ColorButton icon={<EyeFilled translate="true" />} bgColor="#FF9800" fontColor="#FFFFFF">预览</ColorButton>
+                    <ColorButton icon={<VerticalAlignBottomOutlined translate="true" />} bgColor="#64B78B" fontColor="#FFFFFF">下载</ColorButton>
+                </div>
+            </div>
+        }
+    </div>
 
 export default CaseSuperviseDetail;

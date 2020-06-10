@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { BoxContainer, BoxContainerInner } from "components/layout";
 import { TableList } from "components/table";
 import { TableSearch } from "./tableSearch";
-import { PendingProcessTableColumn, PendingExamineTableColumn, ExaminedTableColumn, PendingAppointTableColumn, PendingExamineForDepartmentLeaderTableColumn, PendingExamineForLeaderTableColumn } from "./tableConfig";
+import { PendingProcessTableColumn, PendingExamineTableColumn, ExaminedTableColumn, PendingAppointTableColumn, PendingExamineForDepartmentLeaderTableColumn, PendingExamineForLeaderTableColumn, AllTableColumn } from "./tableConfig";
 import SuperviseStore from "stores/superviseStore";
 import { inject, useObserver } from "mobx-react";
 import MainStore from "stores/mainStore";
@@ -54,7 +54,7 @@ export const InvestigationTabContent = inject("supervise", "main")((
                             case "pendingAppoint":
                                 return PendingAppointTableColumn(props.onAppointClick, props.onDetailClick)
                             default:
-                                return []
+                                return AllTableColumn(props.onDetailClick)
                         }
                     })()}
                     onChange={(page, pageSize) => { console.log(page) }}

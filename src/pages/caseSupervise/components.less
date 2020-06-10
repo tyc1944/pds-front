@@ -1,0 +1,25 @@
+.examine-comment {
+    max-width: 1373px;
+    display  : flex;
+    border   : 1px solid #D6DDE3;
+    height   : 72px;
+
+    textarea {
+        border: none;
+        height: 90%;
+    }
+
+    &>div:first-child {
+        border-right : 1px solid #D6DDE3;
+        text-align   : right;
+        width        : 143px;
+        padding-right: 13px;
+        height       : 72px;
+    }
+
+    &>div:last-child {
+        flex      : 1;
+        height    : 72px;
+        overflow-y: auto;
+    }
+}

@@ -12,6 +12,15 @@ export interface SuperviseData {
     receptionInformation: string;
     dataType: string;
     belongToUnit: string;
+    executorComment: string;
+    departmentComment: string;
+    leaderComment: string;
+}
+
+export interface SuperviseProcessInfo {
+    relatedUnit?: string;
+    processedDate?: number;
+    comment: string;
 }
 
 export interface SuperviseDataSearchModel {
@@ -91,6 +100,14 @@ export default class SuperviseStore {
 
     getSuperviseDataFiles(superviseId: string) {
         return axios.get(`/api/supervise/${superviseId}/files`)
+    }
+
+    async addSuperviseProcessData(superviseId: string, processInfo: SuperviseProcessInfo) {
+        await axios.post(`/api/supervise/${superviseId}/process`, processInfo)
+    }
+
+    async addSuperviseRejectData(superviseId: string, processInfo: SuperviseProcessInfo) {
+        await axios.post(`/api/supervise/${superviseId}/reject`, processInfo)
     }
 
 }

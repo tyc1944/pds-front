@@ -1,7 +1,23 @@
 import React from "react";
-import { DATA_STATUS_ACTION } from "common";
+import { DATA_STATUS_ACTION, CLUE_STATUS } from "common";
 import { formatTimeYMD } from "utils/TimeUtil";
 import { WarningOutlined } from "@ant-design/icons";
+import TextArea from "antd/lib/input/TextArea";
+import "./components.less";
+
+export const ExamineComment = (props: {
+    onChange?: (val: string) => void,
+    comment?: string;
+    title?: string;
+}) =>
+    <div className="examine-comment">
+        <div>{props.title ? props.title : '审批意见'}</div>
+        <div>
+            {
+                props.comment ? props.comment : <TextArea onChange={e => props.onChange && props.onChange(e.currentTarget.value)}></TextArea>
+            }
+        </div>
+    </div>
 
 export const CaseStatus = (props: {
     status: string
@@ -59,6 +75,15 @@ export const ExaminedTempTableColum = [
     },
 ]
 
+export const AllTempTableColum = [
+    {
+      title: "案件状态",
+      dataIndex: "status",
+      key: "status",
+      render: (val: string) => <CaseStatus status={CLUE_STATUS[val]}></CaseStatus>
+    },
+]
+
 export const PendingExamineTempTableColum = [
     {
         title: "承办人意见",
@@ -67,8 +92,9 @@ export const PendingExamineTempTableColum = [
     },
     {
         title: "待审批程序",
-        dataIndex: "examineStep",
-        key: "examineStep",
+        dataIndex: "flowType",
+        key: "flowType",
+        render: (val: string) => val === "STEP_3" ? '部门领导' : '院领导'
     },
 ]
 
@@ -98,13 +124,13 @@ export const PendingExamineForLeaderTempTableColum = [
     },
     {
         title: "部门领导",
-        dataIndex: "departmentLeader",
-        key: "departmentLeader",
+        dataIndex: "departmentExamineName",
+        key: "departmentExamineName",
     },
     {
         title: "部门领导审批日期",
-        dataIndex: "departmentLeaderExamineTime",
-        key: "departmentLeaderExamineTime",
+        dataIndex: "departmentExamineTime",
+        key: "departmentExamineTime",
         render: (val: number) => formatTimeYMD(val)
     },
 ]
