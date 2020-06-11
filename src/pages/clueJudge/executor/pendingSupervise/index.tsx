@@ -4,7 +4,6 @@ import { BoxContainer, BoxContainerInner } from "components/layout";
 import { TableSearch } from "./tableSearch";
 import { TableColumn } from "./tableConfig";
 import { TableList } from "components/table";
-import { ColorButton } from "components/buttons";
 import { inject, observer } from "mobx-react";
 import ClueStore, { ClueDataSearchModel } from "stores/clueStore";
 import { fillObjectFromOpsValue } from "components/table/tableListOpsComponents";
@@ -54,7 +53,6 @@ class ExecutorPendingSuperviseClueJudge extends React.Component<ClueJudgeProps> 
                 <BoxContainerInner flex={0.5}>
                     <TableSearch onSearch={changed => {
                         clue.searchModel = fillObjectFromOpsValue({}, changed) as ClueDataSearchModel
-                        clue.searchModel.page = 1;
                         this.getClueDataList();
                     }}></TableSearch>
                 </BoxContainerInner>
@@ -63,9 +61,10 @@ class ExecutorPendingSuperviseClueJudge extends React.Component<ClueJudgeProps> 
                         title="线索列表"
                         total={this.state.clueDataTotalCount}
                         data={this.state.clueDataList}
-                        columns={TableColumn(this.onDetailClick )}
+                        columns={TableColumn(this.onDetailClick)}
                         onChange={(page, pageSize) => {
                             clue.searchModel.page = page;
+                            clue.searchModel.pageSize = pageSize;
                             this.getClueDataList();
                         }}
                     />

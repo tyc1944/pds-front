@@ -98,7 +98,6 @@ class DepartmentLeaderPendingAppointClueJudge extends React.Component<ClueJudgeP
                 <BoxContainerInner flex={0.5}>
                     <TableSearch onSearch={changed => {
                         clue.searchModel = fillObjectFromOpsValue({}, changed) as ClueDataSearchModel
-                        clue.searchModel.page = 1;
                         this.getClueDataList();
                     }}></TableSearch>
                 </BoxContainerInner>
@@ -110,6 +109,7 @@ class DepartmentLeaderPendingAppointClueJudge extends React.Component<ClueJudgeP
                         columns={TableColumn(this.onDetailClick, this.onAppointClick)}
                         onChange={(page, pageSize) => {
                             clue.searchModel.page = page;
+                            clue.searchModel.pageSize = pageSize;
                             this.getClueDataList();
                         }}
                     />

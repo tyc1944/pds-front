@@ -15,7 +15,7 @@ export interface TableListProps {
   pageSize?: number;
   total?: number;
   showHeader?: boolean;
-  onChange?: (page: number, pageSize?: number) => void;
+  onChange?: (page: number, pageSize: number) => void;
   scroll?: any;
   pages?: number;
   activeKey?: string; //可以通过该字段自动重置分页页数

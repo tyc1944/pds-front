@@ -5,15 +5,18 @@ import _ from "lodash";
 import { CASE_CATEGORY, CLUE_SOURCE, DATA_STATUS_ACTION } from "common";
 
 export interface ClueDataSearchModel {
-  page: number;
-  pageSize: number;
+  page?: number;
+  pageSize?: number;
   reportDateStart?: string;
   reportDateEnd?: string;
   caseCategory?: string;
   clueSource?: string;
   caseSource?: string;
+  rate?: string | number;
+  flowType?: string;
   status?: string;
   keyword?: string;
+  clueStatus?: string;
 }
 
 export interface CaseData {
@@ -152,6 +155,35 @@ export default class ClueStore {
             tmpSearchModel.caseSource = key;
             break;
           }
+        }
+      }
+    }
+    if (tmpSearchModel.rate) {
+      if (tmpSearchModel.rate === "不限") {
+        delete tmpSearchModel.rate;
+      } else {
+        tmpSearchModel.rate = parseInt((tmpSearchModel.rate as string).replace("级", ""))
+      }
+    }
+    if (tmpSearchModel.flowType) {
+      if (tmpSearchModel.flowType === "不限") {
+        delete tmpSearchModel.flowType;
+      } else {
+        if (tmpSearchModel.flowType === "部门领导") {
+          tmpSearchModel.flowType = "STEP_3"
+        } else if (tmpSearchModel.flowType === "院领导") {
+          tmpSearchModel.flowType = "STEP_4"
+        }
+      }
+    }
+    if (tmpSearchModel) {
+      if (tmpSearchModel.flowType === "不限") {
+        delete tmpSearchModel.flowType;
+      } else {
+        if (tmpSearchModel.flowType === "部门领导") {
+          tmpSearchModel.flowType = "STEP_3"
+        } else if (tmpSearchModel.flowType === "院领导") {
+          tmpSearchModel.flowType = "STEP_4"
         }
       }
     }

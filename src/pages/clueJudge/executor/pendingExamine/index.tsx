@@ -54,7 +54,6 @@ class ExecutorClueJudgePendingExamine extends React.Component<ClueJudgeProps> {
                 <BoxContainerInner flex={0.5}>
                     <TableSearch onSearch={changed => {
                         clue.searchModel = fillObjectFromOpsValue({}, changed) as ClueDataSearchModel
-                        clue.searchModel.page = 1;
                         this.getClueDataList();
                     }}></TableSearch>
                 </BoxContainerInner>
@@ -66,6 +65,7 @@ class ExecutorClueJudgePendingExamine extends React.Component<ClueJudgeProps> {
                         columns={TableColumn(this.onDetailClick)}
                         onChange={(page, pageSize) => {
                             clue.searchModel.page = page;
+                            clue.searchModel.pageSize = pageSize;
                             this.getClueDataList();
                         }}
                     />
