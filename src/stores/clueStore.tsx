@@ -176,15 +176,9 @@ export default class ClueStore {
         }
       }
     }
-    if (tmpSearchModel) {
-      if (tmpSearchModel.flowType === "不限") {
-        delete tmpSearchModel.flowType;
-      } else {
-        if (tmpSearchModel.flowType === "部门领导") {
-          tmpSearchModel.flowType = "STEP_3"
-        } else if (tmpSearchModel.flowType === "院领导") {
-          tmpSearchModel.flowType = "STEP_4"
-        }
+    if (tmpSearchModel.clueStatus) {
+      if (tmpSearchModel.clueStatus === "不限") {
+        delete tmpSearchModel.clueStatus;
       }
     }
     return tmpSearchModel
