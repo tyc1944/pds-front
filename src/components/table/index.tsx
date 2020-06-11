@@ -17,6 +17,7 @@ export interface TableListProps {
   showHeader?: boolean;
   onChange?: (page: number, pageSize?: number) => void;
   scroll?: any;
+  pages?: number;
   activeKey?: string; //可以通过该字段自动重置分页页数
 }
 
@@ -53,6 +54,7 @@ export const TableList = ({
   data = [],
   tableSearchOps,
   total = 0,
+  pages = 0,
   onChange,
   scroll,
   activeKey = "1",
@@ -86,25 +88,35 @@ export const TableList = ({
       <div className="tablelist-pagination">
         <div>共{total}条</div>
         <div>每页
-          <Select defaultValue={pageSize} onChange={val => setPageSize(val)}>
+          <Select defaultValue={pageSize} onChange={val => {
+            setPageSize(val)
+            setCurrentPage(1)
+            onChange && onChange(currentPage, pageSize)
+          }}>
             <Option value={10}>10</Option>
             <Option value={20}>20</Option>
             <Option value={30}>30</Option>
           </Select>
         </div>
         <div>
-          <LeftOutlined translate="true" onClick={() => {
+          <LeftOutlined className={currentPage <= 1 ? 'disabled' : ''} translate="true" onClick={() => {
+            if (currentPage <= 1) {
+              return
+            }
             setCurrentPage(currentPage - 1)
             onChange && onChange(currentPage - 1, pageSize)
           }} />
           <span>{currentPage}</span>
-          <RightOutlined translate="true" onClick={() => {
+          <RightOutlined className={currentPage >= pages ? 'disabled' : ''} translate="true" onClick={() => {
+            if (currentPage >= pages) {
+              return
+            }
             setCurrentPage(currentPage + 1)
             onChange && onChange(currentPage + 1, pageSize)
           }} />
         </div>
         <div>
-          前往<InputNumber step={1} min={1} style={{ width: '68px' }} onPressEnter={e => {
+          前往<InputNumber step={1} min={1} max={pages} style={{ width: '68px' }} onPressEnter={e => {
             let tmp = parseInt(e.currentTarget.value);
             setCurrentPage(tmp)
             onChange && onChange(tmp, pageSize)

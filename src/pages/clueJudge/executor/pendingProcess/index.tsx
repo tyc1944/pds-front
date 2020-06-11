@@ -25,6 +25,7 @@ class ExecutorClueJudge extends React.Component<ClueJudgeProps> {
         breadscrumData: [],
         clueDataList: [],
         clueDataTotalCount: 0,
+        clueDataTotalPages: 0,
         showCreateSelfFoundClueModal: false,
         showReturnClueModal: false
     }
@@ -37,7 +38,8 @@ class ExecutorClueJudge extends React.Component<ClueJudgeProps> {
         this.props.clue.getClueDataList("pendingProcess").then(res => {
             this.setState({
                 clueDataList: res.data.records,
-                clueDataTotalCount: res.data.total
+                clueDataTotalCount: res.data.total,
+                clueDataTotalPages: res.data.pages
             })
         })
     }
@@ -112,6 +114,7 @@ class ExecutorClueJudge extends React.Component<ClueJudgeProps> {
                     <TableSearch onSearch={changed => {
                         clue.searchModel = fillObjectFromOpsValue({}, changed) as ClueDataSearchModel
                         clue.searchModel.page = 1;
+                        clue.searchModel.pageSize = 20;
                         this.getClueDataList();
                     }}></TableSearch>
                 </BoxContainerInner>
@@ -119,6 +122,7 @@ class ExecutorClueJudge extends React.Component<ClueJudgeProps> {
                     <TableList
                         title="线索列表"
                         total={this.state.clueDataTotalCount}
+                        pages={this.state.clueDataTotalPages}
                         tableSearchOps={<ColorButton bgColor="#4084F0" onClick={this.onSelfFoundClick}>+自行发现</ColorButton>}
                         data={this.state.clueDataList}
                         columns={TableColumn(this.onDetailClick, this.onReturnClick)}

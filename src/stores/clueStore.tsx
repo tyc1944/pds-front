@@ -1,16 +1,19 @@
 import { observable, action } from "mobx";
 import { axios } from "../utils/RequestUtil";
 import { ProcessStep } from "components/dataDetail";
+import _ from "lodash";
+import { CASE_CATEGORY, CLUE_SOURCE, DATA_STATUS_ACTION } from "common";
 
 export interface ClueDataSearchModel {
   page: number;
   pageSize: number;
-  reportDateStart: string;
-  reportDateEnd: string;
-  caseCategory: string;
-  clueSource: string;
-  caseSource: string;
+  reportDateStart?: string;
+  reportDateEnd?: string;
+  caseCategory?: string;
+  clueSource?: string;
+  caseSource?: string;
   status?: string;
+  keyword?: string;
 }
 
 export interface CaseData {
@@ -109,12 +112,58 @@ export default class ClueStore {
     }]
   }
 
+  private preprocessSearchModal(searchModel: ClueDataSearchModel) {
+    let tmpSearchModel = _.clone(searchModel)
+    if (tmpSearchModel.caseCategory) {
+      if (tmpSearchModel.caseCategory === "不限") {
+        delete tmpSearchModel.caseCategory;
+      } else {
+        for (let key in CASE_CATEGORY) {
+          if (CASE_CATEGORY[key] === tmpSearchModel.caseCategory) {
+            tmpSearchModel.caseCategory = key;
+            break;
+          }
+        }
+      }
+    }
+    if (tmpSearchModel.clueSource) {
+      if (tmpSearchModel.clueSource === "不限") {
+        delete tmpSearchModel.clueSource;
+      } else {
+        let tmp = tmpSearchModel.clueSource.split(",")
+        let res = []
+        for (let i in tmp) {
+          for (let key in CLUE_SOURCE) {
+            if (CLUE_SOURCE[key] === tmp[i]) {
+              res.push(key)
+              break;
+            }
+          }
+        }
+        tmpSearchModel.clueSource = res.join(",")
+      }
+    }
+    if (tmpSearchModel.caseSource) {
+      if (tmpSearchModel.caseSource === "不限") {
+        delete tmpSearchModel.caseSource;
+      } else {
+        for (let key in DATA_STATUS_ACTION) {
+          if (DATA_STATUS_ACTION[key] === tmpSearchModel.caseSource) {
+            tmpSearchModel.caseSource = key;
+            break;
+          }
+        }
+      }
+    }
+    return tmpSearchModel
+  }
+
   async getClueStatusCount() {
     return await axios.get('/api/clue/count')
   }
 
   getClueDataList(status?: string) {
-    let params = this.searchModel
+    let params = this.preprocessSearchModal(this.searchModel)
     if (status && status !== "all") {
       params.status = status;
     }
