@@ -7,7 +7,7 @@ import "./index.less";
 const { Option } = Select;
 
 export interface TableListProps {
-  title: string;
+  title: string | React.ReactNode;
   columns: Array<ColumnProps<any>>;
   data?: any[];
   tableSearchOps?: React.ReactNode;
@@ -22,7 +22,7 @@ export interface TableListProps {
 }
 
 export const TitlePanel = (props: {
-  title: string;
+  title: string | React.ReactNode;
   children?: React.ReactNode;
 }) => (
     <div
