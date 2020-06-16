@@ -4,7 +4,7 @@
 replicaCount: 1
 
 image:
-  repository: registry.yunmotec.com:1443/pds-server
+  repository: registry.yunmotec.com:1443/pds-front
   pullPolicy: Always
 
 nameOverride: "qa"

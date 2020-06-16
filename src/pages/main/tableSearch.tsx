@@ -21,23 +21,28 @@ export const CluePendingProcessSearch = inject("main")((props: {
             }}
             initData={changed}
         >
-            <div>
-                <SingleSelector
-                    title="案件线索"
-                    selectItems={(() => {
-                        let tmp = [{
-                            title: '请选择',
-                            value: ''
-                        }]
-                        for (let k in CLUE_SOURCE) {
-                            tmp.push({
-                                title: CLUE_SOURCE[k],
-                                value: k
-                            })
-                        }
-                        return tmp;
-                    })()}></SingleSelector>
-            </div>
+            {
+                props.main!.userProfile.role !== 'LEADERSHIP' &&
+                <>
+                    <div>
+                        <SingleSelector
+                            title="案件来源"
+                            selectItems={(() => {
+                                let tmp = [{
+                                    title: '请选择',
+                                    value: ''
+                                }]
+                                for (let k in CLUE_SOURCE) {
+                                    tmp.push({
+                                        title: CLUE_SOURCE[k],
+                                        value: k
+                                    })
+                                }
+                                return tmp;
+                            })()}></SingleSelector>
+                    </div>
+                </>
+            }
             <div>
                 <InputWithoutIcon name="keyword" placeholder="输入关键词进行搜索" />
             </div>

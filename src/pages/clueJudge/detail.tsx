@@ -16,6 +16,7 @@ import { ExamineComment } from "./components";
 import { ClueRateInfo } from "./clueRate";
 import { message, Modal } from "antd";
 import _ from "lodash";
+import { AnalysisReport } from "components/modal";
 const { confirm } = Modal;
 
 interface MatchParams {
@@ -41,6 +42,7 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
         clueData: {} as ClueData,
         comment: "",
         showFinishJudgeModal: false,
+        showAnalysisReportModal: false,
     }
 
     componentDidMount() {
@@ -123,6 +125,23 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
             height: "100%",
             flexDirection: 'column'
         }}>
+            {
+                this.state.showAnalysisReportModal &&
+                <AnalysisReport
+                    onDownloadClick={() => {
+                        let a = document.createElement("a")
+                        a.download = `分析报告.docx`
+                        a.href = `/files/clueReport/${clueData.id}/clueReport_${clueData.id}.docx`
+                        a.click()
+                    }}
+                    onAnalysisBtnClick={uploadFile => { }}
+                    url={`/files/clueReport/${clueData.id}/clueReport_${clueData.id}.pdf`}
+                    visiable={this.state.showAnalysisReportModal}
+                    onCancel={() => this.setState({
+                        showAnalysisReportModal: false
+                    })}
+                ></AnalysisReport>
+            }
             {
                 this.state.showAddressModal && <AddressMapModal title="案发地址"
                     onCancel={() => this.setState({
@@ -237,7 +256,9 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
                         <div>
                             {
                                 clueData.status === "pendingProcess" && <>
-                                    <ColorButton bgColor="#FF9800" fontColor="#FFFFFF">分析报告</ColorButton>
+                                    <ColorButton bgColor="#FF9800" fontColor="#FFFFFF" onClick={() => this.setState({
+                                        showAnalysisReportModal: true
+                                    })}>分析报告</ColorButton>
                                     <ColorButton bgColor="#4084F0" fontColor="#FFFFFF" onClick={() => {
                                         const { params } = this.props.match
                                         window.location.href = `/index/clue/executor/judge/pendingProcess/${params.clueId}/submit`
