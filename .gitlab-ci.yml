@@ -35,13 +35,3 @@ deploy qa:
   script:
     - mkdir .kube  && echo $kuber_config | base64 -d > .kube/config && export KUBECONFIG=$(pwd)/.kube/config
     - cd ci/helm && helm upgrade -f values-qa.yaml --set image.tag=$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA --install --namespace procuratorrate  pds-front-qa .
-
-deploy prod:
-  stage: deploy
-  image: registry.yunmotec.com:1443/ansible-xtcx:0.0.3
-  only:
-    - /^Release-.*$/
-  except:
-    - branches
-  script:
-    - ansible-playbook -i ci/playbook/hosts ci/playbook/deploy.yml --extra-vars "CI_PROJECT_NAME=pbd-server CI_COMMIT_REF_NAME=$CI_COMMIT_REF_NAME CI_COMMIT_SHORT_SHA=$CI_COMMIT_SHORT_SHA"

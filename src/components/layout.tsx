@@ -9,6 +9,8 @@ interface BoxContainerInnerProps {
   children: React.ReactNode;
   flex?: number
   noPadding?: boolean
+  noBorder?: boolean
+  minHeight?: string
 }
 
 export class BoxContainer extends React.Component<BoxContainerProps> {
@@ -41,10 +43,11 @@ export class BoxContainerInner extends React.Component<BoxContainerInnerProps> {
           width: "100%",
           height: "auto",
           display: "flex",
+          minHeight: this.props.minHeight ? this.props.minHeight : 'auto',
           flexDirection: "column",
           backgroundColor: "#FFFFFF",
           marginBottom: "15px",
-          border: "1px solid #D6DDE3",
+          border: this.props.noBorder ? 'none' : "1px solid #D6DDE3",
           flex: this.props.flex ? this.props.flex : 'auto'
         }}
       >
