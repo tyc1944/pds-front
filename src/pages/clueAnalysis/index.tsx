@@ -14,16 +14,26 @@ import "./index.less"
 import { RiseOutlined, FallOutlined } from "@ant-design/icons";
 
 const data = [
-    { year: '2019-01', count: 30, type: "线索量" },
-    { year: '2019-01', count: 20, type: "案件量" },
-    { year: '2019-02', count: 30, type: "线索量" },
-    { year: '2019-02', count: 20, type: "案件量" },
-    { year: '2019-03', count: 30, type: "线索量" },
-    { year: '2019-03', count: 20, type: "案件量" },
-    { year: '2019-04', count: 30, type: "线索量" },
-    { year: '2019-04', count: 20, type: "案件量" },
-    { year: '2019-05', count: 30, type: "线索量" },
-    { year: '2019-05', count: 20, type: "案件量" },
+    { year: '网上报案', count: 30, type: "线索量" },
+    { year: '网上报案', count: 20, type: "案件量" },
+    { year: '舆情线索', count: 30, type: "线索量" },
+    { year: '舆情线索', count: 20, type: "案件量" },
+    { year: '公安线索', count: 30, type: "线索量" },
+    { year: '公安线索', count: 20, type: "案件量" },
+    { year: '法院线索', count: 30, type: "线索量" },
+    { year: '法院线索', count: 20, type: "案件量" },
+    { year: '行政线索', count: 30, type: "线索量" },
+    { year: '行政线索', count: 20, type: "案件量" },
+    { year: '网格化线索', count: 30, type: "线索量" },
+    { year: '网格化线索', count: 20, type: "案件量" },
+    { year: '自行发现', count: 30, type: "线索量" },
+    { year: '自行发现', count: 20, type: "案件量" },
+    { year: '12345', count: 30, type: "线索量" },
+    { year: '12345', count: 20, type: "案件量" },
+    { year: '政风热线', count: 30, type: "线索量" },
+    { year: '政风热线', count: 20, type: "案件量" },
+    { year: '12315', count: 30, type: "线索量" },
+    { year: '12315', count: 20, type: "案件量" },
 ];
 
 
