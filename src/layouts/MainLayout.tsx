@@ -16,7 +16,6 @@ import {
 } from "@ant-design/icons";
 import { TOKEN_KEY } from "utils/RequestUtil";
 import { MenuItem } from "components/menu";
-import DataAnalysis from "pages/dataAnalysis";
 import DataRetrieval from "pages/dataRetrieval";
 import Setting from "pages/setting";
 import ModifyPassword from "pages/setting/modifyPassword";
@@ -35,6 +34,9 @@ import ExecutorPendingSuperviseClueJudge from "pages/clueJudge/executor/pendingS
 import SuperviseStore from "stores/superviseStore";
 import CaseSuperviseDetail from "pages/caseSupervise/detail";
 import CaseSupervise from "pages/caseSupervise";
+import NationwideDataAnalysis from "pages/dataAnalysis/nationwide";
+import CitywideDataAnalysis from "pages/dataAnalysis/citywide";
+import DistrictDataAnalysis from "pages/dataAnalysis/district";
 
 const { Header, Sider, Content } = Layout;
 
@@ -159,7 +161,6 @@ class MainLayout extends Component<MainLayoutProps, object> {
                     },
                     {
                       name: "全部线索",
-                      count: 0,
                       activeUrl: "/index/clue/all/judge/all",
                     }]
                 case "DEPARTMENT_LEADER":
@@ -174,7 +175,6 @@ class MainLayout extends Component<MainLayoutProps, object> {
                       activeUrl: "/index/clue/departmentLeader/judge/pendingExamine",
                     }, {
                       name: "全部线索",
-                      count: 0,
                       activeUrl: "/index/clue/all/judge/all",
                     }]
                 case "LEADERSHIP":
@@ -185,7 +185,6 @@ class MainLayout extends Component<MainLayoutProps, object> {
                       activeUrl: "/index/clue/leader/judge/pendingExamine",
                     }, {
                       name: "全部线索",
-                      count: 0,
                       activeUrl: "/index/clue/all/judge/all",
                     }]
               }
@@ -223,7 +222,6 @@ class MainLayout extends Component<MainLayoutProps, object> {
                     },
                     {
                       name: "全部案件",
-                      count: 0,
                       activeUrl: "/index/supervise/all/all",
                     }]
                 case "DEPARTMENT_LEADER":
@@ -238,7 +236,6 @@ class MainLayout extends Component<MainLayoutProps, object> {
                       activeUrl: "/index/supervise/departmentleader/pendingExamine",
                     }, {
                       name: "全部案件",
-                      count: 0,
                       activeUrl: "/index/supervise/all/all",
                     }]
                 case "LEADERSHIP":
@@ -249,7 +246,6 @@ class MainLayout extends Component<MainLayoutProps, object> {
                       activeUrl: "/index/supervise/leader/pendingExamine",
                     }, {
                       name: "全部案件",
-                      count: 0,
                       activeUrl: "/index/supervise/all/all",
                     }]
               }
@@ -258,60 +254,48 @@ class MainLayout extends Component<MainLayoutProps, object> {
 
             <MenuItem name="决策辅助" icon={<AreaChartOutlined translate="true" />} subItems={[{
               name: "全国案例数据分析",
-              count: 12,
               activeUrl: "/index/data/analysis/national",
             },
             {
               name: "全市案件数据分析",
-              count: 0,
               activeUrl: "/index/data/analysis/city"
             }, {
               name: "本区案件数据分析",
-              count: 0,
               activeUrl: "/index/data/analysis/district",
             }]} />
             <MenuItem name="资料检索" icon={<FileSearchOutlined translate="true" />} subItems={[{
               name: "法律法规",
-              count: 12,
               activeUrl: "/index/data/retrieval/laws",
             },
             {
               name: "典型案例",
-              count: 0,
               activeUrl: '/index/data/retrieval/specialCases',
             }, {
               name: "全国案例",
-              count: 0,
               activeUrl: "/index/data/retrieval/nationalCases",
             }, {
               name: "无锡案例",
-              count: 0,
               activeUrl: "/index/data/retrieval/wuxiCases"
             }]} />
             <MenuItem name="知产宣传" icon={<NotificationOutlined translate="true" />} subItems={[{
               name: "决策参考",
-              count: 0,
               activeUrl: "/index/data/retrieval/wuxiCases"
             }, {
               name: "知产新闻",
-              count: 0,
               activeUrl: '/index/data/retrieval/wuxiCases'
             }]} />
             <MenuItem name="系统设置" icon={<SettingOutlined translate="true" />} subItems={async () => {
               if (main.userProfile.role === "ADMIN" || main.userProfile.role === "MANAGER") {
                 return [{
                   name: "账户管理",
-                  count: 0,
                   activeUrl: "/index/setting/account"
                 }, {
                   name: "修改密码",
-                  count: 0,
                   activeUrl: "/index/setting/password"
                 }]
               } else {
                 return [{
                   name: "修改密码",
-                  count: 0,
                   activeUrl: "/index/setting/password"
                 }]
               }
@@ -351,7 +335,10 @@ class MainLayout extends Component<MainLayoutProps, object> {
               <Route path="/index/supervise/all/all" exact component={CaseSupervise} />
               <Route path="/index/supervise/all/all/:superviseId" exact component={CaseSuperviseDetail} />
 
-              <Route path="/index/data/analysis" exact component={DataAnalysis} />
+              <Route path="/index/data/analysis/national" exact component={NationwideDataAnalysis} />
+              <Route path="/index/data/analysis/city" exact component={CitywideDataAnalysis} />
+              <Route path="/index/data/analysis/district" exact component={DistrictDataAnalysis} />
+
               <Route path="/index/data/retrieval" exact component={DataRetrieval} />
               <Route path="/index/setting/account" exact component={Setting} />
               <Route path="/index/setting/password" exact component={ModifyPassword} />

@@ -131,11 +131,11 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
                     onDownloadClick={() => {
                         let a = document.createElement("a")
                         a.download = `分析报告.docx`
-                        a.href = `/files/clueReport/${clueData.id}/clueReport_${clueData.id}.docx`
+                        a.href = `/file/clueReport/${clueData.id}/clueReport_${clueData.id}.docx`
                         a.click()
                     }}
                     onAnalysisBtnClick={uploadFile => { }}
-                    url={`/files/clueReport/${clueData.id}/clueReport_${clueData.id}.pdf`}
+                    url={`/file/clueReport/${clueData.id}/clueReport_${clueData.id}.pdf`}
                     visiable={this.state.showAnalysisReportModal}
                     onCancel={() => this.setState({
                         showAnalysisReportModal: false

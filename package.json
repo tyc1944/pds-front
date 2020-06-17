@@ -3,9 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ant-design/charts": "^0.9.5",
     "@ant-design/icons": "^4.1.0",
     "@antv/g2": "^4.0.9",
     "@antv/g2plot": "^1.1.6",
+    "@antv/l7": "^2.2.14",
+    "@antv/l7-maps": "^2.2.14",
     "@tinymce/tinymce-react": "^3.6.0",
     "@types/lodash": "^4.14.151",
     "@types/node": "12.11.7",

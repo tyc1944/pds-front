@@ -4,7 +4,7 @@ import { RightOutlined, DownOutlined } from "@ant-design/icons";
 
 interface SubItem {
     name: string;
-    count: number;
+    count?: number;
     activeUrl: string;
     onClick?: () => void;
 }
