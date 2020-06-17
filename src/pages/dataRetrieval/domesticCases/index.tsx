@@ -1,15 +1,17 @@
 import React from "react";
 import Breadscrum from "components/breadscrum";
-import { BoxContainer, BoxContainerInner } from "components/layout";
+import {BoxContainer, BoxContainerInner} from "components/layout";
 
-class Wiki extends React.Component {
+class DomesticCasesDataRetrieval extends React.Component {
+
+
     render() {
         return <div style={{
             display: "flex",
             height: "100%",
             flexDirection: 'column'
         }}>
-            <Breadscrum data={["知识宣传"]}></Breadscrum>
+            <Breadscrum data={["资料检索"]}></Breadscrum>
             <BoxContainer>
                 <BoxContainerInner flex={0.6}>
 
@@ -22,4 +24,4 @@ class Wiki extends React.Component {
     }
 }
 
-export default Wiki;
+export default DomesticCasesDataRetrieval;

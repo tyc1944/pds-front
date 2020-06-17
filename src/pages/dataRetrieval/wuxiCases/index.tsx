@@ -1,8 +1,10 @@
 import React from "react";
 import Breadscrum from "components/breadscrum";
-import { BoxContainer, BoxContainerInner } from "components/layout";
+import {BoxContainer, BoxContainerInner} from "components/layout";
 
-class DataRetrieval extends React.Component {
+class WuxiCasesDataRetrieval extends React.Component {
+
+
     render() {
         return <div style={{
             display: "flex",
@@ -22,4 +24,4 @@ class DataRetrieval extends React.Component {
     }
 }
 
-export default DataRetrieval;
+export default WuxiCasesDataRetrieval;
