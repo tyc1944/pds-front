@@ -36,11 +36,12 @@ class CaseSupervise extends React.Component<CaseSuperviseProps> {
     }
 
     onDetailClick = (caseId: number) => {
+        const { history } = this.props;
         const { status, role } = this.props.match.params;
         if (role && status) {
-            window.location.href = `/index/supervise/${role}/${status}/${caseId}`
+            history.push(`/index/supervise/${role}/${status}/${caseId}`)
         } else {
-            window.location.href = `/index/supervise/all/all/${caseId}`
+            history.push(`/index/supervise/all/all/${caseId}`)
         }
     }
 

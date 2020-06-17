@@ -118,7 +118,7 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
 
 
     render() {
-        const { clue, main } = this.props;
+        const { clue, main, history } = this.props;
         const { clueData } = this.state;
         return <div style={{
             display: "flex",
@@ -168,7 +168,7 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
                             showFinishJudgeModal: true
                         }, () => {
                             message.success("研判完成！")
-                            window.history.back();
+                            history.goBack();
                         })
                     }}
                 ></FinishJudgeModal>
@@ -261,7 +261,7 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
                                     })}>分析报告</ColorButton>
                                     <ColorButton bgColor="#4084F0" fontColor="#FFFFFF" onClick={() => {
                                         const { params } = this.props.match
-                                        window.location.href = `/index/clue/executor/judge/pendingProcess/${params.clueId}/submit`
+                                        history.push(`/index/clue/executor/judge/pendingProcess/${params.clueId}/submit`)
                                     }
                                     }>处理</ColorButton>
                                     {
@@ -299,7 +299,7 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
                                                         })
                                                 }
                                                 message.success("提交成功！")
-                                                window.history.back()
+                                                history.goBack()
                                             },
                                             onCancel() {
                                                 console.log('Cancel');
@@ -333,7 +333,7 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
                                                         })
                                                 }
                                                 message.success("驳回成功！")
-                                                window.history.back()
+                                                history.goBack()
                                             },
                                             onCancel() {
                                                 console.log('Cancel');
@@ -359,7 +359,7 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
                                             onOk: async () => {
                                                 await clue.addClueDataSuperviseInfo(parseInt(this.props.match.params.clueId));
                                                 message.success("转案件监督成功！")
-                                                window.history.back();
+                                                history.goBack();
                                             },
                                             onCancel() {
                                                 console.log('Cancel');
@@ -368,7 +368,7 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
                                     }}>转案件监督</ColorButton>
                                 </>
                             }
-                            <ColorButton bgColor="#FFFFFF" fontColor="#1E1E1E" onClick={() => window.history.back()}>取消</ColorButton>
+                            <ColorButton bgColor="#FFFFFF" fontColor="#1E1E1E" onClick={() => history.goBack()}>取消</ColorButton>
                         </div>
                         <div style={{
                             flex: 1,

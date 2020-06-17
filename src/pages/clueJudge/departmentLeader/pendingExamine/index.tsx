@@ -4,12 +4,12 @@ import { BoxContainer, BoxContainerInner } from "components/layout";
 import { TableSearch } from "./tableSearch";
 import { TableColumn } from "./tableConfig";
 import { TableList } from "components/table";
-import { ColorButton } from "components/buttons";
 import { inject, observer } from "mobx-react";
 import ClueStore, { ClueDataSearchModel } from "stores/clueStore";
 import { fillObjectFromOpsValue } from "components/table/tableListOpsComponents";
+import { RouteComponentProps } from "react-router-dom";
 
-interface ClueJudgeProps {
+interface ClueJudgeProps extends RouteComponentProps {
     clue: ClueStore
 }
 
@@ -38,7 +38,7 @@ class DepartmentLeaderPendingExamineClueJudge extends React.Component<ClueJudgeP
     }
 
     onDetailClick = (clueId: number) => {
-        window.location.href = `/index/clue/departmentLeader/judge/pendingExamine/${clueId}`
+        this.props.history.push(`/index/clue/departmentLeader/judge/pendingExamine/${clueId}`)
     }
 
     onReturnClick = (clueId: number) => {

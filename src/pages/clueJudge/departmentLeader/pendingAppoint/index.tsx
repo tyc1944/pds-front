@@ -9,8 +9,9 @@ import ClueStore, { ClueDataSearchModel, ClueData } from "stores/clueStore";
 import { fillObjectFromOpsValue } from "components/table/tableListOpsComponents";
 import { AssignClueModal } from "pages/clueJudge/modals";
 import { message } from "antd";
+import { RouteComponentProps } from "react-router-dom";
 
-interface ClueJudgeProps {
+interface ClueJudgeProps extends RouteComponentProps {
     clue: ClueStore
 }
 
@@ -41,7 +42,7 @@ class DepartmentLeaderPendingAppointClueJudge extends React.Component<ClueJudgeP
     }
 
     onDetailClick = (clueId: number) => {
-        window.location.href = `/index/clue/departmentLeader/judge/pendingAppoint/${clueId}`
+        this.props.history.push(`/index/clue/departmentLeader/judge/pendingAppoint/${clueId}`)
     }
 
     onAppointClick = (clueData: ClueData) => {

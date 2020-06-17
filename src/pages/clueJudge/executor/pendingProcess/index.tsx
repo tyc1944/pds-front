@@ -11,8 +11,9 @@ import { fillObjectFromOpsValue } from "components/table/tableListOpsComponents"
 import { CreateSelfFoundClue, ReturnClueModal } from "./modals";
 import { Moment } from "moment";
 import { message } from "antd";
+import { RouteComponentProps } from "react-router-dom";
 
-interface ClueJudgeProps {
+interface ClueJudgeProps extends RouteComponentProps {
     clue: ClueStore
 }
 
@@ -45,7 +46,7 @@ class ExecutorClueJudge extends React.Component<ClueJudgeProps> {
     }
 
     onDetailClick = (clueId: number) => {
-        window.location.href = `/index/clue/executor/judge/pendingProcess/${clueId}`
+        this.props.history.push(`/index/clue/executor/judge/pendingProcess/${clueId}`)
     }
 
     onReturnClick = (clueId: number) => {

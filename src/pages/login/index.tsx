@@ -20,7 +20,7 @@ class Login extends React.Component<MainLayoutProps> {
   };
 
   render() {
-    const { main } = this.props;
+    const { main, history } = this.props;
     return (
       <div className="login-container">
         <div>
@@ -44,7 +44,7 @@ class Login extends React.Component<MainLayoutProps> {
             <div>
               <Input
                 type="password"
-                onPressEnter={() => main.doLogin(this.state.username, this.state.password)}
+                onPressEnter={() => main.doLogin(this.state.username, this.state.password, history)}
                 style={{ width: "398px", height: "42px" }}
                 placeholder="请输入密码"
                 prefix={<UserOutlined translate="true" />}
@@ -58,7 +58,7 @@ class Login extends React.Component<MainLayoutProps> {
             <ColorButton
               width="398px"
               onClick={() =>
-                main.doLogin(this.state.username, this.state.password)
+                main.doLogin(this.state.username, this.state.password, history)
               }
               disabled={main.logining}
               bgColor="#2E74EE"

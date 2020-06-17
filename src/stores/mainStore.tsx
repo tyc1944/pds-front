@@ -1,6 +1,7 @@
-import {observable, action} from "mobx";
-import {axios, TOKEN_KEY} from "../utils/RequestUtil";
-import {TableListOpsValueType} from "components/table/tableListOpsComponents";
+import { observable, action } from "mobx";
+import { axios, TOKEN_KEY } from "../utils/RequestUtil";
+import { TableListOpsValueType } from "components/table/tableListOpsComponents";
+import { History } from "history/index"
 
 export interface UserProfile {
     id: number;
@@ -44,7 +45,7 @@ export default class MainStore {
     }
 
     @action
-    doLogin(username = "", password = "") {
+    doLogin(username = "", password = "", history: History) {
         this.logining = true;
         const form = new FormData();
         form.append("grant_type", "password");
@@ -58,7 +59,7 @@ export default class MainStore {
             })
             .then(res => {
                 localStorage.setItem(TOKEN_KEY, res.data.access_token);
-                window.location.replace("/index/main");
+                history.replace("/index/main");
             })
             .finally(() => (this.logining = false));
     }

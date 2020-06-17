@@ -141,7 +141,7 @@ class CaseSuperviseDetail extends React.Component<ClueJudgeDetailProps> {
 
 
     render() {
-        const { supervise, main } = this.props;
+        const { supervise, main, history } = this.props;
         const { status, exceptionContent, receptionInformation, exceptionResult } = this.state.superviseData;
         const { superviseId } = this.props.match.params;
         return <div style={{
@@ -297,7 +297,7 @@ class CaseSuperviseDetail extends React.Component<ClueJudgeDetailProps> {
                                                     processedDate: this.state.processedDate
                                                 })
                                                 message.success("提交成功！")
-                                                window.history.back();
+                                                history.goBack();
                                             },
                                             onCancel() {
                                                 console.log('Cancel');
@@ -323,7 +323,7 @@ class CaseSuperviseDetail extends React.Component<ClueJudgeDetailProps> {
                                                 comment: this.state.comment,
                                             })
                                             message.success("提交成功！")
-                                            window.history.back();
+                                            history.goBack();
                                         },
                                         onCancel() {
                                             console.log('Cancel');
@@ -347,7 +347,7 @@ class CaseSuperviseDetail extends React.Component<ClueJudgeDetailProps> {
                                                 comment: this.state.comment,
                                             })
                                             message.success("提交成功！")
-                                            window.history.back();
+                                            history.goBack();
                                         },
                                         onCancel() {
                                             console.log('Cancel');
@@ -355,7 +355,7 @@ class CaseSuperviseDetail extends React.Component<ClueJudgeDetailProps> {
                                     });
                                 }}>提交</ColorButton>
                             }
-                            <ColorButton bgColor="#FFFFFF" fontColor="#1E1E1E" onClick={() => window.history.back()}>取消</ColorButton>
+                            <ColorButton bgColor="#FFFFFF" fontColor="#1E1E1E" onClick={() => history.goBack()}>取消</ColorButton>
                         </div>
                         <div style={{
                             flex: 1,

@@ -66,7 +66,7 @@ class ExecutorSubmitClueJudge extends React.Component<SubmitClueJudgeProps> {
     }
 
     render() {
-        const { clue } = this.props;
+        const { clue, history } = this.props;
         return <div style={{
             display: "flex",
             height: "100%",
@@ -112,7 +112,7 @@ class ExecutorSubmitClueJudge extends React.Component<SubmitClueJudgeProps> {
                                 message.success("提交成功！")
                                 window.history.go(-2);
                             }}>提交</ColorButton>
-                            <ColorButton bgColor="#FFFFFF" fontColor="#1E1E1E" onClick={() => window.history.back()}>取消</ColorButton>
+                            <ColorButton bgColor="#FFFFFF" fontColor="#1E1E1E" onClick={() => history.goBack()}>取消</ColorButton>
                         </div>
                     </div>
                 </BoxContainerInner>

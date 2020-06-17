@@ -1,15 +1,13 @@
 import React from "react";
 import Breadscrum from "components/breadscrum";
-import {BoxContainer, BoxContainerInner} from "components/layout";
-import {Col, List, Row} from "antd";
+import { BoxContainer, BoxContainerInner } from "components/layout";
+import { Col, List, Row } from "antd";
 import {
-    InputWithoutIcon,
-    OptionsDateRangePicker,
-    SingleSelectionGroup, TableListOpsValueType
+    InputWithoutIcon, TableListOpsValueType
 } from "../../../components/table/tableListOpsComponents";
-import {ColorButton} from "../../../components/buttons";
-import {TableListOpsHelper} from "../../../components/table/tableListOpsContext";
-import {TableListPagination} from "../../../components/table";
+import { ColorButton } from "../../../components/buttons";
+import { TableListOpsHelper } from "../../../components/table/tableListOpsContext";
+import { TableListPagination } from "../../../components/table";
 
 class DecisionWiki extends React.Component {
 
@@ -53,18 +51,18 @@ class DecisionWiki extends React.Component {
                                         <div style={{
                                             display: "flex",
                                         }}>
-                                            <InputWithoutIcon style={{width: "290px"}} name="keyword"
-                                                              placeholder="输入关键词进行搜索"></InputWithoutIcon>
+                                            <InputWithoutIcon style={{ width: "290px" }} name="keyword"
+                                                placeholder="输入关键词进行搜索"></InputWithoutIcon>
                                             <ColorButton width="76px" bgColor="#4084F0"
-                                                         onClick={() => {
-                                                         }}>查询</ColorButton>
+                                                onClick={() => {
+                                                }}>查询</ColorButton>
                                             <ColorButton width="76px" bgColor="#FFFFFF" fontColor="#72757B"
-                                                         onClick={() => {
-                                                             this.setState(({
-                                                                 changed: [],
-                                                                 searchKey: Date.now()
-                                                             }))
-                                                         }}>清空</ColorButton>
+                                                onClick={() => {
+                                                    this.setState(({
+                                                        changed: [],
+                                                        searchKey: Date.now()
+                                                    }))
+                                                }}>清空</ColorButton>
                                         </div>
                                     </Col>
                                 </Row>
@@ -73,7 +71,7 @@ class DecisionWiki extends React.Component {
                     </TableListOpsHelper>
                 </BoxContainerInner>
                 <BoxContainerInner flex={1}>
-                    <div style={{color: "#2D405E", fontSize: '18px', padding: '0 0 14px 0'}}>决策参考</div>
+                    <div style={{ color: "#2D405E", fontSize: '18px', padding: '0 0 14px 0' }}>决策参考</div>
                     <List
                         size="large"
                         bordered
@@ -125,7 +123,7 @@ class DecisionWiki extends React.Component {
                             this.setState(({
                                 currentPage: page
                             }))
-                        }}/>
+                        }} />
                 </BoxContainerInner>
             </BoxContainer>
         </div>

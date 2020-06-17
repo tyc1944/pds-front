@@ -7,8 +7,9 @@ import { TableList } from "components/table";
 import { inject, observer } from "mobx-react";
 import ClueStore, { ClueDataSearchModel } from "stores/clueStore";
 import { fillObjectFromOpsValue } from "components/table/tableListOpsComponents";
+import { RouteComponentProps } from "react-router-dom";
 
-interface ClueJudgeProps {
+interface ClueJudgeProps extends RouteComponentProps {
     clue: ClueStore
 }
 
@@ -37,7 +38,7 @@ class LeaderPendingExamineClueJudge extends React.Component<ClueJudgeProps> {
     }
 
     onDetailClick = (clueId: number) => {
-        window.location.href = `/index/clue/leader/judge/pendingExamine/${clueId}`
+        this.props.history.push(`/index/clue/leader/judge/pendingExamine/${clueId}`)
     }
 
     render() {

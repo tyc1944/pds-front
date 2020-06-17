@@ -1,7 +1,7 @@
 import React from "react";
 
 interface BreadscrumProps {
-  data: string[];
+  data: React.ReactNode[];
 }
 
 /**
@@ -24,9 +24,9 @@ export default class Breadscrum extends React.Component<BreadscrumProps> {
       >
         当前位置：
         {this.props.data.map((item, index, arr) => (
-          <span key={index}>{`${item}${
+          <span key={index}>{item}{
             index !== arr.length - 1 ? " > " : ""
-            }`}</span>
+            }</span>
         ))}
       </div>
     );

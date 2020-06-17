@@ -1,11 +1,11 @@
-import React, {Component} from "react";
-import {Layout, Input} from "antd";
+import React, { Component } from "react";
+import { Layout, Input } from "antd";
 import "./MainLayout.less";
-import {RouteComponentProps} from "react-router-dom";
-import {inject, observer} from "mobx-react";
-import MainStore, {UserProfile} from "stores/mainStore";
+import { RouteComponentProps, Link } from "react-router-dom";
+import { inject, observer } from "mobx-react";
+import MainStore, { UserProfile } from "stores/mainStore";
 import "../common";
-import {Route, Switch, Redirect} from "react-router";
+import { Route, Switch, Redirect } from "react-router";
 
 import Main from "../pages/main";
 import ClueAnalysis from "../pages/clueAnalysis";
@@ -14,8 +14,8 @@ import {
     FileDoneOutlined, AreaChartOutlined, FileSearchOutlined, PoweroffOutlined, NotificationOutlined,
     DeploymentUnitOutlined, SettingOutlined, ShareAltOutlined, HomeOutlined
 } from "@ant-design/icons";
-import {TOKEN_KEY} from "utils/RequestUtil";
-import {MenuItem} from "components/menu";
+import { TOKEN_KEY } from "utils/RequestUtil";
+import { MenuItem } from "components/menu";
 import Setting from "pages/setting";
 import ModifyPassword from "pages/setting/modifyPassword";
 import ClueStore from "stores/clueStore";
@@ -41,18 +41,27 @@ import DomesticCasesDataRetrieval from "pages/dataRetrieval/domesticCases";
 import WuxiCasesDataRetrieval from "../pages/dataRetrieval/wuxiCases";
 import DecisionWiki from "pages/wiki/decision";
 import NewsWiki from "../pages/wiki/news";
+import SearchResult from "pages/search";
+import DataStore from "stores/dataStore";
+import _ from "lodash";
 
-const {Header, Sider, Content} = Layout;
+const { Header, Sider, Content } = Layout;
 
 export interface MainLayoutProps extends RouteComponentProps {
     main: MainStore;
     clue: ClueStore;
     supervise: SuperviseStore;
+    data: DataStore;
 }
 
-@inject("main", "clue", "supervise")
+@inject("main", "clue", "supervise", "data")
 @observer
 class MainLayout extends Component<MainLayoutProps, object> {
+
+    state = {
+        searchParam: ""
+    }
+
     componentDidMount() {
         this.props.main.getUserProfile();
     }
@@ -62,7 +71,9 @@ class MainLayout extends Component<MainLayoutProps, object> {
             main,
             clue,
             supervise,
-            location: {pathname}
+            data,
+            history,
+            location: { pathname }
         } = this.props;
         return (
             <Layout className="mainLayout">
@@ -79,7 +90,21 @@ class MainLayout extends Component<MainLayoutProps, object> {
                         无锡市人民检察院知识产权检察监督信息平台
                     </div>
                     <div className="mainSearch">
-                        <Input addonAfter={<SearchOutlined translate="true"/>}/>
+                        <Input
+                            addonAfter={<SearchOutlined translate="true" />}
+                            onChange={e => this.setState({
+                                searchParam: e.currentTarget.value
+                            })}
+                            onPressEnter={() => {
+                                if (!_.isEmpty(this.state.searchParam)) {
+                                    data.searchParam = this.state.searchParam;
+                                    history.push("/index/search/result")
+                                } else {
+                                    if (history.location.pathname === "/index/search/result") {
+                                        history.goBack()
+                                    }
+                                }
+                            }} />
                     </div>
                     <div className="loginInfo">
                         <div
@@ -106,7 +131,7 @@ class MainLayout extends Component<MainLayoutProps, object> {
                                 translate="true"
                                 onClick={() => {
                                     localStorage.removeItem(TOKEN_KEY);
-                                    window.location.replace("/login");
+                                    history.replace("/login")
                                     this.props.main.userProfile = {} as UserProfile;
                                 }}
                             />
@@ -121,13 +146,13 @@ class MainLayout extends Component<MainLayoutProps, object> {
                             borderRight: "1px solid #D6DDE3 "
                         }}
                     >
-                        <MenuItem name="首页" icon={<HomeOutlined translate="true"/>} onClick={() => {
-                            window.location.href = "/index/main";
-                        }}/>
-                        <MenuItem name="线索汇聚" icon={<DeploymentUnitOutlined translate="true"/>} onClick={() => {
-                            window.location.href = "/index/clue/analysis";
-                        }}/>
-                        <MenuItem name="线索研判" icon={<ShareAltOutlined translate="true"/>} subItems={async () => {
+                        <MenuItem name="首页" icon={<HomeOutlined translate="true" />} onClick={() => {
+                            history.replace("/index/main");
+                        }} />
+                        <MenuItem name="线索汇聚" icon={<DeploymentUnitOutlined translate="true" />} onClick={() => {
+                            history.replace("/index/clue/analysis");
+                        }} />
+                        <MenuItem name="线索研判" icon={<ShareAltOutlined translate="true" />} subItems={async () => {
                             let statusCount = {
                                 pendingProcessCount: 0,
                                 pendingAppointCount: 0,
@@ -194,8 +219,8 @@ class MainLayout extends Component<MainLayoutProps, object> {
                                         }]
                             }
                             return []
-                        }}/>
-                        <MenuItem name="案件监督" icon={<FileDoneOutlined translate="true"/>} subItems={async () => {
+                        }} />
+                        <MenuItem name="案件监督" icon={<FileDoneOutlined translate="true" />} subItems={async () => {
                             let statusCount = {
                                 pendingProcessCount: 0,
                                 pendingAppointCount: 0,
@@ -255,41 +280,41 @@ class MainLayout extends Component<MainLayoutProps, object> {
                                         }]
                             }
                             return []
-                        }}/>
+                        }} />
 
-                        <MenuItem name="决策辅助" icon={<AreaChartOutlined translate="true"/>} subItems={[{
+                        <MenuItem name="决策辅助" icon={<AreaChartOutlined translate="true" />} subItems={[{
                             name: "全国案例数据分析",
                             activeUrl: "/index/data/analysis/national",
                         },
-                            {
-                                name: "全市案件数据分析",
-                                activeUrl: "/index/data/analysis/city"
-                            }, {
-                                name: "本区案件数据分析",
-                                activeUrl: "/index/data/analysis/district",
-                            }]}/>
-                        <MenuItem name="资料检索" icon={<FileSearchOutlined translate="true"/>} subItems={[{
+                        {
+                            name: "全市案件数据分析",
+                            activeUrl: "/index/data/analysis/city"
+                        }, {
+                            name: "本区案件数据分析",
+                            activeUrl: "/index/data/analysis/district",
+                        }]} />
+                        <MenuItem name="资料检索" icon={<FileSearchOutlined translate="true" />} subItems={[{
                             name: "法律法规",
                             activeUrl: "/index/data/retrieval/laws",
                         },
-                            {
-                                name: "典型案例",
-                                activeUrl: '/index/data/retrieval/typical',
-                            }, {
-                                name: "全国案例",
-                                activeUrl: "/index/data/retrieval/domestic",
-                            }, {
-                                name: "无锡案例",
-                                activeUrl: "/index/data/retrieval/wuxi"
-                            }]}/>
-                        <MenuItem name="知产宣传" icon={<NotificationOutlined translate="true"/>} subItems={[{
+                        {
+                            name: "典型案例",
+                            activeUrl: '/index/data/retrieval/typical',
+                        }, {
+                            name: "全国案例",
+                            activeUrl: "/index/data/retrieval/domestic",
+                        }, {
+                            name: "无锡案例",
+                            activeUrl: "/index/data/retrieval/wuxi"
+                        }]} />
+                        <MenuItem name="知产宣传" icon={<NotificationOutlined translate="true" />} subItems={[{
                             name: "决策参考",
                             activeUrl: "/index/wiki/decision"
                         }, {
                             name: "知产新闻",
                             activeUrl: '/index/wiki/news'
-                        }]}/>
-                        <MenuItem name="系统设置" icon={<SettingOutlined translate="true"/>} subItems={async () => {
+                        }]} />
+                        <MenuItem name="系统设置" icon={<SettingOutlined translate="true" />} subItems={async () => {
                             if (main.userProfile.role === "ADMIN" || main.userProfile.role === "MANAGER") {
                                 return [{
                                     name: "账户管理",
@@ -304,72 +329,73 @@ class MainLayout extends Component<MainLayoutProps, object> {
                                     activeUrl: "/index/setting/password"
                                 }]
                             }
-                        }}/>
+                        }} />
                     </Sider>
                     <Content>
                         <Switch>
                             <Route path="/" exact>
                                 <Redirect to="/index/main"></Redirect>
                             </Route>
-                            <Route path="/index/main" exact component={Main}/>
-                            <Route path="/index/clue/analysis" exact component={ClueAnalysis}/>
-                            <Route path="/index/clue/all/judge/all" exact component={AllClueJudge}/>
-                            <Route path="/index/clue/all/judge/all/:clueId" exact component={ClueJudgeDetail}/>
+                            <Route path="/index/search/result" exact component={SearchResult} />
+                            <Route path="/index/main" exact component={Main} />
+                            <Route path="/index/clue/analysis" exact component={ClueAnalysis} />
+                            <Route path="/index/clue/all/judge/all" exact component={AllClueJudge} />
+                            <Route path="/index/clue/all/judge/all/:clueId" exact component={ClueJudgeDetail} />
                             {/* 承办人线索 */}
                             <Route path="/index/clue/executor/judge/pendingProcess" exact
-                                   component={ExecutorClueJudge}/>
+                                component={ExecutorClueJudge} />
                             <Route path="/index/clue/executor/judge/pendingProcess/:clueId" exact
-                                   component={ClueJudgeDetail}/>
+                                component={ClueJudgeDetail} />
                             <Route path="/index/clue/executor/judge/pendingProcess/:clueId/submit" exact
-                                   component={ExecutorSubmitClueJudge}/>
+                                component={ExecutorSubmitClueJudge} />
                             <Route path="/index/clue/executor/judge/pendingExamine" exact
-                                   component={ExecutorClueJudgePendingExamine}/>
+                                component={ExecutorClueJudgePendingExamine} />
                             <Route path="/index/clue/executor/judge/pendingExamine/:clueId" exact
-                                   component={ClueJudgeDetail}/>
+                                component={ClueJudgeDetail} />
                             <Route path="/index/clue/executor/judge/pendingSupervise" exact
-                                   component={ExecutorPendingSuperviseClueJudge}/>
+                                component={ExecutorPendingSuperviseClueJudge} />
                             <Route path="/index/clue/executor/judge/pendingSupervise/:clueId" exact
-                                   component={ClueJudgeDetail}/>
+                                component={ClueJudgeDetail} />
                             <Route path="/index/clue/executor/judge/examined" exact
-                                   component={ExecutorExaminedClueJudge}/>
+                                component={ExecutorExaminedClueJudge} />
                             <Route path="/index/clue/executor/judge/examined/:clueId" exact
-                                   component={ClueJudgeDetail}/>
+                                component={ClueJudgeDetail} />
                             {/* 部门领导线索 */}
                             <Route path="/index/clue/departmentLeader/judge/pendingAppoint" exact
-                                   component={DepartmentLeaderPendingAppointClueJudge}/>
+                                component={DepartmentLeaderPendingAppointClueJudge} />
                             <Route path="/index/clue/departmentLeader/judge/pendingAppoint/:clueId" exact
-                                   component={ClueJudgeDetail}/>
+                                component={ClueJudgeDetail} />
                             <Route path="/index/clue/departmentLeader/judge/pendingExamine" exact
-                                   component={DepartmentLeaderPendingExamineClueJudge}/>
+                                component={DepartmentLeaderPendingExamineClueJudge} />
                             <Route path="/index/clue/departmentLeader/judge/pendingExamine/:clueId" exact
-                                   component={ClueJudgeDetail}/>
+                                component={ClueJudgeDetail} />
                             {/* 院领导线索*/}
                             <Route path="/index/clue/leader/judge/pendingExamine" exact
-                                   component={LeaderPendingExamineClueJudge}/>
+                                component={LeaderPendingExamineClueJudge} />
                             <Route path="/index/clue/leader/judge/pendingExamine/:clueId" exact
-                                   component={ClueJudgeDetail}/>
+                                component={ClueJudgeDetail} />
                             {/* 案件*/}
-                            <Route path="/index/supervise/:role/:status" exact component={CaseSupervise}/>
+                            <Route path="/index/supervise/:role/:status" exact component={CaseSupervise} />
                             <Route path="/index/supervise/:role/:status/:superviseId" exact
-                                   component={CaseSuperviseDetail}/>
+                                component={CaseSuperviseDetail} />
                             {/* 全部案件*/}
-                            <Route path="/index/supervise/all/all" exact component={CaseSupervise}/>
-                            <Route path="/index/supervise/all/all/:superviseId" exact component={CaseSuperviseDetail}/>
+                            <Route path="/index/supervise/all/all" exact component={CaseSupervise} />
+                            <Route path="/index/supervise/all/all/:superviseId" exact component={CaseSuperviseDetail} />
                             {/*决策辅助*/}
-                            <Route path="/index/data/analysis/national" exact component={NationwideDataAnalysis}/>
-                            <Route path="/index/data/analysis/city" exact component={CitywideDataAnalysis}/>
-                            <Route path="/index/data/analysis/district" exact component={DistrictDataAnalysis}/>
+                            <Route path="/index/data/analysis/national" exact component={NationwideDataAnalysis} />
+                            <Route path="/index/data/analysis/city" exact component={CitywideDataAnalysis} />
+                            <Route path="/index/data/analysis/district" exact component={DistrictDataAnalysis} />
                             {/*资料检索*/}
-                            <Route path="/index/data/retrieval/laws" exact component={LawsAndRegulationsDataRetrieval}/>
-                            <Route path="/index/data/retrieval/typical" exact component={TypicalCasesDataRetrieval}/>
-                            <Route path="/index/data/retrieval/domestic" exact component={DomesticCasesDataRetrieval}/>
-                            <Route path="/index/data/retrieval/wuxi" exact component={WuxiCasesDataRetrieval}/>
+                            <Route path="/index/data/retrieval/laws" exact component={LawsAndRegulationsDataRetrieval} />
+                            <Route path="/index/data/retrieval/typical" exact component={TypicalCasesDataRetrieval} />
+                            <Route path="/index/data/retrieval/domestic" exact component={DomesticCasesDataRetrieval} />
+                            <Route path="/index/data/retrieval/wuxi" exact component={WuxiCasesDataRetrieval} />
                             {/*知识宣传*/}
-                            <Route path="/index/wiki/decision" exact component={DecisionWiki}/>
-                            <Route path="/index/wiki/news" exact component={NewsWiki}/>
+                            <Route path="/index/wiki/decision" exact component={DecisionWiki} />
+                            <Route path="/index/wiki/news" exact component={NewsWiki} />
                             {/*设置*/}
-                            <Route path="/index/setting/account" exact component={Setting}/>
-                            <Route path="/index/setting/password" exact component={ModifyPassword}/>
+                            <Route path="/index/setting/account" exact component={Setting} />
+                            <Route path="/index/setting/password" exact component={ModifyPassword} />
                         </Switch>
                     </Content>
                 </Layout>
