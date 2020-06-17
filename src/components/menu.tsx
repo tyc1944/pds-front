@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 import "./menu.less"
-import { RightOutlined, DownOutlined } from "@ant-design/icons";
+import {RightOutlined, DownOutlined} from "@ant-design/icons";
 
 interface SubItem {
     name: string;
@@ -9,7 +9,7 @@ interface SubItem {
     onClick?: () => void;
 }
 
-export const MenuItem = ({ onClick, subItems, name, icon, activeUrl }: {
+export const MenuItem = ({onClick, subItems, name, icon, activeUrl}: {
     name: string,
     icon: React.ReactNode,
     subItems?: SubItem[] | (() => Promise<SubItem[]>),
@@ -42,18 +42,20 @@ export const MenuItem = ({ onClick, subItems, name, icon, activeUrl }: {
         }
     }, [subItems])
 
-    return <div>
-        <div className={`MenuItem`} onClick={() => {
-            if (subItemsInner && subItemsInner.length > 0) {
-                setShowSubItems(!showSubItems)
-            } else {
-                onClick ? onClick() : (() => {
-                    if (activeUrl) {
-                        window.location.href = activeUrl;
-                    }
-                })();
-            }
-        }}>
+    return <div className={"MenuItemContainer"}>
+        <div
+            className={`MenuItem ${(showSubItems && subItemsInner.filter(item => href.lastIndexOf(item.activeUrl) !== -1).length > 0) ? 'active' : ''}`}
+            onClick={() => {
+                if (subItemsInner && subItemsInner.length > 0) {
+                    setShowSubItems(!showSubItems)
+                } else {
+                    onClick ? onClick() : (() => {
+                        if (activeUrl) {
+                            window.location.href = activeUrl;
+                        }
+                    })();
+                }
+            }}>
             <div style={{
                 flex: 0.4,
                 textAlign: "center"
@@ -67,11 +69,11 @@ export const MenuItem = ({ onClick, subItems, name, icon, activeUrl }: {
                 }}>
                     {
                         !showSubItems &&
-                        <RightOutlined translate="true" />
+                        <RightOutlined translate="true"/>
                     }
                     {
                         showSubItems &&
-                        <DownOutlined translate="true" />
+                        <DownOutlined translate="true"/>
                     }
                 </div> : <div style={{
                     flex: 0.2
@@ -81,19 +83,21 @@ export const MenuItem = ({ onClick, subItems, name, icon, activeUrl }: {
         {
             showSubItems && <>
                 {
-                    subItemsInner.map(item =>
-                        <div className={`SubMenuItem ${href.lastIndexOf(item.activeUrl) !== -1 ? 'active' : ''}`} key={item.name} onClick={() => {
-                            if (item.onClick) {
-                                item.onClick()
-                            } else {
-                                window.location.href = item.activeUrl;
-                            }
-                        }}>
-                            {item.name}
-                            {
-                                item.count ? ` (${item.count})` : ''
-                            }
-                        </div>
+                    subItemsInner.map(item => {
+                            return <div className={`SubMenuItem ${href.lastIndexOf(item.activeUrl) !== -1 ? 'active' : ''}`}
+                                        key={item.name} onClick={() => {
+                                if (item.onClick) {
+                                    item.onClick()
+                                } else {
+                                    window.location.href = item.activeUrl;
+                                }
+                            }}>
+                                {item.name}
+                                {
+                                    item.count ? ` (${item.count})` : ''
+                                }
+                            </div>
+                        }
                     )
                 }
             </>
