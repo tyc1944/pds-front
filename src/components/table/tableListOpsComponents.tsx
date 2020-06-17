@@ -452,7 +452,7 @@ export const InputWithoutIcon = ({
       .value as string;
   }
   return (
-    <div style={title ? {} : { paddingLeft: "10px" }}>
+    <div>
       {title && <span style={{ padding: "0 10px" }}>{title}</span>}
       <Input
         placeholder={placeholder}
