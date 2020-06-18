@@ -74,7 +74,17 @@
     display       : flex;
     flex-direction: column;
     max-height    : 183px;
+    min-height    : 180px;
     overflow-y    : auto;
+
+    &.empty {
+      justify-content: center;
+      align-items    : center;
+    }
+
+    &>.global-info-message-empty {
+      font-size: 22px;
+    }
 
     &>div {
       padding        : 13px 30px 10px 30px;

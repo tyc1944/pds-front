@@ -25,6 +25,38 @@ export interface UpdatePassword {
     rePassword: string;
 }
 
+export interface CaseWholeCount {
+    /**
+    * 执行人员
+    */
+    pendingProcessClueCount: number;
+    pendingProcessInvestigationCount: number;
+    pendingProcessTrialCount: number;
+    pendingProcessExecutionCount: number;
+    pendingProcessAdministrationCount: number;
+    /**
+     * 部门领导
+     */
+    pendingAppointClueCount: number;
+    pendingAppointInvestigationCount: number;
+    pendingAppointTrialCount: number;
+    pendingAppointExecutionCount: number;
+    pendingAppointAdministrationCount: number;
+    /**
+     * 院领导
+     */
+    pendingExamineClueCount: number;
+    pendingExamineInvestigationCount: number;
+    pendingExamineTrialCount: number;
+    pendingExamineExecutionCount: number;
+    pendingExamineAdministrationCount: number;
+}
+
+export interface Todo {
+    todoContent: string;
+    createdTime: number;
+}
+
 export default class MainStore {
 
     @observable
@@ -84,4 +116,19 @@ export default class MainStore {
         await axios.put(`/api/account/password`, updatePassword)
     }
 
+    getStatisticsWholeCount() {
+        return axios.get("/api/statistics/wholeCount")
+    }
+
+    getStatisticsTodoCount() {
+        return axios.get("/api/statistics/todoCount")
+    }
+
+    getStatisticsYearCount() {
+        return axios.get("/api/statistics/yearCount")
+    }
+
+    getStatisticsTodoList() {
+        return axios.get("/api/statistics/todoList")
+    }
 }
