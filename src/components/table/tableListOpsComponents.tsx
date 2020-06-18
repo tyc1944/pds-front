@@ -73,7 +73,7 @@ export const fillObjectFromOpsValue = (
   if (!opsValues) {
     return oriObject;
   }
-  if (keys) {
+  if (keys && keys.length !== 0) {
     for (let i in opsValues) {
       for (let ii in keys) {
         if (opsValues[parseInt(i)].name === keys[ii]) {
@@ -452,7 +452,7 @@ export const InputWithoutIcon = ({
       .value as string;
   }
   return (
-    <div>
+    <div style={title ? {} : { paddingLeft: "10px" }}>
       {title && <span style={{ padding: "0 10px" }}>{title}</span>}
       <Input
         placeholder={placeholder}

@@ -118,7 +118,7 @@ export default class ClueStore {
   private preprocessSearchModal(searchModel: ClueDataSearchModel) {
     let tmpSearchModel = _.clone(searchModel)
     if (tmpSearchModel.caseCategory) {
-      if (tmpSearchModel.caseCategory === "不限") {
+      if (tmpSearchModel.caseCategory === "不限" || tmpSearchModel.caseCategory === "") {
         delete tmpSearchModel.caseCategory;
       } else {
         for (let key in CASE_CATEGORY) {
@@ -130,7 +130,7 @@ export default class ClueStore {
       }
     }
     if (tmpSearchModel.clueSource) {
-      if (tmpSearchModel.clueSource === "不限") {
+      if (tmpSearchModel.clueSource === "不限" || tmpSearchModel.clueSource === "") {
         delete tmpSearchModel.clueSource;
       } else {
         let tmp = tmpSearchModel.clueSource.split(",")
@@ -147,7 +147,7 @@ export default class ClueStore {
       }
     }
     if (tmpSearchModel.caseSource) {
-      if (tmpSearchModel.caseSource === "不限") {
+      if (tmpSearchModel.caseSource === "不限" || tmpSearchModel.caseSource === "") {
         delete tmpSearchModel.caseSource;
       } else {
         for (let key in DATA_STATUS_ACTION) {

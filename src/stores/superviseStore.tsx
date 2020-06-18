@@ -25,8 +25,8 @@ export interface SuperviseProcessInfo {
 }
 
 export interface SuperviseDataSearchModel {
-    page: number;
-    pageSize: number;
+    page?: number;
+    pageSize?: number;
     status?: string;
     caseType?: string;
 }

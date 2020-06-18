@@ -26,6 +26,7 @@ export const CluePendingProcessSearch = inject("main")((props: {
                 <>
                     <div>
                         <SingleSelector
+                            name="clueSource"
                             title="案件来源"
                             selectItems={(() => {
                                 let tmp = [{
@@ -35,7 +36,7 @@ export const CluePendingProcessSearch = inject("main")((props: {
                                 for (let k in CLUE_SOURCE) {
                                     tmp.push({
                                         title: CLUE_SOURCE[k],
-                                        value: k
+                                        value: CLUE_SOURCE[k]
                                     })
                                 }
                                 return tmp;

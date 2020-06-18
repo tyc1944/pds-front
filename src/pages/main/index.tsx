@@ -10,8 +10,9 @@ import { GroupedColumn } from '@antv/g2plot';
 import "./index.less"
 import { formatTimeYMDHMS } from "utils/TimeUtil";
 import _ from "lodash";
+import { RouteComponentProps } from "react-router-dom";
 
-export interface Props {
+export interface Props extends RouteComponentProps {
   main: MainStore
 }
 
@@ -176,13 +177,13 @@ class Main extends React.Component<Props> {
           </BoxContainerInner>
           <BoxContainerInner flex={1} noPadding>
             {
-              main.userProfile.role === "NORMAL_USER" && <ExecutorMainDataList></ExecutorMainDataList>
+              main.userProfile.role === "NORMAL_USER" && <ExecutorMainDataList history={this.props.history}></ExecutorMainDataList>
             }
             {
-              main.userProfile.role === "LEADERSHIP" && <LeaderMainDataList></LeaderMainDataList>
+              main.userProfile.role === "LEADERSHIP" && <LeaderMainDataList history={this.props.history}></LeaderMainDataList>
             }
             {
-              main.userProfile.role === "DEPARTMENT_LEADER" && <DepartmentLeaderMainDataList></DepartmentLeaderMainDataList>
+              main.userProfile.role === "DEPARTMENT_LEADER" && <DepartmentLeaderMainDataList history={this.props.history}></DepartmentLeaderMainDataList>
             }
           </BoxContainerInner>
         </BoxContainer>

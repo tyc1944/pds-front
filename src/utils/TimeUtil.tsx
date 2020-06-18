@@ -9,7 +9,11 @@ const formatTimeYMD = (dateString: number | string | Date | null | undefined) =>
 };
 
 const formatTimeYMDHMS = (dateString: number | string | Date | Moment | null | undefined) => {
-  return moment(dateString).format("YYYY-MM-DD HH:mm:ss");
+  if (dateString) {
+    return moment(dateString).format("YYYY-MM-DD HH:mm:ss");
+  } else {
+    return "--"
+  }
 };
 
 const getDayStartDate = (dateString: number | string | Date) => {

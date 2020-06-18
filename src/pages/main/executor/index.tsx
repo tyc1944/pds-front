@@ -6,30 +6,55 @@ import ClueStore from "stores/clueStore";
 import SuperviseStore from "stores/superviseStore";
 import { PendingProcessTable, InvestigationTable, TrialTable, ExecutionTable, AdministrationTable } from "./tables";
 import "./index.less";
+import MainStore, { CaseWholeCount } from "stores/mainStore";
+import { History } from "history/index"
 
 const { TabPane } = Tabs;
 
 interface MainDataListProps {
     clue?: ClueStore;
     supervise?: SuperviseStore;
+    main?: MainStore;
+    history: History
 }
 
-@inject("clue", "supervise")
+@inject("clue", "supervise", "main")
 class ExecutorMainDataList extends React.Component<MainDataListProps> {
 
     state = {
-        activeIndex: "1"
+        activeIndex: "1",
+        caseWholeCount: {} as CaseWholeCount
     }
 
     componentDidMount() {
+        const { main } = this.props;
+        main!.getStatisticsWholeCount().then(res => this.setState({
+            caseWholeCount: res.data
+        }))
     }
 
-    onDetailClick = () => {
-
+    onDetailClick = (id: number) => {
+        const { history } = this.props;
+        if (this.state.activeIndex === "1") {
+            history.push(`/index/clue/executor/judge/pendingProcess/${id}`)
+        } else {
+            history.push(`/index/supervise/executor/pendingProcess/${id}`)
+        }
     }
 
     onRejectClick = () => {
-
+        switch (this.state.activeIndex) {
+            case "1":
+                break;
+            case "2":
+                break;
+            case "3":
+                break;
+            case "4":
+                break;
+            case "5":
+                break;
+        }
     }
 
     onTabChange = (activeIndex: string) => {
@@ -39,20 +64,22 @@ class ExecutorMainDataList extends React.Component<MainDataListProps> {
     }
 
     render() {
+        const { caseWholeCount } = this.state;
+
         return <Tabs defaultActiveKey="1" onChange={this.onTabChange}>
-            <TabPane tab={<TableNameWithNumber name="待处理线索" count={0} />} key="1" >
+            <TabPane tab={<TableNameWithNumber name="待处理线索" count={caseWholeCount.pendingProcessClueCount} />} key="1" >
                 <PendingProcessTable activeIndex={this.state.activeIndex} onDetailClick={this.onDetailClick} onReturnClick={this.onRejectClick} />
             </TabPane>
-            <TabPane tab={<TableNameWithNumber name="侦查监督" count={0} />} key="2">
+            <TabPane tab={<TableNameWithNumber name="侦查监督" count={caseWholeCount.pendingProcessInvestigationCount} />} key="2">
                 <InvestigationTable activeIndex={this.state.activeIndex} onDetailClick={this.onDetailClick} onReturnClick={this.onRejectClick} />
             </TabPane>
-            <TabPane tab={<TableNameWithNumber name="审判监督" count={0} />} key="3">
+            <TabPane tab={<TableNameWithNumber name="审判监督" count={caseWholeCount.pendingProcessTrialCount} />} key="3">
                 <TrialTable activeIndex={this.state.activeIndex} onDetailClick={this.onDetailClick} onReturnClick={this.onRejectClick} />
             </TabPane>
-            <TabPane tab={<TableNameWithNumber name="执行监督" count={0} />} key="4">
+            <TabPane tab={<TableNameWithNumber name="执行监督" count={caseWholeCount.pendingProcessExecutionCount} />} key="4">
                 <ExecutionTable activeIndex={this.state.activeIndex} onDetailClick={this.onDetailClick} onReturnClick={this.onRejectClick} />
             </TabPane>
-            <TabPane tab={<TableNameWithNumber name="行政监督" count={0} />} key="5">
+            <TabPane tab={<TableNameWithNumber name="行政监督" count={caseWholeCount.pendingProcessAdministrationCount} />} key="5">
                 <AdministrationTable activeIndex={this.state.activeIndex} onDetailClick={this.onDetailClick} onReturnClick={this.onRejectClick} />
             </TabPane>
         </Tabs>

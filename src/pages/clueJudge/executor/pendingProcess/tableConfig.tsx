@@ -81,7 +81,8 @@ export const TableColumn = (
             row.statusAction !== "SELF" &&
             <span
               style={{
-                cursor: "pointer"
+                cursor: "pointer",
+                color: '#FF3F11'
               }}
               onClick={() => onReturnClick(row.id)}
             >
