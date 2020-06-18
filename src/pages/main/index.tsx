@@ -139,7 +139,7 @@ class Main extends React.Component<Props> {
                         <div>待指派线索</div>
                       </div>
                       <div>
-                        <div>0</div>
+                        <div>{caseWholeCount.pendingExamineClueCount}</div>
                         <div>待审批线索</div>
                       </div>
                       <div>
@@ -152,7 +152,7 @@ class Main extends React.Component<Props> {
                         <div>待指派监督</div>
                       </div>
                       <div>
-                        <div>0</div>
+                        <div>{caseWholeCount.pendingExamineSuperviseCount}</div>
                         <div>待审批监督</div>
                       </div>
                     </div>

@@ -31,8 +31,9 @@ export interface AnalysisReportProps {
   visiable: boolean;
   url: string;
   onCancel: () => void;
-  onDownloadClick: () => void;
-  onAnalysisBtnClick: (uploadFileName: string) => void;
+  onDownloadClick?: () => void;
+  onAnalysisBtnClick?: (uploadFileName: string) => void;
+  readonly?: boolean;
 }
 
 export class AnalysisReport extends React.Component<AnalysisReportProps> {
@@ -167,24 +168,26 @@ export class AnalysisReport extends React.Component<AnalysisReportProps> {
 
     return <MyModal visiable={this.props.visiable} onCancel={this.props.onCancel} title="分析报告" width={917}>
       <div style={{ padding: '0 36px' }}>
-        <Row>
-          <Col span="4">上传外部报告</Col>
-          <Col span="16">
-            <Input readOnly={true} disabled={true} style={{ width: '400px' }}></Input>
-            <Upload {...props}>
-              <Button>
-                选择文件
+        {
+          !this.props.readonly && <Row>
+            <Col span="4">上传外部报告</Col>
+            <Col span="16">
+              <Input readOnly={true} disabled={true} style={{ width: '400px' }}></Input>
+              <Upload {...props}>
+                <Button>
+                  选择文件
     </Button>
-            </Upload>
-          </Col>
-          <Col span="4"><ColorButton onClick={() => {
-            if (_.isEmpty(this.state.uploadFileName)) {
-              message.warning("请上传外部报告后重试！")
-              return;
-            }
-            this.props.onAnalysisBtnClick(this.state.uploadFileName)
-          }}>生成报告</ColorButton></Col>
-        </Row>
+              </Upload>
+            </Col>
+            <Col span="4"><ColorButton onClick={() => {
+              if (_.isEmpty(this.state.uploadFileName)) {
+                message.warning("请上传外部报告后重试！")
+                return;
+              }
+              this.props.onAnalysisBtnClick && this.props.onAnalysisBtnClick(this.state.uploadFileName)
+            }}>生成报告</ColorButton></Col>
+          </Row>
+        }
         <div style={{
           display: "flex",
           justifyContent: "center",
@@ -230,15 +233,17 @@ export class AnalysisReport extends React.Component<AnalysisReportProps> {
           </div>
         </div>
       </div>
-      <div style={{
-        textAlign: 'right',
-        marginBottom: "15px",
-        backgroundColor: "#ECF1FA",
-        padding: "17px 38px"
-      }}>
-        <ColorButton bgColor="#4084F0" fontColor="#FFFFFF" onClick={this.props.onDownloadClick}>下载报告</ColorButton>
-        <ColorButton bgColor="#FFFFFF" fontColor="#1E1E1E" onClick={this.props.onCancel} >取消</ColorButton>
-      </div>
+      {
+        !this.props.readonly && <div style={{
+          textAlign: 'right',
+          marginBottom: "15px",
+          backgroundColor: "#ECF1FA",
+          padding: "17px 38px"
+        }}>
+          <ColorButton bgColor="#4084F0" fontColor="#FFFFFF" onClick={this.props.onDownloadClick}>下载报告</ColorButton>
+          <ColorButton bgColor="#FFFFFF" fontColor="#1E1E1E" onClick={this.props.onCancel} >取消</ColorButton>
+        </div>
+      }
     </MyModal>
   }
 }

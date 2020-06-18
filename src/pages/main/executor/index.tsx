@@ -1,5 +1,5 @@
 import React from "react";
-import { Tabs } from 'antd';
+import { Tabs, Modal, message } from 'antd';
 import { TableNameWithNumber } from "components/tabs";
 import { inject } from "mobx-react";
 import ClueStore from "stores/clueStore";
@@ -8,8 +8,10 @@ import { PendingProcessTable, InvestigationTable, TrialTable, ExecutionTable, Ad
 import "./index.less";
 import MainStore, { CaseWholeCount } from "stores/mainStore";
 import { History } from "history/index"
+import { ExclamationCircleOutlined } from "@ant-design/icons";
 
 const { TabPane } = Tabs;
+const { confirm } = Modal;
 
 interface MainDataListProps {
     clue?: ClueStore;
@@ -42,19 +44,26 @@ class ExecutorMainDataList extends React.Component<MainDataListProps> {
         }
     }
 
-    onRejectClick = () => {
-        switch (this.state.activeIndex) {
-            case "1":
-                break;
-            case "2":
-                break;
-            case "3":
-                break;
-            case "4":
-                break;
-            case "5":
-                break;
-        }
+    onRejectClick = (id: number) => {
+        return new Promise<boolean>((resolve) => {
+            confirm({
+                title: '操作确认',
+                icon: <ExclamationCircleOutlined translate="true" />,
+                content: '确认要退回吗？',
+                onOk: async () => {
+                    if (this.state.activeIndex === "1") {
+                        await this.props.clue!.returnClueData(id);
+                    } else {
+                        await this.props.supervise!.returnSuperviseData(id);
+                    }
+                    message.success("退回成功！")
+                    resolve(true)
+                },
+                onCancel: () => {
+                    resolve(false)
+                },
+            });
+        })
     }
 
     onTabChange = (activeIndex: string) => {

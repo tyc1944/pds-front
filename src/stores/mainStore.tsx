@@ -42,6 +42,7 @@ export interface CaseWholeCount {
     pendingAppointTrialCount: number;
     pendingAppointExecutionCount: number;
     pendingAppointAdministrationCount: number;
+    pendingExamineSuperviseCount: number;
     /**
      * 院领导
      */

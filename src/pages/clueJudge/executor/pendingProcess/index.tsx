@@ -10,8 +10,11 @@ import ClueStore, { ClueDataSearchModel } from "stores/clueStore";
 import { fillObjectFromOpsValue } from "components/table/tableListOpsComponents";
 import { CreateSelfFoundClue, ReturnClueModal } from "./modals";
 import { Moment } from "moment";
-import { message } from "antd";
+import { message, Modal } from "antd";
 import { RouteComponentProps } from "react-router-dom";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
+
+const { confirm } = Modal;
 
 interface ClueJudgeProps extends RouteComponentProps {
     clue: ClueStore
@@ -50,7 +53,19 @@ class ExecutorClueJudge extends React.Component<ClueJudgeProps> {
     }
 
     onReturnClick = (clueId: number) => {
-
+        confirm({
+            title: '操作确认',
+            icon: <ExclamationCircleOutlined translate="true" />,
+            content: '确认要退回吗？',
+            onOk: async () => {
+                await this.props.clue.returnClueData(clueId);
+                message.success("退回成功！")
+                this.getClueDataList()
+            },
+            onCancel() {
+                console.log('Cancel');
+            },
+        });
     }
 
     onSelfFoundClick = () => {

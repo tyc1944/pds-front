@@ -239,4 +239,8 @@ export default class ClueStore {
   async transferClueData(clueId: number, transferClueData: TransferClueData) {
     await axios.post(`/api/clue/${clueId}/transfer`, transferClueData)
   }
+
+  async returnClueData(clueId: number) {
+    await axios.put(`/api/clue/${clueId}/return`)
+  }
 }

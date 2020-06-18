@@ -16,7 +16,7 @@ import SuperviseStore from "stores/superviseStore";
 
 export const PendingProcessTable = inject("clue")((props: {
     onDetailClick: (clueId: number) => void;
-    onReturnClick: (clueId: number) => void;
+    onReturnClick: (clueId: number) => Promise<boolean>;
     activeIndex: string;
     clue?: ClueStore;
 }) => {
@@ -50,7 +50,11 @@ export const PendingProcessTable = inject("clue")((props: {
                 total={total}
                 pages={pages}
                 data={dataList}
-                columns={TableColumn1(props.onDetailClick, props.onReturnClick)}
+                columns={TableColumn1(props.onDetailClick, async (clueId) => {
+                    if (await props.onReturnClick(clueId)) {
+                        getClueData()
+                    }
+                })}
                 onChange={(page, pageSize) => {
                     props.clue!.searchModel.page = page;
                     props.clue!.searchModel.pageSize = pageSize;
@@ -63,7 +67,7 @@ export const PendingProcessTable = inject("clue")((props: {
 
 export const InvestigationTable = inject("supervise")((props: {
     onDetailClick: (caseId: number) => void;
-    onReturnClick: (caseId: number) => void;
+    onReturnClick: (caseId: number) => Promise<boolean>;
     activeIndex: string;
     supervise?: SuperviseStore;
 }) => {
@@ -96,7 +100,11 @@ export const InvestigationTable = inject("supervise")((props: {
             total={total}
             pages={pages}
             data={dataList}
-            columns={TableColumn2(props.onDetailClick, props.onReturnClick)}
+            columns={TableColumn2(props.onDetailClick, async (clueId) => {
+                if (await props.onReturnClick(clueId)) {
+                    getDataList()
+                }
+            })}
             onChange={(page, pageSize) => {
                 props.supervise!.searchModel.page = page;
                 props.supervise!.searchModel.pageSize = pageSize;
@@ -108,7 +116,7 @@ export const InvestigationTable = inject("supervise")((props: {
 
 export const TrialTable = inject("supervise")((props: {
     onDetailClick: (caseId: number) => void;
-    onReturnClick: (caseId: number) => void;
+    onReturnClick: (caseId: number) => Promise<boolean>;
     activeIndex: string;
     supervise?: SuperviseStore;
 }) => {
@@ -157,7 +165,15 @@ export const TrialTable = inject("supervise")((props: {
             total={total}
             pages={pages}
             data={dataList}
-            columns={caseType === "civil_case" ? TableColumn3(props.onDetailClick, props.onReturnClick) : TableColumn4(props.onDetailClick, props.onReturnClick)}
+            columns={caseType === "civil_case" ? TableColumn3(props.onDetailClick, async (clueId) => {
+                if (await props.onReturnClick(clueId)) {
+                    getDataList()
+                }
+            }) : TableColumn4(props.onDetailClick, async (clueId) => {
+                if (await props.onReturnClick(clueId)) {
+                    getDataList()
+                }
+            })}
             onChange={(page, pageSize) => {
                 props.supervise!.searchModel.page = page;
                 props.supervise!.searchModel.pageSize = pageSize;
@@ -169,7 +185,7 @@ export const TrialTable = inject("supervise")((props: {
 
 export const ExecutionTable = inject("supervise")((props: {
     onDetailClick: (caseId: number) => void;
-    onReturnClick: (caseId: number) => void;
+    onReturnClick: (caseId: number) => Promise<boolean>;
     activeIndex: string;
     supervise?: SuperviseStore;
 }) => {
@@ -218,7 +234,15 @@ export const ExecutionTable = inject("supervise")((props: {
             total={total}
             pages={pages}
             data={dataList}
-            columns={caseType === "civil_case" ? TableColumn5(props.onDetailClick, props.onReturnClick) : TableColumn6(props.onDetailClick, props.onReturnClick)}
+            columns={caseType === "civil_case" ? TableColumn5(props.onDetailClick, async (clueId) => {
+                if (await props.onReturnClick(clueId)) {
+                    getDataList()
+                }
+            }) : TableColumn6(props.onDetailClick, async (clueId) => {
+                if (await props.onReturnClick(clueId)) {
+                    getDataList()
+                }
+            })}
             onChange={(page, pageSize) => {
                 props.supervise!.searchModel.page = page;
                 props.supervise!.searchModel.pageSize = pageSize;
@@ -230,7 +254,7 @@ export const ExecutionTable = inject("supervise")((props: {
 
 export const AdministrationTable = inject("supervise")((props: {
     onDetailClick: (caseId: number) => void;
-    onReturnClick: (caseId: number) => void;
+    onReturnClick: (caseId: number) => Promise<boolean>;
     activeIndex: string;
     supervise?: SuperviseStore;
 }) => {
@@ -263,7 +287,11 @@ export const AdministrationTable = inject("supervise")((props: {
             total={total}
             pages={pages}
             data={dataList}
-            columns={TableColumn7(props.onDetailClick, props.onReturnClick)}
+            columns={TableColumn7(props.onDetailClick, async (clueId) => {
+                if (await props.onReturnClick(clueId)) {
+                    getDataList()
+                }
+            })}
             onChange={(page, pageSize) => {
                 props.supervise!.searchModel.page = page;
                 props.supervise!.searchModel.pageSize = pageSize;

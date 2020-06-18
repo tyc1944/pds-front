@@ -265,7 +265,21 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
                                     }
                                     }>处理</ColorButton>
                                     {
-                                        clueData.statusAction !== "SELF" && <ColorButton bgColor="#FF3F11" fontColor="#FFFFFF">退回</ColorButton>
+                                        clueData.statusAction !== "SELF" && <ColorButton bgColor="#FF3F11" fontColor="#FFFFFF" onClick={() => {
+                                            confirm({
+                                                title: '操作确认',
+                                                icon: <ExclamationCircleOutlined translate="true" />,
+                                                content: '确认要退回吗？',
+                                                onOk: async () => {
+                                                    await this.props.clue.returnClueData(clueData.id as number);
+                                                    message.success("退回成功！")
+                                                    history.goBack()
+                                                },
+                                                onCancel() {
+                                                    console.log('Cancel');
+                                                },
+                                            });
+                                        }}>退回</ColorButton>
                                     }
                                 </>
                             }
