@@ -128,6 +128,7 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
             {
                 this.state.showAnalysisReportModal &&
                 <AnalysisReport
+                    id={this.props.match.params.clueId}
                     onDownloadClick={() => {
                         let a = document.createElement("a")
                         a.download = `分析报告.docx`

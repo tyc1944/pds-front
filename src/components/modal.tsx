@@ -29,6 +29,7 @@ export const MyModal = (props: {
 
 export interface AnalysisReportProps {
   visiable: boolean;
+  id: string;
   url: string;
   onCancel: () => void;
   onDownloadClick?: () => void;
@@ -70,7 +71,7 @@ export class AnalysisReport extends React.Component<AnalysisReportProps> {
     });
   }
 
-  componentDidMount() {
+  loadPdfFile = () => {
     // Loaded via <script> tag, create shortcut to access PDF.js exports.
     var pdfjsLib = (window as any)['pdfjs-dist/build/pdf'];
     // The workerSrc property shall be specified.
@@ -108,14 +109,19 @@ export class AnalysisReport extends React.Component<AnalysisReportProps> {
     });
   }
 
+
+  componentDidMount() {
+    this.loadPdfFile();
+  }
+
   render() {
 
     const token = localStorage.getItem(TOKEN_KEY);
     const props = {
-      accept: ".doc,.docx",
+      accept: ".docx",
       name: "file",
       showUploadList: false,
-      action: "/api/clueData/analysisReport/upload",
+      action: `/api/clue/${this.props.id}/report`,
       data: {},
       headers: {
         authorization: `Bearer ${token}`
@@ -135,21 +141,14 @@ export class AnalysisReport extends React.Component<AnalysisReportProps> {
           this.setState({
             uploadStatus: "processing"
           });
+          message.success(`${file.name} 上传成功，正在生成报告！`);
         }
         if (file.status === "done") {
           this.setState({
             uploadStatus: ""
           });
-          message.success(`${file.name} 上传成功！`);
-          this.setState(
-            {
-              uploadFileName: ""
-            },
-            () =>
-              this.setState({
-                uploadFileName: file.response
-              })
-          );
+          message.success(`报告生成成功！`);
+          this.loadPdfFile()
         } else if (file.status === "error") {
           this.setState({
             uploadStatus: ""
@@ -171,21 +170,14 @@ export class AnalysisReport extends React.Component<AnalysisReportProps> {
         {
           !this.props.readonly && <Row>
             <Col span="4">上传外部报告</Col>
-            <Col span="16">
-              <Input readOnly={true} disabled={true} style={{ width: '400px' }}></Input>
+            <Col span="14">
+              <Input readOnly={true} disabled={true} style={{ width: '400px' }} value={this.state.uploadFileName}></Input>
+            </Col>
+            <Col span="6">
               <Upload {...props}>
-                <Button>
-                  选择文件
-    </Button>
+                <ColorButton width={"150px"}>上传并生成报告</ColorButton>
               </Upload>
             </Col>
-            <Col span="4"><ColorButton onClick={() => {
-              if (_.isEmpty(this.state.uploadFileName)) {
-                message.warning("请上传外部报告后重试！")
-                return;
-              }
-              this.props.onAnalysisBtnClick && this.props.onAnalysisBtnClick(this.state.uploadFileName)
-            }}>生成报告</ColorButton></Col>
           </Row>
         }
         <div style={{

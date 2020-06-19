@@ -25,6 +25,7 @@ export const ClueProcessInfo = inject("clue")((props: {
         return <>
             {
                 showReport && <AnalysisReport
+                    id={clueProcessData.id + ""}
                     readonly={true}
                     url={`/file/clueReport/${clueProcessData.id}/clueReport_${clueProcessData.id}.pdf`}
                     visiable={showReport}
