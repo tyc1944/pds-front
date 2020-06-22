@@ -2,7 +2,7 @@ import React from "react";
 import Breadscrum from "components/breadscrum";
 import { BoxContainer } from "components/layout";
 import { RouteComponentProps } from "react-router-dom";
-import { Tabs } from 'antd';
+import { Tabs, message, Modal } from 'antd';
 import { TableNameWithNumber } from "components/tabs";
 import { InvestigationTabContent } from "./investigation";
 import { TrialTabContent } from "./trial";
@@ -10,7 +10,12 @@ import { ExecutionTabContent } from "./execution";
 import { AdministrationTabContent } from "./administration";
 import { inject, observer } from "mobx-react";
 import SuperviseStore from "stores/superviseStore";
+import { AssignCaseModal } from "./modals";
+import { SuperviseData } from "stores/superviseStore";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { ClueData } from "stores/clueStore";
 
+const { confirm } = Modal;
 const { TabPane } = Tabs;
 
 interface MatchParams {
@@ -28,8 +33,12 @@ class CaseSupervise extends React.Component<CaseSuperviseProps> {
 
     state = {
         breadscrumData: [],
-        activeTabIndex: "1"
+        activeTabIndex: "1",
+        showAppointModal: false,
+        superviseData: {} as SuperviseData
     }
+
+    appointResolve = (val: boolean) => { };
 
     componentDidMount() {
         this.getBreadscrumData(this.props.match.params.status)
@@ -45,15 +54,37 @@ class CaseSupervise extends React.Component<CaseSuperviseProps> {
         }
     }
 
-    onRejectClick = () => {
-
+    onRejectClick = (caseId: number) => {
+        return new Promise<boolean>(resolve => {
+            confirm({
+                title: '操作确认',
+                icon: <ExclamationCircleOutlined translate="true" />,
+                content: '确认要退回吗？',
+                onOk: async () => {
+                    await this.props.supervise.returnSuperviseData(caseId);
+                    message.success("退回成功！")
+                    resolve(true)
+                },
+                onCancel() {
+                    console.log('Cancel');
+                    resolve(false)
+                },
+            });
+        })
     }
 
-    onAppointClick = () => {
-
+    onAppointClick = async (caseId: number) => {
+        this.setState({
+            superviseData: { id: caseId },
+            showAppointModal: true
+        })
+        return new Promise<boolean>(resolve => {
+            this.appointResolve = resolve;
+        })
     }
 
     onTabChange = (key: string) => {
+        this.props.supervise.searchModel = {}
         this.setState({
             activeTabIndex: key
         })
@@ -90,6 +121,7 @@ class CaseSupervise extends React.Component<CaseSuperviseProps> {
 
     render() {
 
+        const { supervise } = this.props;
         const { role, status } = this.props.match.params;
 
         return <div style={{
@@ -97,6 +129,38 @@ class CaseSupervise extends React.Component<CaseSuperviseProps> {
             minHeight: "100%",
             flexDirection: 'column'
         }}>
+            {
+                this.state.showAppointModal &&
+                <AssignCaseModal
+                    visiable={this.state.showAppointModal}
+                    superviseData={this.state.superviseData}
+                    title="指派案件"
+                    onCancel={() => {
+                        this.setState({
+                            showAppointModal: false
+                        })
+                        this.appointResolve(false)
+                    }}
+                    onConfirm={async res => {
+                        if (res.transfer) {
+                            await supervise.transferSuperviseData(this.state.superviseData.id!, {
+                                comment: res.comment,
+                                unit: res.departmentName.split(",")[0],
+                                department: res.departmentName.split(",")[1]
+                            });
+                        } else {
+                            await supervise.assignSuperviseData(this.state.superviseData.id!, {
+                                accountId: res.executorId
+                            });
+                        }
+                        message.success("操作完成！")
+                        this.setState({
+                            showAppointModal: false
+                        })
+                        this.appointResolve(true)
+                    }}
+                />
+            }
             <Breadscrum data={this.state.breadscrumData}></Breadscrum>
             <BoxContainer>
                 <Tabs defaultActiveKey="1" onChange={this.onTabChange}>

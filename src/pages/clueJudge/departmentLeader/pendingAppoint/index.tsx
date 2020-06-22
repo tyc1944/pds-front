@@ -23,7 +23,8 @@ class DepartmentLeaderPendingAppointClueJudge extends React.Component<ClueJudgeP
     state = {
         breadscrumData: [],
         clueDataList: [],
-        clueDataTotalCount: 0,
+        total: 0,
+        pages: 0,
         showAssignClueModal: false,
         clueData: {} as ClueData
     }
@@ -36,7 +37,8 @@ class DepartmentLeaderPendingAppointClueJudge extends React.Component<ClueJudgeP
         this.props.clue.getClueDataList("pendingAppoint").then(res => {
             this.setState({
                 clueDataList: res.data.records,
-                clueDataTotalCount: res.data.total
+                total: res.data.total,
+                pages: res.data.pages
             })
         })
     }
@@ -96,7 +98,7 @@ class DepartmentLeaderPendingAppointClueJudge extends React.Component<ClueJudgeP
             }
             <Breadscrum data={["线索研判", "待指派数据"]}></Breadscrum>
             <BoxContainer>
-                <BoxContainerInner flex={0.5}>
+                <BoxContainerInner minHeight={"250px"}>
                     <TableSearch onSearch={changed => {
                         clue.searchModel = fillObjectFromOpsValue({}, changed) as ClueDataSearchModel
                         this.getClueDataList();
@@ -105,7 +107,8 @@ class DepartmentLeaderPendingAppointClueJudge extends React.Component<ClueJudgeP
                 <BoxContainerInner flex={1} noPadding>
                     <TableList
                         title="线索列表"
-                        total={this.state.clueDataTotalCount}
+                        pages={this.state.pages}
+                        total={this.state.total}
                         data={this.state.clueDataList}
                         columns={TableColumn(this.onDetailClick, this.onAppointClick)}
                         onChange={(page, pageSize) => {

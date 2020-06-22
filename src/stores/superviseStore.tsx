@@ -36,6 +36,16 @@ export interface SuperviseCaseData {
     rawData: string;
 }
 
+export interface AssignSuperviseData {
+    accountId: number;
+}
+
+export interface TransferSuperviseData {
+    unit: string;
+    department: string;
+    comment: string;
+}
+
 export default class SuperviseStore {
 
     @observable
@@ -122,5 +132,13 @@ export default class SuperviseStore {
 
     async returnSuperviseData(clueId: number) {
         await axios.put(`/api/supervise/${clueId}/return`)
+    }
+
+    async assignSuperviseData(superviseId: number, AssignSuperviseData: AssignSuperviseData) {
+        await axios.post(`/api/supervise/${superviseId}/assign`, AssignSuperviseData)
+    }
+
+    async transferSuperviseData(superviseId: number, transferSuperviseData: TransferSuperviseData) {
+        await axios.post(`/api/supervise/${superviseId}/transfer`, transferSuperviseData)
     }
 }

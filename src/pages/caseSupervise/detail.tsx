@@ -317,7 +317,21 @@ class CaseSuperviseDetail extends React.Component<ClueJudgeDetailProps> {
                                             },
                                         });
                                     }}>提交</ColorButton>
-                                    <ColorButton bgColor="#FF3F11" fontColor="#FFFFFF" onClick={() => { }}>退回</ColorButton>
+                                    <ColorButton bgColor="#FF3F11" fontColor="#FFFFFF" onClick={() => {
+                                        confirm({
+                                            title: '操作确认',
+                                            icon: <ExclamationCircleOutlined translate="true" />,
+                                            content: '确认要退回吗？',
+                                            onOk: async () => {
+                                                await supervise.returnSuperviseData(this.state.superviseData.id as number);
+                                                message.success("退回成功！")
+                                                history.goBack()
+                                            },
+                                            onCancel() {
+                                                console.log('Cancel');
+                                            },
+                                        });
+                                    }}>退回</ColorButton>
                                 </>
                             }
                             {

@@ -9,6 +9,7 @@ import "pages/caseSupervise/index.less";
 import { Row, Col } from "antd";
 import { PendingAppointCriminalCaseTableColumn } from "../trial/tableConfig";
 import MainStore from "stores/mainStore";
+import { fillObjectFromOpsValue } from "components/table/tableListOpsComponents";
 
 export const ExecutionTabContent = inject("supervise", "main")((
     props: {
@@ -18,17 +19,21 @@ export const ExecutionTabContent = inject("supervise", "main")((
         main?: MainStore;
         activeTabIndex: string;
         onDetailClick: (caseId: number) => void;
-        onRejectClick: (caseId: number) => void;
-        onAppointClick: (caseId: number) => void;
+        onRejectClick: (caseId: number) => Promise<boolean>;
+        onAppointClick: (caseId: number) => Promise<boolean>;
     }
 ) => {
     const [caseCategory, setCaseCategory] = React.useState("civil_case")
     const [dataList, setDataList] = React.useState([])
 
+    const getSuperviseDataList = () => {
+        props.supervise!.getSuperviseDataList("execution", props.status, caseCategory)
+            .then(res => setDataList(res.data.records))
+    }
+
     useEffect(() => {
         if (props.activeTabIndex === "3") {
-            props.supervise!.getSuperviseDataList("execution", props.status, caseCategory)
-                .then(res => setDataList(res.data.records))
+            getSuperviseDataList()
         }
     }, [props.supervise, props.status, props.activeTabIndex, caseCategory])
 
@@ -48,11 +53,17 @@ export const ExecutionTabContent = inject("supervise", "main")((
                 </Row>
                 {
                     caseCategory === "civil_case" &&
-                    <CivilCaseTableSearch status={props.status} onSearch={changed => { }}></CivilCaseTableSearch>
+                    <CivilCaseTableSearch status={props.status} onSearch={changed => {
+                        props.supervise!.searchModel = fillObjectFromOpsValue({}, changed)
+                        getSuperviseDataList()
+                    }}></CivilCaseTableSearch>
                 }
                 {
                     caseCategory === "criminal_case" &&
-                    <CriminalCaseTableSearch status={props.status} onSearch={changed => { }}></CriminalCaseTableSearch>
+                    <CriminalCaseTableSearch status={props.status} onSearch={changed => {
+                        props.supervise!.searchModel = fillObjectFromOpsValue({}, changed)
+                        getSuperviseDataList()
+                    }}></CriminalCaseTableSearch>
                 }
             </BoxContainerInner>
             <BoxContainerInner flex={1} noPadding>
@@ -64,7 +75,11 @@ export const ExecutionTabContent = inject("supervise", "main")((
                         columns={(() => {
                             switch (props.status) {
                                 case "pendingProcess":
-                                    return PendingProcessCivilCaseTableColumn(props.onDetailClick, props.onRejectClick)
+                                    return PendingProcessCivilCaseTableColumn(props.onDetailClick, async caseId => {
+                                        if (await props.onRejectClick(caseId)) {
+                                            getSuperviseDataList()
+                                        }
+                                    })
                                 case "pendingExamine":
                                     if (props.main!.userProfile.role === "DEPARTMENT_LEADER") {
                                         return PendingExamineForDepartmentLeaderCivilCaseTableColumn(props.onDetailClick)
@@ -76,13 +91,22 @@ export const ExecutionTabContent = inject("supervise", "main")((
                                 case "examined":
                                     return ExaminedCivilCaseTableColumn(props.onDetailClick)
                                 case "pendingAppoint":
-                                    return PendingAppointCivilCaseTableColumn(props.onDetailClick, props.onAppointClick)
+                                    return PendingAppointCivilCaseTableColumn(props.onDetailClick, async caseId => {
+                                        let res = await props.onAppointClick(caseId)
+                                        if (res) {
+                                            getSuperviseDataList()
+                                        }
+                                    })
                                 default:
                                     return []
                             }
 
                         })()}
-                        onChange={(page, pageSize) => { console.log(page) }}
+                        onChange={(page, pageSize) => {
+                            props.supervise!.searchModel.page = page;
+                            props.supervise!.searchModel.pageSize = pageSize;
+                            getSuperviseDataList()
+                        }}
                     />
                 }
                 {
@@ -94,7 +118,11 @@ export const ExecutionTabContent = inject("supervise", "main")((
 
                             switch (props.status) {
                                 case "pendingProcess":
-                                    return PendingProcessCriminalCaseTableColumn(props.onDetailClick, props.onRejectClick)
+                                    return PendingProcessCriminalCaseTableColumn(props.onDetailClick, async caseId => {
+                                        if (await props.onRejectClick(caseId)) {
+                                            getSuperviseDataList()
+                                        }
+                                    })
                                 case "pendingExamine":
                                     if (props.main!.userProfile.role === "DEPARTMENT_LEADER") {
                                         return PendingExamineForDepartmentLeaderCriminalCaseTableColumn(props.onDetailClick)
@@ -106,12 +134,21 @@ export const ExecutionTabContent = inject("supervise", "main")((
                                 case "examined":
                                     return ExaminedCriminalCaseTableColumn(props.onDetailClick)
                                 case "pendingAppoint":
-                                    return PendingAppointCriminalCaseTableColumn(props.onDetailClick, props.onAppointClick)
+                                    return PendingAppointCriminalCaseTableColumn(props.onDetailClick, async caseId => {
+                                        let res = await props.onAppointClick(caseId)
+                                        if (res) {
+                                            getSuperviseDataList()
+                                        }
+                                    })
                                 default:
                                     return []
                             }
                         })()}
-                        onChange={(page, pageSize) => { console.log(page) }}
+                        onChange={(page, pageSize) => {
+                            props.supervise!.searchModel.page = page;
+                            props.supervise!.searchModel.pageSize = pageSize;
+                            getSuperviseDataList()
+                        }}
                     />
                 }
             </BoxContainerInner>

@@ -16,8 +16,8 @@ export const InvestigationTabContent = inject("supervise", "main")((
         main?: MainStore;
         activeTabIndex: string;
         onDetailClick: (caseId: number) => void;
-        onRejectClick: (caseId: number) => void;
-        onAppointClick: (caseId: number) => void;
+        onRejectClick: (caseId: number) => Promise<boolean>;
+        onAppointClick: (caseId: number) => Promise<boolean>;
     }
 ) => {
 
@@ -42,7 +42,7 @@ export const InvestigationTabContent = inject("supervise", "main")((
 
     return useObserver(() => {
         return <BoxContainer noPadding>
-            <BoxContainerInner flex={0.3}>
+            <BoxContainerInner minHeight={"150px"}>
                 <TableSearch status={props.status} onSearch={changed => {
                     supervise!.searchModel = fillObjectFromOpsValue({}, changed)
                     getSuperviseDataList()
@@ -57,7 +57,11 @@ export const InvestigationTabContent = inject("supervise", "main")((
                     columns={(() => {
                         switch (props.status) {
                             case "pendingProcess":
-                                return PendingProcessTableColumn(props.onDetailClick, props.onRejectClick)
+                                return PendingProcessTableColumn(props.onDetailClick, async caseId => {
+                                    if (await props.onRejectClick(caseId)) {
+                                        getSuperviseDataList()
+                                    }
+                                })
                             case "pendingExamine":
                                 if (props.main!.userProfile.role === "DEPARTMENT_LEADER") {
                                     return PendingExamineForDepartmentLeaderTableColumn(props.onDetailClick)
@@ -69,7 +73,12 @@ export const InvestigationTabContent = inject("supervise", "main")((
                             case "examined":
                                 return ExaminedTableColumn(props.onDetailClick)
                             case "pendingAppoint":
-                                return PendingAppointTableColumn(props.onAppointClick, props.onDetailClick)
+                                return PendingAppointTableColumn(async caseId => {
+                                    let res = await props.onAppointClick(caseId)
+                                    if (res) {
+                                        getSuperviseDataList()
+                                    }
+                                }, props.onDetailClick)
                             default:
                                 return AllTableColumn(props.onDetailClick)
                         }

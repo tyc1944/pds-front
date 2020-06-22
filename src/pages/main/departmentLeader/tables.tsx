@@ -16,7 +16,7 @@ import { fillObjectFromOpsValue } from "components/table/tableListOpsComponents"
 
 export const PendingAppointTable = inject("clue")((props: {
     onDetailClick: (clueId: number) => void;
-    onAppointClick: (clueData: ClueData) => void;
+    onAppointClick: (clueData: ClueData) => Promise<boolean>;
     activeIndex: string;
     clue?: ClueStore;
 }) => {
@@ -49,7 +49,12 @@ export const PendingAppointTable = inject("clue")((props: {
             total={total}
             pages={pages}
             data={dataList}
-            columns={TableColumn1(props.onDetailClick, props.onAppointClick)}
+            columns={TableColumn1(props.onDetailClick, async clueData => {
+                if (await props.onAppointClick(clueData)) {
+                    props.clue!.searchModel.page = 1;
+                    getClueData()
+                }
+            })}
             onChange={(page, pageSize) => {
                 props.clue!.searchModel.page = page;
                 props.clue!.searchModel.pageSize = pageSize;
@@ -61,7 +66,7 @@ export const PendingAppointTable = inject("clue")((props: {
 
 export const InvestigationTable = inject("supervise")((props: {
     onDetailClick: (caseId: number) => void;
-    onAppointClick: (caseId: number) => void;
+    onAppointClick: (caseId: number) => Promise<boolean>;
     activeIndex: string;
     supervise?: SuperviseStore;
 }) => {
@@ -93,7 +98,12 @@ export const InvestigationTable = inject("supervise")((props: {
             total={total}
             pages={pages}
             data={dataList}
-            columns={TableColumn2(props.onAppointClick, props.onDetailClick)}
+            columns={TableColumn2(async clueData => {
+                if (await props.onAppointClick(clueData)) {
+                    props.supervise!.searchModel.page = 1;
+                    getDataList()
+                }
+            }, props.onDetailClick)}
             onChange={(page, pageSize) => {
                 props.supervise!.searchModel.page = page;
                 props.supervise!.searchModel.pageSize = pageSize;
@@ -105,7 +115,7 @@ export const InvestigationTable = inject("supervise")((props: {
 
 export const TrialTable = inject("supervise")((props: {
     onDetailClick: (caseId: number) => void;
-    onAppointClick: (caseId: number) => void;
+    onAppointClick: (caseId: number) => Promise<boolean>;
     activeIndex: string;
     supervise?: SuperviseStore;
 }) => {
@@ -154,7 +164,17 @@ export const TrialTable = inject("supervise")((props: {
             total={total}
             pages={pages}
             data={dataList}
-            columns={caseType === "civil_case" ? TableColumn3(props.onDetailClick, props.onAppointClick) : TableColumn4(props.onDetailClick, props.onAppointClick)}
+            columns={caseType === "civil_case" ? TableColumn3(props.onDetailClick, async clueData => {
+                if (await props.onAppointClick(clueData)) {
+                    props.supervise!.searchModel.page = 1;
+                    getDataList()
+                }
+            }) : TableColumn4(props.onDetailClick, async clueData => {
+                if (await props.onAppointClick(clueData)) {
+                    props.supervise!.searchModel.page = 1;
+                    getDataList()
+                }
+            })}
             onChange={(page, pageSize) => {
                 props.supervise!.searchModel.page = page;
                 props.supervise!.searchModel.pageSize = pageSize;
@@ -166,7 +186,7 @@ export const TrialTable = inject("supervise")((props: {
 
 export const ExecutionTable = inject("supervise")((props: {
     onDetailClick: (caseId: number) => void;
-    onAppointClick: (caseId: number) => void;
+    onAppointClick: (caseId: number) => Promise<boolean>;
     activeIndex: string;
     supervise?: SuperviseStore;
 }) => {
@@ -215,7 +235,17 @@ export const ExecutionTable = inject("supervise")((props: {
             total={total}
             pages={pages}
             data={dataList}
-            columns={caseType === "civil_case" ? TableColumn5(props.onDetailClick, props.onAppointClick) : TableColumn6(props.onDetailClick, props.onAppointClick)}
+            columns={caseType === "civil_case" ? TableColumn5(props.onDetailClick, async clueData => {
+                if (await props.onAppointClick(clueData)) {
+                    props.supervise!.searchModel.page = 1;
+                    getDataList()
+                }
+            }) : TableColumn6(props.onDetailClick, async clueData => {
+                if (await props.onAppointClick(clueData)) {
+                    props.supervise!.searchModel.page = 1;
+                    getDataList()
+                }
+            })}
             onChange={(page, pageSize) => {
                 props.supervise!.searchModel.page = page;
                 props.supervise!.searchModel.pageSize = pageSize;
@@ -227,7 +257,7 @@ export const ExecutionTable = inject("supervise")((props: {
 
 export const AdministrationTable = inject("supervise")((props: {
     onDetailClick: (caseId: number) => void;
-    onAppointClick: (caseId: number) => void;
+    onAppointClick: (caseId: number) => Promise<boolean>;
     activeIndex: string;
     supervise?: SuperviseStore;
 }) => {
@@ -260,7 +290,12 @@ export const AdministrationTable = inject("supervise")((props: {
             total={total}
             pages={pages}
             data={dataList}
-            columns={TableColumn7(props.onDetailClick, props.onAppointClick)}
+            columns={TableColumn7(props.onDetailClick, async clueData => {
+                if (await props.onAppointClick(clueData)) {
+                    props.supervise!.searchModel.page = 1;
+                    getDataList()
+                }
+            })}
             onChange={(page, pageSize) => {
                 props.supervise!.searchModel.page = page;
                 props.supervise!.searchModel.pageSize = pageSize;
