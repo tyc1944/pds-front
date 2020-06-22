@@ -6,6 +6,7 @@ import { PendingProcessTableColumn, PendingExamineTableColumn, ExaminedTableColu
 import SuperviseStore from "stores/superviseStore";
 import { inject, useObserver } from "mobx-react";
 import MainStore from "stores/mainStore";
+import { fillObjectFromOpsValue } from "components/table/tableListOpsComponents";
 
 export const InvestigationTabContent = inject("supervise", "main")((
     props: {
@@ -21,22 +22,38 @@ export const InvestigationTabContent = inject("supervise", "main")((
 ) => {
 
     const [dataList, setDataList] = React.useState([])
+    const [total, setTotal] = React.useState(0)
+    const [pages, setPages] = React.useState(0)
+    const { supervise } = props;
+    const getSuperviseDataList = () => {
+        props.supervise!.getSuperviseDataList("investigation", props.status)
+            .then(res => {
+                setDataList(res.data.records)
+                setTotal(res.data.total)
+                setPages(res.data.pages)
+            })
+    }
+
     useEffect(() => {
         if (props.activeTabIndex === "1") {
-            props.supervise!.getSuperviseDataList("investigation", props.status)
-                .then(res => setDataList(res.data.records))
+            getSuperviseDataList();
         }
     }, [props.supervise, props.status, props.activeTabIndex])
 
     return useObserver(() => {
         return <BoxContainer noPadding>
             <BoxContainerInner flex={0.3}>
-                <TableSearch status={props.status} onSearch={changed => { }}></TableSearch>
+                <TableSearch status={props.status} onSearch={changed => {
+                    supervise!.searchModel = fillObjectFromOpsValue({}, changed)
+                    getSuperviseDataList()
+                }}></TableSearch>
             </BoxContainerInner>
             <BoxContainerInner flex={1} noPadding>
                 <TableList
                     title="案件列表"
                     data={dataList}
+                    total={total}
+                    pages={pages}
                     columns={(() => {
                         switch (props.status) {
                             case "pendingProcess":
@@ -57,7 +74,11 @@ export const InvestigationTabContent = inject("supervise", "main")((
                                 return AllTableColumn(props.onDetailClick)
                         }
                     })()}
-                    onChange={(page, pageSize) => { console.log(page) }}
+                    onChange={(page, pageSize) => {
+                        supervise!.searchModel.page = page;
+                        supervise!.searchModel.pageSize = pageSize;
+                        getSuperviseDataList()
+                    }}
                 />
             </BoxContainerInner>
         </BoxContainer>

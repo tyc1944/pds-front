@@ -9,7 +9,7 @@ import { ColorButton } from "components/buttons";
 import MainStore from "stores/mainStore";
 import { message, Modal, Input, DatePicker } from "antd";
 import _ from "lodash";
-import SuperviseStore, { SuperviseData } from "stores/superviseStore";
+import SuperviseStore, { SuperviseData, SuperviseCaseData } from "stores/superviseStore";
 import "./detail.less";
 import { ExceptionResultTitle, ExamineComment } from "./components";
 import { formatTimeYMD } from "utils/TimeUtil";
@@ -47,7 +47,7 @@ class CaseSuperviseDetail extends React.Component<ClueJudgeDetailProps> {
         processedDate: 0,
         comment: "",
         processInfoLabel: "",
-        caseData: [],
+        caseData: [] as SuperviseCaseData[],
         partyData: [],
         dataFiles: [] as string[][]
     }
@@ -167,8 +167,18 @@ class CaseSuperviseDetail extends React.Component<ClueJudgeDetailProps> {
                         this.state.caseData.length > 0 &&
                         <DataDetail header="案件数据">
                             {
-                                this.state.caseData.map(item =>
-                                    <CloseableDataTable dataInfo={this.generateDataTableFormatDataFromString(item)} title="案件编号：J3202820217032400001" headerInfo={<span style={{ color: '#8C929F' }}>报案时间：2018-06-01 12:21:12</span>} />
+                                this.state.caseData.map(item => {
+                                    let title = "";
+                                    let headerInfo = "";
+                                    let dataMap = JSON.parse(item.rawData)
+                                    switch (item.rawDataType) {
+                                        case "police_report":
+                                            title = `案件编号：${dataMap['案件编号']}`;
+                                            headerInfo = `报案时间：${dataMap['报案时间']}`;
+
+                                    }
+                                    return <CloseableDataTable dataInfo={this.generateDataTableFormatDataFromString(item.rawData)} title={title} headerInfo={<span style={{ color: '#8C929F' }}>{headerInfo}</span>} />
+                                }
                                 )
                             }
                         </DataDetail>
@@ -189,22 +199,25 @@ class CaseSuperviseDetail extends React.Component<ClueJudgeDetailProps> {
                             }
                         </DataDetail>
                     }
-                    <DataDetail header="监督处理信息">
-                        <SuperviseProcessInfo
-                            superviseData={this.state.superviseData}
-                            readonly={status !== "pendingProcess"}
-                            processInfoLabel={this.state.processInfoLabel}
-                            onRelatedUnitChange={relatedUnit => this.setState({
-                                relatedUnit
-                            })}
-                            onProcessedDateChange={processedDate => this.setState({
-                                processedDate
-                            })}
-                            onCommentChange={comment => this.setState({
-                                comment
-                            })}
-                        ></SuperviseProcessInfo>
-                    </DataDetail>
+                    {
+                        status !== "pendingAppoint" &&
+                        <DataDetail header="监督处理信息">
+                            <SuperviseProcessInfo
+                                superviseData={this.state.superviseData}
+                                readonly={status !== "pendingProcess"}
+                                processInfoLabel={this.state.processInfoLabel}
+                                onRelatedUnitChange={relatedUnit => this.setState({
+                                    relatedUnit
+                                })}
+                                onProcessedDateChange={processedDate => this.setState({
+                                    processedDate
+                                })}
+                                onCommentChange={comment => this.setState({
+                                    comment
+                                })}
+                            ></SuperviseProcessInfo>
+                        </DataDetail>
+                    }
                     {
                         (main.userProfile.role === "DEPARTMENT_LEADER" && status === "pendingExamine") &&
                         <DataDetail header="部门领导审批意见">

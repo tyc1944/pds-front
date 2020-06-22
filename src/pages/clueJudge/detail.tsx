@@ -209,7 +209,7 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
                         }
                     </DataDetail>
                     {
-                        clue.clueProcessData.status !== "pendingProcess" &&
+                        (clue.clueProcessData.status !== "pendingProcess" && clue.clueProcessData.status !== "pendingAppoint") &&
                         <DataDetail header="线索处理信息" headerOps={<ClueRateInfo />}>
                             <ClueProcessInfo readonly></ClueProcessInfo>
                         </DataDetail>

@@ -79,8 +79,8 @@ export const PendingAppointTableColumn = (
 ) => [...tmpTableColum,
 {
   title: "受理单位",
-  dataIndex: "createdTime",
-  key: "createdTime",
+  dataIndex: ["investigationSuperviseDetailData", "acceptingUnit"],
+  key: "acceptingUnit",
 },
 {
   title: "异常结果",

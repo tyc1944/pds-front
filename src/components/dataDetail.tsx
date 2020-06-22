@@ -86,10 +86,15 @@ export const CloseableDataTable = (props: {
                                 (() => {
                                     let tmp = []
                                     for (let k in item) {
+                                        let tmpContent = item[k];
+                                        let isLongContent = tmpContent && item[k].length > 21
                                         tmp.push(
                                             <Fragment key={k}>
                                                 <div style={{ width: "200px", justifyContent: "flex-end", paddingRight: "14px" }}>{k}</div>
-                                                <div style={{ flex: 1, paddingLeft: "14px" }}>{(k === "案发地址" || k === "发生地点") ? <span
+                                                <div style={{
+                                                    flex: 1, paddingLeft: "14px", display: isLongContent ? 'block' : 'flex',
+                                                    overflowY: 'auto'
+                                                }}>{(k === "案发地址" || k === "发生地点") ? <span
                                                     style={{
                                                         textDecoration: "underline",
                                                         color: "#4084F0",

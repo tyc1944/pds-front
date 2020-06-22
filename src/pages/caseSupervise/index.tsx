@@ -94,7 +94,7 @@ class CaseSupervise extends React.Component<CaseSuperviseProps> {
 
         return <div style={{
             display: "flex",
-            height: "100%",
+            minHeight: "100%",
             flexDirection: 'column'
         }}>
             <Breadscrum data={this.state.breadscrumData}></Breadscrum>

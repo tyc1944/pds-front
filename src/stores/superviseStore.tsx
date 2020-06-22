@@ -31,6 +31,11 @@ export interface SuperviseDataSearchModel {
     caseType?: string;
 }
 
+export interface SuperviseCaseData {
+    rawDataType: string;
+    rawData: string;
+}
+
 export default class SuperviseStore {
 
     @observable
