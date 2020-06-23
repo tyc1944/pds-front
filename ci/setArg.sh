@@ -8,5 +8,5 @@ elif [[ $1 == Staging* ]]; then
     sed 's/pds-server-api/pdsserverqa\.procuratorrate/g' /tmp/nginx.conf > /etc/nginx/nginx.conf
 elif [[ $1 == Release* ]]; then
     echo "release branch"
-    sed 's/mems-server-api/10.10.10.4/g' /tmp/nginx.conf > /etc/nginx/nginx.conf
+    sed 's/pds-server-api/pds-server/g' /tmp/nginx.conf > /etc/nginx/nginx.conf
 fi
