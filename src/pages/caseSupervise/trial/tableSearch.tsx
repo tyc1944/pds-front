@@ -52,7 +52,7 @@ export const CivilCaseTableSearch = inject("main")((props: {
                 <Row>
                     <Col xl={2} xs={4} style={{ color: '#9099A2' }}>异常结果</Col>
                     <Col xl={22} xs={20}>
-                        <SingleSelectionGroup name="caseCategory" defaultValue="不限"
+                        <SingleSelectionGroup name="exceptionResult" defaultValue="不限"
                             selectItems={["不限", "审理期限异常", "审判组织异常", "送达程序异常", "诉讼代理异常",
                                 "开庭异常", "结案方式异常", "判赔金额异常"]} />
                     </Col>

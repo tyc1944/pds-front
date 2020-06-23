@@ -122,7 +122,7 @@ export const CriminalCaseTableSearch = inject("main")((props: {
                 <Row >
                     <Col xl={2} xs={4} style={{ color: '#9099A2' }}>执行年份</Col>
                     <Col>
-                        <SingleSelectionGroup name="executeYear" defaultValue="不限"
+                        <SingleSelectionGroup name="executionYear" defaultValue="不限"
                             selectItems={["不限", "2019年", "2018年", "2017年", "2016年", "2015年", "2014年"]} />
                     </Col>
                 </Row>

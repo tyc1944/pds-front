@@ -30,6 +30,10 @@ export interface SuperviseDataSearchModel {
     pageSize?: number;
     status?: string;
     caseType?: string;
+    exceptionResult?: string;
+    executionYear?: string;
+    examineStep?: string;
+    judgementYear?: string;
 }
 
 export interface SuperviseCaseData {
@@ -93,6 +97,18 @@ export default class SuperviseStore {
         }
         if (caseCategory) {
             params.caseType = caseCategory;
+        }
+        if (params.exceptionResult === "不限") {
+            delete params.exceptionResult;
+        }
+        if (params.executionYear === "不限") {
+            delete params.executionYear;
+        }
+        if (params.examineStep === "不限") {
+            delete params.examineStep;
+        }
+        if (params.judgementYear === "不限") {
+            delete params.judgementYear;
         }
         return axios.get(`/api/supervise/${dataType}/list`, {
             params

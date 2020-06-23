@@ -43,7 +43,7 @@ export const TableSearch = inject("main")((props: {
                 <Row >
                     <Col xl={2} xs={4} style={{ color: '#9099A2' }}>立案日期</Col>
                     <Col>
-                        <OptionsDateRangePicker name={["caseCreatedDateStart", "caseCreatedDateEnd"]}></OptionsDateRangePicker>
+                        <OptionsDateRangePicker name={["filingDateStart", "filingDateEnd"]}></OptionsDateRangePicker>
                     </Col>
                 </Row>
             </div>

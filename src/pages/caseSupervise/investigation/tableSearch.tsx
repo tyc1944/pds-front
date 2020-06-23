@@ -51,7 +51,7 @@ export const TableSearch = inject("main")((props: {
                 <Row>
                     <Col xl={2} xs={4} style={{ color: '#9099A2' }}>异常结果</Col>
                     <Col xl={22} xs={20}>
-                        <SingleSelectionGroup name="caseCategory" defaultValue="不限" selectItems={["不限", "未采取强制措施", "未移送审查起诉"]}></SingleSelectionGroup>
+                        <SingleSelectionGroup name="exceptionResult" defaultValue="不限" selectItems={["不限", "未采取强制措施", "未移送审查起诉"]}></SingleSelectionGroup>
                     </Col>
                 </Row>
             </div>
