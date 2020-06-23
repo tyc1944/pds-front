@@ -26,7 +26,7 @@ export const history = syncHistoryWithStore(browserHistory, routingStore);
 const App: React.FC = () => {
     return (
         <Provider {...stores}>
-            <div className="App">
+            <div className="pds-app">
                 <Router history={history}>
                     <Switch>
                         <Route key="login" exact path="/login" component={Login}/>
