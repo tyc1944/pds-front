@@ -13,7 +13,6 @@ import SuperviseStore from "stores/superviseStore";
 import { AssignCaseModal } from "./modals";
 import { SuperviseData } from "stores/superviseStore";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
-import { ClueData } from "stores/clueStore";
 
 const { confirm } = Modal;
 const { TabPane } = Tabs;
