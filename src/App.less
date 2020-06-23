@@ -49,7 +49,7 @@
     }
   }
 
-  .ant-tabs-nav-scroll {
+  .ant-tabs {
     border          : 1px solid #D8DBE1;
     background-color: #F5F7FB;
 
@@ -59,13 +59,18 @@
     }
 
     .ant-tabs-nav {
+      margin: 0;
+
       .ant-tabs-tab {
-        width       : 150px;
-        height      : 58px;
-        font-size   : 18px;
-        text-align  : center;
-        color       : #6c87b3;
-        margin-right: 0 !important;
+        width          : 150px;
+        height         : 58px;
+        font-size      : 18px;
+        text-align     : center;
+        color          : #6c87b3;
+        margin-right   : 0 !important;
+        display        : flex;
+        justify-content: center;
+
       }
 
       .ant-tabs-tab-active {
