@@ -21,6 +21,7 @@ const { TabPane } = Tabs;
 interface MatchParams {
     status: string;
     role: string;
+    tabIndex: string;
 }
 
 interface CaseSuperviseProps extends RouteComponentProps<MatchParams> {
@@ -42,15 +43,18 @@ class CaseSupervise extends React.Component<CaseSuperviseProps> {
 
     componentDidMount() {
         this.getBreadscrumData(this.props.match.params.status)
+        this.setState({
+            activeTabIndex: this.props.match.params.tabIndex
+        })
     }
 
     onDetailClick = (caseId: number) => {
         const { history } = this.props;
         const { status, role } = this.props.match.params;
         if (role && status) {
-            history.push(`/index/supervise/${role}/${status}/${caseId}`)
+            history.push(`/index/supervise/${role}/${status}/${this.state.activeTabIndex}/${caseId}`)
         } else {
-            history.push(`/index/supervise/all/all/${caseId}`)
+            history.push(`/index/supervise/all/all/${this.state.activeTabIndex}/${caseId}`)
         }
     }
 
@@ -87,6 +91,14 @@ class CaseSupervise extends React.Component<CaseSuperviseProps> {
         this.props.supervise.searchModel = {}
         this.setState({
             activeTabIndex: key
+        }, () => {
+            const { history } = this.props;
+            const { status, role } = this.props.match.params;
+            if (role && status) {
+                history.replace(`/index/supervise/${role}/${status}/${this.state.activeTabIndex}`)
+            } else {
+                history.replace(`/index/supervise/all/all/${this.state.activeTabIndex}`)
+            }
         })
     }
 
@@ -163,7 +175,7 @@ class CaseSupervise extends React.Component<CaseSuperviseProps> {
             }
             <Breadscrum data={this.state.breadscrumData}></Breadscrum>
             <BoxContainer>
-                <Tabs defaultActiveKey="1" onChange={this.onTabChange}>
+                <Tabs defaultActiveKey={this.props.match.params.tabIndex} onChange={this.onTabChange}>
                     <TabPane tab={<TableNameWithNumber name="侦查监督" count={0} />} key="1">
                         <InvestigationTabContent
                             activeTabIndex={this.state.activeTabIndex}

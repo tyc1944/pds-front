@@ -1,7 +1,7 @@
 import React from "react";
 import { Space } from "antd";
 import { formatTimeYMD } from "utils/TimeUtil";
-import { PendingProcessTempTableColum, PendingExamineTempTableColum, ExaminedTempTableColum, PendingExamineForDepartmentLeaderTempTableColum, PendingExamineForLeaderTempTableColum } from "../components";
+import { PendingProcessTempTableColum, PendingExamineTempTableColum, ExaminedTempTableColum, PendingExamineForDepartmentLeaderTempTableColum, PendingExamineForLeaderTempTableColum, AllTempTableColum } from "../components";
 
 const tmpTableColum = [
   {
@@ -43,8 +43,8 @@ const tmpTableColum = [
   },
   {
     title: "异常结果",
-    dataIndex: "execptionResult",
-    key: "execptionResult",
+    dataIndex: "exceptionResult",
+    key: "exceptionResult",
   },
 ]
 
@@ -211,3 +211,30 @@ export const ExaminedTableColumn = (
       )
     }
   ];
+
+export const AllTableColumn = (
+  onDetailClick: (caseId: number) => void,
+) => [...tmpTableColum,
+{
+  title: "异常结果",
+  dataIndex: "exceptionResult",
+  key: "exceptionResult",
+},
+...AllTempTableColum,
+{
+  title: "操作",
+  dataIndex: "operation",
+  key: "operation",
+  render: (val: any, row: any) => (
+    <Space style={{ color: "#2687FF" }}>
+      <span
+        style={{
+          cursor: "pointer"
+        }}
+        onClick={() => onDetailClick(row.id)}
+      >
+        查看
+        </span>
+    </Space>
+  )
+}];

@@ -1,6 +1,6 @@
 import React from "react";
 import { Space } from "antd";
-import { ExaminedTempTableColum, PendingExamineTempTableColum, PendingProcessTempTableColum, PendingExamineForDepartmentLeaderTempTableColum, PendingExamineForLeaderTempTableColum } from "../components";
+import { ExaminedTempTableColum, PendingExamineTempTableColum, PendingProcessTempTableColum, PendingExamineForDepartmentLeaderTempTableColum, PendingExamineForLeaderTempTableColum, AllTempTableColum } from "../components";
 
 const civilCaseTempTableColmn = [
   {
@@ -20,7 +20,7 @@ const civilCaseTempTableColmn = [
   },
   {
     title: "申请执行人",
-    dataIndex: ["executionSuperviseDetailData", "caseName"],
+    dataIndex: ["executionSuperviseDetailData", "executionApplicant"],
     key: "executionApplicant",
   },
   {
@@ -400,3 +400,57 @@ export const ExaminedCriminalCaseTableColumn = (
       )
     }
   ];
+
+export const AllCivilCaseTableColumn = (
+  onDetailClick: (caseId: number) => void,
+) => [...civilCaseTempTableColmn,
+{
+  title: "异常结果",
+  dataIndex: "exceptionResult",
+  key: "exceptionResult",
+},
+...AllTempTableColum,
+{
+  title: "操作",
+  dataIndex: "operation",
+  key: "operation",
+  render: (val: any, row: any) => (
+    <Space style={{ color: "#2687FF" }}>
+      <span
+        style={{
+          cursor: "pointer"
+        }}
+        onClick={() => onDetailClick(row.id)}
+      >
+        查看
+        </span>
+    </Space>
+  )
+}];
+
+export const AllCrminalCaseTableColumn = (
+  onDetailClick: (caseId: number) => void,
+) => [...criminalCaseTempTableColumn,
+{
+  title: "异常结果",
+  dataIndex: "exceptionResult",
+  key: "exceptionResult",
+},
+...AllTempTableColum,
+{
+  title: "操作",
+  dataIndex: "operation",
+  key: "operation",
+  render: (val: any, row: any) => (
+    <Space style={{ color: "#2687FF" }}>
+      <span
+        style={{
+          cursor: "pointer"
+        }}
+        onClick={() => onDetailClick(row.id)}
+      >
+        查看
+        </span>
+    </Space>
+  )
+}];

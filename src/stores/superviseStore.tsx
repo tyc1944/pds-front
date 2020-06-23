@@ -1,6 +1,7 @@
 import { observable, action } from "mobx";
 import { axios } from "../utils/RequestUtil";
 import { ProcessStep } from "components/dataDetail";
+import _ from "lodash";
 
 export interface SuperviseData {
     id: number;
@@ -86,7 +87,7 @@ export default class SuperviseStore {
     }
 
     getSuperviseDataList(dataType: string, status?: string, caseCategory?: string) {
-        let params = this.searchModel
+        let params = _.clone(this.searchModel)
         if (status && status !== "all") {
             params.status = status;
         }

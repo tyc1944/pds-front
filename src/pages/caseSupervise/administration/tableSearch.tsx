@@ -22,13 +22,7 @@ export const TableSearch = inject("main")((props: {
         }}
         initData={changed}
     >
-        <div style={{
-            margin: '10px 0px',
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            height: '100%'
-        }}>
+        <div className="table-search-container">
             <div>
                 <Row>
                     <Col span={12}>

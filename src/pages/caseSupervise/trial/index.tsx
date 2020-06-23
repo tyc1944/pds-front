@@ -2,7 +2,11 @@ import React, { useEffect } from "react";
 import { BoxContainer, BoxContainerInner } from "components/layout";
 import { TableList } from "components/table";
 import { CivilCaseTableSearch, CriminalCaseTableSearch } from "./tableSearch";
-import { PendingProcessCivilCaseTableColumn, PendingExamineCivilCaseTableColumn, ExaminedCivilCaseTableColumn, PendingProcessCriminalCaseTableColumn, PendingExamineCriminalCaseTableColumn, ExaminedCriminalCaseTableColumn, PendingAppointCivilCaseTableColumn, PendingAppointCriminalCaseTableColumn, PendingExamineForLeaderCriminalCaseTableColumn, PendingExamineForDepartmentLeaderCriminalCaseTableColumn, PendingExamineForDepartmentLeaderCivilCaseTableColumn, PendingExamineForLeaderCivilCaseTableColumn } from "./tableConfig";
+import {
+    PendingProcessCivilCaseTableColumn, PendingExamineCivilCaseTableColumn, ExaminedCivilCaseTableColumn, PendingProcessCriminalCaseTableColumn,
+    PendingExamineCriminalCaseTableColumn, ExaminedCriminalCaseTableColumn, PendingAppointCivilCaseTableColumn, PendingAppointCriminalCaseTableColumn, PendingExamineForLeaderCriminalCaseTableColumn, PendingExamineForDepartmentLeaderCriminalCaseTableColumn, PendingExamineForDepartmentLeaderCivilCaseTableColumn,
+    PendingExamineForLeaderCivilCaseTableColumn, AllCivilCaseTableColumn, AllCrminalCaseTableColumn
+} from "./tableConfig";
 import { Row, Col } from "antd";
 import "pages/caseSupervise/index.less";
 import { inject, useObserver } from "mobx-react";
@@ -25,10 +29,16 @@ export const TrialTabContent = inject("supervise", "main")((
 
     const [caseCategory, setCaseCategory] = React.useState("civil_case")
     const [dataList, setDataList] = React.useState([])
+    const [total, setTotal] = React.useState(0)
+    const [pages, setPages] = React.useState(0)
 
     const getSuperviseDataList = () => {
         props.supervise!.getSuperviseDataList("trial", props.status, caseCategory)
-            .then(res => setDataList(res.data.records))
+            .then(res => {
+                setDataList(res.data.records)
+                setTotal(res.data.total)
+                setPages(res.data.pages)
+            })
     }
 
     useEffect(() => {
@@ -78,6 +88,8 @@ export const TrialTabContent = inject("supervise", "main")((
                 {
                     caseCategory === "civil_case" &&
                     <TableList
+                        total={total}
+                        pages={pages}
                         title="案件列表"
                         data={dataList}
                         columns={(() => {
@@ -106,7 +118,7 @@ export const TrialTabContent = inject("supervise", "main")((
                                         }
                                     })
                                 default:
-                                    return []
+                                    return AllCivilCaseTableColumn(props.onDetailClick)
                             }
 
                         })()}
@@ -120,6 +132,8 @@ export const TrialTabContent = inject("supervise", "main")((
                 {
                     caseCategory === "criminal_case" &&
                     <TableList
+                        total={total}
+                        pages={pages}
                         title="案件列表"
                         data={dataList}
                         columns={(() => {
@@ -149,7 +163,7 @@ export const TrialTabContent = inject("supervise", "main")((
                                         }
                                     })
                                 default:
-                                    return []
+                                    return AllCrminalCaseTableColumn(props.onDetailClick)
                             }
                         })()}
                         onChange={(page, pageSize) => {

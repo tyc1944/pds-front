@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { BoxContainer, BoxContainerInner } from "components/layout";
 import { TableList } from "components/table";
 import { TableSearch } from "./tableSearch";
-import { PendingProcessTableColumn, PendingExamineTableColumn, ExaminedTableColumn, PendingAppointTableColumn, PendingExamineForLeaderTableColumn, PendingExamineForDepartmentLeaderTableColumn } from "./tableConfig";
+import { PendingProcessTableColumn, PendingExamineTableColumn, ExaminedTableColumn, PendingAppointTableColumn, PendingExamineForLeaderTableColumn, PendingExamineForDepartmentLeaderTableColumn, AllTableColumn } from "./tableConfig";
 import { inject } from "mobx-react";
 import SuperviseStore from "stores/superviseStore";
 import MainStore from "stores/mainStore";
@@ -22,9 +22,15 @@ export const AdministrationTabContent = inject("supervise", "main")((
 ) => {
 
     const [dataList, setDataList] = React.useState([])
+    const [total, setTotal] = React.useState(0)
+    const [pages, setPages] = React.useState(0)
     const getSuperviseDataList = () => {
         props.supervise!.getSuperviseDataList("administration", props.status)
-            .then(res => setDataList(res.data.records))
+            .then(res => {
+                setDataList(res.data.records)
+                setTotal(res.data.total)
+                setPages(res.data.pages)
+            })
     }
 
     useEffect(() => {
@@ -42,6 +48,8 @@ export const AdministrationTabContent = inject("supervise", "main")((
         </BoxContainerInner>
         <BoxContainerInner flex={1} noPadding>
             <TableList
+                pages={pages}
+                total={total}
                 title="案件列表"
                 data={dataList}
                 columns={(() => {
@@ -71,7 +79,7 @@ export const AdministrationTabContent = inject("supervise", "main")((
                                 }
                             })
                         default:
-                            return []
+                            return AllTableColumn(props.onDetailClick)
                     }
                 })()}
                 onChange={(page, pageSize) => {

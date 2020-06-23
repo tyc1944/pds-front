@@ -91,7 +91,7 @@ export const TableList = ({
                 onPageSizeChange={size => {
                     setPageSize(size)
                     setCurrentPage(1)
-                    onChange && onChange(currentPage, pageSize)
+                    onChange && onChange(1, size)
                 }}
                 onPrePageClick={() => {
                     setCurrentPage(currentPage - 1)

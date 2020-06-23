@@ -42,7 +42,7 @@ export const InvestigationTabContent = inject("supervise", "main")((
 
     return useObserver(() => {
         return <BoxContainer noPadding>
-            <BoxContainerInner minHeight={"150px"}>
+            <BoxContainerInner>
                 <TableSearch status={props.status} onSearch={changed => {
                     supervise!.searchModel = fillObjectFromOpsValue({}, changed)
                     getSuperviseDataList()

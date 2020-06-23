@@ -240,43 +240,43 @@ class MainLayout extends Component<MainLayoutProps, object> {
                                         {
                                             name: "待处理",
                                             count: statusCount.pendingProcessCount,
-                                            activeUrl: "/index/supervise/executor/pendingProcess",
+                                            activeUrl: "/index/supervise/executor/pendingProcess/1",
                                         }, {
                                             name: "待审批",
                                             count: statusCount.pendingExamineCount,
-                                            activeUrl: "/index/supervise/executor/pendingExamine",
+                                            activeUrl: "/index/supervise/executor/pendingExamine/1",
                                         }, {
                                             name: "已审批",
                                             count: statusCount.examinedCount,
-                                            activeUrl: "/index/supervise/executor/examined",
+                                            activeUrl: "/index/supervise/executor/examined/1",
                                         },
                                         {
                                             name: "全部案件",
-                                            activeUrl: "/index/supervise/all/all",
+                                            activeUrl: "/index/supervise/all/all/1",
                                         }]
                                 case "DEPARTMENT_LEADER":
                                     return [
                                         {
                                             name: "待指派",
                                             count: statusCount.pendingAppointCount,
-                                            activeUrl: "/index/supervise/departmentleader/pendingAppoint",
+                                            activeUrl: "/index/supervise/departmentleader/pendingAppoint/1",
                                         }, {
                                             name: "待审批",
                                             count: statusCount.pendingExamineCount,
-                                            activeUrl: "/index/supervise/departmentleader/pendingExamine",
+                                            activeUrl: "/index/supervise/departmentleader/pendingExamine/1",
                                         }, {
                                             name: "全部案件",
-                                            activeUrl: "/index/supervise/all/all",
+                                            activeUrl: "/index/supervise/all/all/1",
                                         }]
                                 case "LEADERSHIP":
                                     return [
                                         {
                                             name: "待审批",
                                             count: statusCount.pendingExamineCount,
-                                            activeUrl: "/index/supervise/leader/pendingExamine",
+                                            activeUrl: "/index/supervise/leader/pendingExamine/1",
                                         }, {
                                             name: "全部案件",
-                                            activeUrl: "/index/supervise/all/all",
+                                            activeUrl: "/index/supervise/all/all/1",
                                         }]
                             }
                             return []
@@ -375,8 +375,8 @@ class MainLayout extends Component<MainLayoutProps, object> {
                             <Route path="/index/clue/leader/judge/pendingExamine/:clueId" exact
                                 component={ClueJudgeDetail} />
                             {/* 案件*/}
-                            <Route path="/index/supervise/:role/:status" exact component={CaseSupervise} />
-                            <Route path="/index/supervise/:role/:status/:superviseId" exact
+                            <Route path="/index/supervise/:role/:status/:tabIndex" exact component={CaseSupervise} />
+                            <Route path="/index/supervise/:role/:status/:tabIndex/:superviseId" exact
                                 component={CaseSuperviseDetail} />
                             {/* 全部案件*/}
                             <Route path="/index/supervise/all/all" exact component={CaseSupervise} />
