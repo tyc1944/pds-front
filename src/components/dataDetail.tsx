@@ -119,7 +119,7 @@ export const DataTable = (props: {
     onAddressClick?: (address: string) => void
 }) => {
     return <div className="closeable-data-table">
-        {
+        <div className="closeable-data-table-body">{
             props.dataInfo.map((item, index) =>
                 <div className="closeable-data-table-row" key={index}>
                     {
@@ -144,6 +144,7 @@ export const DataTable = (props: {
                 </div>
             )
         }
+        </div>
     </div>
 }
 

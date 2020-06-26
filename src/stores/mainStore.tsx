@@ -132,4 +132,5 @@ export default class MainStore {
     getStatisticsTodoList() {
         return axios.get("/api/statistics/todoList")
     }
+
 }

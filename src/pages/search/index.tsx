@@ -1,11 +1,12 @@
 import React from "react";
 import Breadscrum from "components/breadscrum";
 import { inject, observer } from "mobx-react";
-import DataStore from "stores/dataStore";
+import DataStore, { GlobalSearchResult } from "stores/dataStore";
 import { BoxContainer, BoxContainerInner } from "components/layout";
 import "./index.less";
+import { RouteComponentProps } from "react-router-dom";
 
-interface SearchResultProps {
+interface SearchResultProps extends RouteComponentProps {
     data: DataStore
 }
 
@@ -13,7 +14,18 @@ interface SearchResultProps {
 @observer
 class SearchResult extends React.Component<SearchResultProps> {
 
+    state = {
+        searchResult: [] as GlobalSearchResult[]
+    }
+
     componentDidMount() {
+        const { data } = this.props;
+        data.getGlobalSearch(data.searchParam)
+            .then(res => {
+                this.setState({
+                    searchResult: res.data.records
+                })
+            })
     }
 
     render() {
@@ -30,18 +42,19 @@ class SearchResult extends React.Component<SearchResultProps> {
                 <BoxContainerInner flex={1}>
                     <div style={{ fontSize: "18px", color: '#2D405E' }}>搜索结果：</div>
                     <div className="search-result-list">
-                        <div className="search-result-item">
-                            <em>{data.searchParam}</em> 销售侵犯注册商品专用权的产品【锡工商新分案（2016）第00150号】
-                        </div>
-                        <div className="search-result-item">
-                            <em>{data.searchParam}</em> 销售侵犯注册商品专用权的产品【锡工商新分案（2016）第00150号】
-                        </div>
-                        <div className="search-result-item">
-                            <em>{data.searchParam}</em> 销售侵犯注册商品专用权的产品【锡工商新分案（2016）第00150号】
-                        </div>
-                        <div className="search-result-item">
-                            <em>{data.searchParam}</em> 销售侵犯注册商品专用权的产品【锡工商新分案（2016）第00150号】
-                        </div>
+                        {
+                            this.state.searchResult.map((item, index) =>
+                                <div className="search-result-item" key={index} onClick={() => {
+                                    const { history } = this.props;
+                                    history.push(`/index/search/result/detail/${item.dataId}`, {
+                                        dataType: item.dataType,
+                                        dataDescription: item.dataDescription
+                                    })
+                                }}>
+                                    {item.dataDescription}
+                                </div>
+                            )
+                        }
                     </div>
 
                 </BoxContainerInner>

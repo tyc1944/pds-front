@@ -44,6 +44,7 @@ import NewsWiki from "../pages/wiki/news";
 import SearchResult from "pages/search";
 import DataStore from "stores/dataStore";
 import _ from "lodash";
+import SearchResultDetail from "pages/search/detail";
 
 const { Header, Sider, Content } = Layout;
 
@@ -64,6 +65,19 @@ class MainLayout extends Component<MainLayoutProps, object> {
 
     componentDidMount() {
         this.props.main.getUserProfile();
+    }
+
+    goToSearch = () => {
+        const { data, history } = this.props;
+
+        if (!_.isEmpty(this.state.searchParam)) {
+            data.searchParam = this.state.searchParam;
+            history.push("/index/search/result")
+        } else {
+            if (history.location.pathname === "/index/search/result") {
+                history.goBack()
+            }
+        }
     }
 
     render() {
@@ -91,20 +105,11 @@ class MainLayout extends Component<MainLayoutProps, object> {
                     </div>
                     <div className="mainSearch">
                         <Input
-                            addonAfter={<SearchOutlined translate="true" />}
+                            addonAfter={<SearchOutlined translate="true" onClick={() => this.goToSearch()} />}
                             onChange={e => this.setState({
                                 searchParam: e.currentTarget.value
                             })}
-                            onPressEnter={() => {
-                                if (!_.isEmpty(this.state.searchParam)) {
-                                    data.searchParam = this.state.searchParam;
-                                    history.push("/index/search/result")
-                                } else {
-                                    if (history.location.pathname === "/index/search/result") {
-                                        history.goBack()
-                                    }
-                                }
-                            }} />
+                            onPressEnter={() => this.goToSearch()} />
                     </div>
                     <div className="loginInfo">
                         <div
@@ -337,6 +342,7 @@ class MainLayout extends Component<MainLayoutProps, object> {
                                 <Redirect to="/index/main"></Redirect>
                             </Route>
                             <Route path="/index/search/result" exact component={SearchResult} />
+                            <Route path="/index/search/result/detail/:dataId" exact component={SearchResultDetail} />
                             <Route path="/index/main" exact component={Main} />
                             <Route path="/index/clue/analysis" exact component={ClueAnalysis} />
                             <Route path="/index/clue/all/judge/all" exact component={AllClueJudge} />
