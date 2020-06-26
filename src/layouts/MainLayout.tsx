@@ -154,9 +154,12 @@ class MainLayout extends Component<MainLayoutProps, object> {
                         <MenuItem name="首页" icon={<HomeOutlined translate="true" />} onClick={() => {
                             history.replace("/index/main");
                         }} />
-                        <MenuItem name="线索汇聚" icon={<DeploymentUnitOutlined translate="true" />} onClick={() => {
-                            history.replace("/index/clue/analysis");
-                        }} />
+                        {
+                            main.userProfile.role === "LEADERSHIP" &&
+                            <MenuItem name="线索汇聚" icon={<DeploymentUnitOutlined translate="true" />} onClick={() => {
+                                history.replace("/index/clue/analysis");
+                            }} />
+                        }
                         <MenuItem name="线索研判" icon={<ShareAltOutlined translate="true" />} subItems={async () => {
                             let statusCount = {
                                 pendingProcessCount: 0,
