@@ -74,7 +74,7 @@ class SearchResultDetail extends React.Component<SearchResultProps> {
             height: "100%",
             flexDirection: 'column'
         }}>
-            <Breadscrum data={['搜索', state.dataDescription]}></Breadscrum>
+            <Breadscrum data={['搜索', state.dataDescription.replace("<em>", "").replace("</em>", "")]}></Breadscrum>
             <BoxContainer>
                 <BoxContainerInner flex={1}>
                     <DataDetail header="案件信息">

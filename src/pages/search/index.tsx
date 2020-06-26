@@ -2,9 +2,12 @@ import React from "react";
 import Breadscrum from "components/breadscrum";
 import { inject, observer } from "mobx-react";
 import DataStore, { GlobalSearchResult } from "stores/dataStore";
-import { BoxContainer, BoxContainerInner } from "components/layout";
+import { BoxContainer, BoxContainerInner, HTMLContent } from "components/layout";
 import "./index.less";
 import { RouteComponentProps } from "react-router-dom";
+import { Layout } from "antd";
+
+const Content = Layout.Content;
 
 interface SearchResultProps extends RouteComponentProps {
     data: DataStore
@@ -51,7 +54,7 @@ class SearchResult extends React.Component<SearchResultProps> {
                                         dataDescription: item.dataDescription
                                     })
                                 }}>
-                                    {item.dataDescription}
+                                    <HTMLContent content={item.dataDescription}></HTMLContent>
                                 </div>
                             )
                         }

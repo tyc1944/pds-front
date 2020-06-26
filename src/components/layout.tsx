@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 interface BoxContainerProps {
     children: React.ReactNode;
@@ -102,4 +102,17 @@ export class BorderedBox2 extends React.Component<BorderedBoxProps> {
             </div>
         );
     }
+}
+
+export const HTMLContent = (props: {
+    content: string
+}) => {
+
+    const ref = React.createRef<HTMLDivElement>()
+
+    useEffect(() => {
+        ref.current!.innerHTML = props.content;
+    }, [props.content])
+
+    return <div ref={ref}></div>
 }
