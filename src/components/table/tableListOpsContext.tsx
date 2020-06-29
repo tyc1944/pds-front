@@ -4,16 +4,20 @@ import { TableListOpsValueType, mergeOpsValue } from "./tableListOpsComponents";
 export class TableListOps {
   private changed: TableListOpsValueType[];
   private onChanged?: (
-    changed: TableListOpsValueType[] | TableListOpsValueType
+    changed: TableListOpsValueType[] | TableListOpsValueType,
+    opsName?: string
   ) => void;
+  private opsName?: string;
 
   constructor(
     onChanged?: (
       changed: TableListOpsValueType[] | TableListOpsValueType
     ) => void,
-    initData?: TableListOpsValueType[]
+    initData?: TableListOpsValueType[],
+    opsName?: string
   ) {
     this.onChanged = onChanged;
+    this.opsName = opsName;
     //初始化数据
     if (initData) {
       this.changed = initData;
@@ -22,10 +26,11 @@ export class TableListOps {
     }
   }
 
-  updateChange = (changed: TableListOpsValueType[] | TableListOpsValueType) => {
+  updateChange = (changed: TableListOpsValueType[] | TableListOpsValueType, opsName?: string) => {
     this.changed = mergeOpsValue(changed, this.changed);
+    this.opsName = opsName;
     if (this.onChanged) {
-      this.onChanged(this.changed);
+      this.onChanged(this.changed, this.opsName);
     }
   };
 
@@ -42,13 +47,14 @@ interface TableListOpsHelperInterface {
   children: React.ReactNode;
   initData?: TableListOpsValueType[];
   onChanged?: (
-    changed: TableListOpsValueType[] | TableListOpsValueType
+    changed: TableListOpsValueType[] | TableListOpsValueType,
+    opsName?: string
   ) => void;
 }
 
 export class TableListOpsHelper extends React.Component<
   TableListOpsHelperInterface
-> {
+  > {
   tableListOps: TableListOps;
 
   constructor(props: TableListOpsHelperInterface) {

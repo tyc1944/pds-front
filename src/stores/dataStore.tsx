@@ -8,6 +8,32 @@ export interface GlobalSearchResult {
     dataType: string;
 }
 
+export interface ClueAnalysisResult {
+    clueReceivedCount: number;
+    clueReceivedRank: number,
+    cityClueReceivedRate: number,
+    clueDoneCount: number,
+    clueDoneRank: number,
+    cluePendingCount: number,
+    cluePendingRank: number,
+    clueExaminingCount: number,
+    clueExaminingRank: number,
+    clueExaminedCount: number,
+    clueExaminedRank: number,
+    clueWholeProcessDuration: number,
+    clueWholeProcessDurationRank: number,
+    clueExcutorProcessDuration: number,
+    clueExcutorProcessDurationRank: number,
+    clueLeaderProcessDuration: number,
+    clueLeaderProcessDurationRank: number
+}
+
+export interface ClueAnalysisSearch {
+    startDate: string;
+    endDate: string;
+    analysisDuration: string;
+}
+
 export default class DataStore {
 
     @observable
@@ -29,6 +55,18 @@ export default class DataStore {
                 dataId,
                 dataType
             }
+        })
+    }
+
+    getClueAnalysis(params: ClueAnalysisSearch) {
+        return axios.get("/api/statistics/clueAnalysis", {
+            params
+        })
+    }
+
+    getClueSourceAnalysis(params: ClueAnalysisSearch) {
+        return axios.get("/api/statistics/clueSourceAnalysis", {
+            params
         })
     }
 }

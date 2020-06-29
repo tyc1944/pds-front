@@ -12,10 +12,9 @@ import ClueStore from "stores/clueStore";
 import { GroupedColumnLine } from '@ant-design/charts';
 import "./index.less"
 import { RiseOutlined, FallOutlined } from "@ant-design/icons";
+import DataStore, { ClueAnalysisResult, ClueAnalysisSearch } from "stores/dataStore";
 
 const data = [
-    { category: '网上报案', count: 30, type: "线索量", duration: 10 },
-    { category: '网上报案', count: 20, type: "案件量" },
     { category: '舆情线索', count: 30, type: "线索量", duration: 10 },
     { category: '舆情线索', count: 20, type: "案件量" },
     { category: '公安线索', count: 30, type: "线索量", duration: 10 },
@@ -80,9 +79,10 @@ const transformData = [
 
 interface ClueAnalysisProps {
     clue: ClueStore;
+    data: DataStore;
 }
 
-@inject("clue")
+@inject("clue", "data")
 class ClueAnalysis extends React.Component<ClueAnalysisProps> {
 
     state = {
@@ -90,6 +90,8 @@ class ClueAnalysis extends React.Component<ClueAnalysisProps> {
         clueDataTotalCount: 0,
         clueDataTotalPages: 0,
         clueDataList: [],
+        categoryData: [],
+        lineData: [],
         statistics: {
             clueReceivedCount: 0,
             clueReceivedRank: 0,
@@ -108,7 +110,7 @@ class ClueAnalysis extends React.Component<ClueAnalysisProps> {
             clueExcutorProcessDurationRank: 0,
             clueLeaderProcessDuration: 0,
             clueLeaderProcessDurationRank: 0
-        }
+        } as ClueAnalysisResult
     }
 
     componentDidMount() {
@@ -144,16 +146,22 @@ class ClueAnalysis extends React.Component<ClueAnalysisProps> {
 
         const config = {
             title: {
-                visible: false,
-                text: '',
+                visible: true,
+                text: '线索来源环比统计及处理时效统计',
             },
             description: {
                 visible: false,
                 text: '',
             },
-            data: [data, transformData],
+            forceFit: true,
+            padding: [100, 100, 100, 100],
+            data: [this.state.categoryData, this.state.lineData],
             xField: 'category',
             yField: ['count', 'count'],
+            legend: {
+                visible: true,
+                position: 'right-center',
+            },
             columnGroupField: 'type',
         };
 
@@ -166,11 +174,55 @@ class ClueAnalysis extends React.Component<ClueAnalysisProps> {
             <BoxContainer>
                 <BoxContainerInner>
                     <TableListOpsHelper
-                        onChanged={changed =>
+                        onChanged={(changed, opsName) => {
+                            let tmp = fillObjectFromOpsValue({
+                                analysisDuration: opsName
+                            }, changed as []) as ClueAnalysisSearch
+                            this.props.data.getClueAnalysis(tmp)
+                                .then(res => this.setState({
+                                    statistics: res.data
+                                }))
+                            this.props.data.getClueSourceAnalysis(tmp)
+                                .then(res => {
+                                    let tmp = res.data
+                                    this.setState({
+                                        categoryData: [
+                                            { category: '网上报案', count: tmp.lastPeriodClueSourceAnalysis.internetReport, type: "上阶段线索" },
+                                            { category: '网上报案', count: tmp.clueSourceAnalysis.internetReport, type: "本阶段线索" },
+                                            { category: '舆情线索', count: tmp.lastPeriodClueSourceAnalysis.socialClue, type: "上阶段线索" },
+                                            { category: '舆情线索', count: tmp.clueSourceAnalysis.socialClue, type: "本阶段线索" },
+                                            { category: '公安线索', count: tmp.lastPeriodClueSourceAnalysis.policeClue, type: "上阶段线索" },
+                                            { category: '公安线索', count: tmp.clueSourceAnalysis.policeClue, type: "本阶段线索" },
+                                            { category: '法院线索', count: tmp.lastPeriodClueSourceAnalysis.courtClue, type: "上阶段线索" },
+                                            { category: '法院线索', count: tmp.clueSourceAnalysis.courtClue, type: "本阶段线索" },
+                                            { category: '网格化线索', count: tmp.lastPeriodClueSourceAnalysis.meshClue, type: "上阶段线索" },
+                                            { category: '网格化线索', count: tmp.clueSourceAnalysis.meshClue, type: "本阶段线索" },
+                                            { category: '自行发现', count: tmp.lastPeriodClueSourceAnalysis.selfFind, type: "上阶段线索" },
+                                            { category: '自行发现', count: tmp.clueSourceAnalysis.selfFind, type: "本阶段线索" },
+                                            { category: '12345', count: tmp.lastPeriodClueSourceAnalysis.p12345, type: "上阶段线索" },
+                                            { category: '12345', count: tmp.clueSourceAnalysis.p12345, type: "本阶段线索" },
+                                            { category: '政风热线', count: tmp.lastPeriodClueSourceAnalysis.hotline, type: "上阶段线索" },
+                                            { category: '政风热线', count: tmp.clueSourceAnalysis.hotline, type: "本阶段线索" },
+                                            { category: '12315', count: tmp.lastPeriodClueSourceAnalysis.p12315, type: "上阶段线索" },
+                                            { category: '12315', count: tmp.clueSourceAnalysis.p12315, type: "本阶段线索" },
+                                        ],
+                                        lineData: [
+                                            { category: '网上报案', count: tmp.clueProcessDuration.internetReport },
+                                            { category: '舆情线索', count: tmp.clueProcessDuration.socialClue },
+                                            { category: '公安线索', count: tmp.clueProcessDuration.policeClue },
+                                            { category: '法院线索', count: tmp.clueProcessDuration.courtClue },
+                                            { category: '网格化线索', count: tmp.clueProcessDuration.meshClue },
+                                            { category: '自行发现', count: tmp.clueProcessDuration.selfFind },
+                                            { category: '12345', count: tmp.clueProcessDuration.p12345 },
+                                            { category: '政风热线', count: tmp.clueProcessDuration.hotline },
+                                            { category: '12315', count: tmp.clueProcessDuration.p12315 },
+                                        ]
+                                    })
+                                })
                             this.setState({
                                 changed
                             })
-                        }
+                        }}
                         initData={this.state.changed}
                     >
                         <div style={{
@@ -184,7 +236,7 @@ class ClueAnalysis extends React.Component<ClueAnalysisProps> {
                                 <Row >
                                     <Col xl={2} xs={4} style={{ color: '#9099A2' }}>统计时段</Col>
                                     <Col>
-                                        <OptionsDateRangePicker name={["dateStart", "dateEnd"]}></OptionsDateRangePicker>
+                                        <OptionsDateRangePicker supportUnlimited={false} name={["startDate", "endDate"]}></OptionsDateRangePicker>
                                     </Col>
                                 </Row>
                             </div>
@@ -236,7 +288,10 @@ class ClueAnalysis extends React.Component<ClueAnalysisProps> {
                 <BoxContainerInner>
                     <div className="clue-analysis-bar-chart">
                         <div>
-                            <GroupedColumnLine {...config} />
+                            <GroupedColumnLine {...config} style={{
+                                width: "100%",
+                                height: "100%"
+                            }} />
                         </div>
                         <div>
                             <div>
@@ -307,14 +362,14 @@ const RankEqual = (props: {}) =>
         环比<span style={{ color: "#bfbfbf" }}> --%</span>
     </>
 
-const RankUp = (props: {
+const RankDown = (props: {
     val: number
 }) =>
     <>
         环比<span style={{ color: "#259B24" }}> <FallOutlined translate="true" />{props.val}%</span>
     </>
 
-const RankDown = (props: {
+const RankUp = (props: {
     val: number
 }) =>
     <>

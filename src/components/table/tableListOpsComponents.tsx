@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Input, DatePicker, Select, Cascader, InputNumber, Checkbox } from "antd";
 import { isArray, isUndefined } from "util";
 import Search from "antd/lib/input/Search";
@@ -629,8 +629,11 @@ export const MultiSelectionGroup = ({
 export const OptionsDateRangePicker = ({
   name = ["startDate", "endDate"],
   title,
-  style = {}
-}: TableListOpsProps) => {
+  style = {},
+  supportUnlimited = true
+}: {
+  supportUnlimited?: boolean
+} & TableListOpsProps) => {
   const { updateChange, getChange } = useContext(TableListOpsContext);
   const currentMounthDate = [formatTimeYMDHMS(getMonthStartDate()), formatTimeYMDHMS(getMonthEndDate())]
   const lastMonthDate = [formatTimeYMDHMS(getLastMonthStartDate()), formatTimeYMDHMS(getLastMonthEndDate())]
@@ -640,6 +643,19 @@ export const OptionsDateRangePicker = ({
     getChange()
       .filter(data => name.indexOf(data.name) !== -1)
       .map(data => moment(data.value)) as RangeValue<moment.Moment>
+
+  useEffect(() => {
+    if (!supportUnlimited) {
+      updateChange([{
+        name: name[0],
+        value: currentMounthDate[0]
+      }, {
+        name: name[1],
+        value: currentMounthDate[1]
+      }], '本月')
+    }
+  }, [supportUnlimited])
+
   return (
     <div>
       {
@@ -650,17 +666,20 @@ export const OptionsDateRangePicker = ({
         justifyContent: "flex-start",
         alignItems: 'center'
       }}>
-        <div
-          onClick={() => updateChange([{
-            name: name[0],
-            value: undefined
-          }, {
-            name: name[1],
-            value: undefined
-          }])}
-          className={`selectOption ${!initValue || initValue.length !== 2 || !initValue[0] ? 'selected' : ''}`} >
-          不限
+        {
+          supportUnlimited &&
+          <div
+            onClick={() => updateChange([{
+              name: name[0],
+              value: undefined
+            }, {
+              name: name[1],
+              value: undefined
+            }])}
+            className={`selectOption ${!initValue || initValue.length !== 2 || !initValue[0] ? 'selected' : ''}`} >
+            不限
         </div>
+        }
 
         <div
           onClick={() => updateChange([{
@@ -669,7 +688,7 @@ export const OptionsDateRangePicker = ({
           }, {
             name: name[1],
             value: currentMounthDate[1]
-          }])}
+          }], '本月')}
           className={`selectOption ${initValue && initValue.length === 2 && formatTimeYMDHMS(initValue[0]) === currentMounthDate[0] ? 'selected' : ''}`} >
           本月
         </div>
@@ -681,7 +700,7 @@ export const OptionsDateRangePicker = ({
           }, {
             name: name[1],
             value: lastMonthDate[1]
-          }])}
+          }], '上个月')}
           className={`selectOption ${initValue && initValue.length === 2 && formatTimeYMDHMS(initValue[0]) === lastMonthDate[0] ? 'selected' : ''}`} >
           上个月
         </div>
@@ -693,7 +712,7 @@ export const OptionsDateRangePicker = ({
           }, {
             name: name[1],
             value: currentYearDate[1]
-          }])}
+          }], '近一年')}
           className={`selectOption ${initValue && initValue.length === 2 && formatTimeYMDHMS(initValue[0]) === currentYearDate[0] ? 'selected' : ''}`} >
           近一年
         </div>
@@ -727,14 +746,26 @@ export const OptionsDateRangePicker = ({
                   });
                 }
               } else {
-                changedVal.push({
-                  name: name[0],
-                  value: undefined
-                });
-                changedVal.push({
-                  name: name[1],
-                  value: undefined
-                });
+
+                if (!supportUnlimited) {
+                  changedVal.push({
+                    name: name[0],
+                    value: currentMounthDate[0]
+                  })
+                  changedVal.push({
+                    name: name[1],
+                    value: currentMounthDate[1]
+                  })
+                } else {
+                  changedVal.push({
+                    name: name[0],
+                    value: undefined
+                  });
+                  changedVal.push({
+                    name: name[1],
+                    value: undefined
+                  });
+                }
               }
               updateChange(changedVal);
             }}
