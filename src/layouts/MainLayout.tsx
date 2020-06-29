@@ -45,6 +45,7 @@ import SearchResult from "pages/search";
 import DataStore from "stores/dataStore";
 import _ from "lodash";
 import SearchResultDetail from "pages/search/detail";
+import WikiDecisionDetail from "pages/wiki/decision/detail";
 
 const { Header, Sider, Content } = Layout;
 
@@ -318,10 +319,10 @@ class MainLayout extends Component<MainLayoutProps, object> {
                         <MenuItem name="知产宣传" icon={<NotificationOutlined translate="true" />} subItems={[{
                             name: "决策参考",
                             activeUrl: "/index/wiki/decision"
-                        }, {
+                        }/*, {
                             name: "知产新闻",
                             activeUrl: '/index/wiki/news'
-                        }]} />
+                        }*/]} />
                         <MenuItem name="系统设置" icon={<SettingOutlined translate="true" />} subItems={async () => {
                             if (main.userProfile.role === "ADMIN" || main.userProfile.role === "MANAGER") {
                                 return [{
@@ -401,6 +402,7 @@ class MainLayout extends Component<MainLayoutProps, object> {
                             <Route path="/index/data/retrieval/wuxi" exact component={WuxiCasesDataRetrieval} />
                             {/*知识宣传*/}
                             <Route path="/index/wiki/decision" exact component={DecisionWiki} />
+                            <Route path="/index/wiki/decision/:id" exact component={WikiDecisionDetail} />
                             <Route path="/index/wiki/news" exact component={NewsWiki} />
                             {/*设置*/}
                             <Route path="/index/setting/account" exact component={Setting} />

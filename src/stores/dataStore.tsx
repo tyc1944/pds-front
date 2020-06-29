@@ -34,6 +34,17 @@ export interface ClueAnalysisSearch {
     analysisDuration: string;
 }
 
+export interface WikiDecisionSearch {
+    keyword?: string;
+    page?: number;
+    pageSize?: number;
+}
+
+export interface WikiDecision {
+    id: number;
+    name: string;
+}
+
 export default class DataStore {
 
     @observable
@@ -68,5 +79,15 @@ export default class DataStore {
         return axios.get("/api/statistics/clueSourceAnalysis", {
             params
         })
+    }
+
+    getWikiDecision(params: WikiDecisionSearch) {
+        return axios.get("/api/wiki/decision", {
+            params
+        })
+    }
+
+    getWikiDecisionDetail(id: string) {
+        return axios.get(`/api/wiki/decision/${id}`)
     }
 }
