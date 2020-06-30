@@ -1,159 +1,316 @@
 import React, { useEffect } from "react";
 import { Line } from '@ant-design/charts';
-import { Scene, PolygonLayer, LineLayer, PointLayer } from '@antv/l7';
-import { Mapbox } from '@antv/l7-maps';
+import { MapboxScene } from '@antv/l7-react';
+import { CountryLayer } from '@antv/l7-district';
 import { Donut, Area, Rose, Pie } from '@ant-design/charts';
 import { Progress } from "antd";
+import { axios } from "utils/RequestUtil";
 
 export const CaseRankChart = () => {
 
-    const data = [
-        {
-            year: '1991',
-            value: 3,
-        },
-        {
-            year: '1992',
-            value: 4,
-        },
-        {
-            year: '1993',
-            value: 3.5,
-        },
-        {
-            year: '1994',
-            value: 5,
-        },
-        {
-            year: '1995',
-            value: 4.9,
-        },
-        {
-            year: '1996',
-            value: 6,
-        },
-        {
-            year: '1997',
-            value: 7,
-        },
-        {
-            year: '1998',
-            value: 9,
-        },
-        {
-            year: '1999',
-            value: 13,
-        },
-    ];
+    const [category, setCategory] = React.useState('刑事案件')
+    const [data, setData] = React.useState([] as any[])
     const config = {
         title: {
             visible: false,
             text: '',
         },
         description: {
-            visible: false,
-            text: '',
+            visible: true,
+            text: '单位：万件',
         },
         padding: 'auto',
         forceFit: true,
         data,
         xField: 'year',
         yField: 'value',
+        meta: {
+            year: {
+                alias: '年份',
+                formatter: (v: number) => { return `${v}年` }
+            },
+            value: {
+                alias: '数量'
+            }
+        },
         smooth: true,
         height: 350,
     };
 
+
+    useEffect(() => {
+        let params = (category === '' ? null : {
+            category
+        })
+        axios.get("/api/statistics/national/ip", { params })
+            .then(res => {
+                let tmp = res.data;
+                let tmpData = [] as any[];
+                for (let i = 4; i < 10; i++) {
+                    tmpData.push({
+                        year: '201' + i,
+                        value: tmp["count201" + i] / 10000
+                    })
+                }
+                setData(tmpData);
+            })
+    }, [category])
+
     return <>
-        <div style={{ fontSize: '16px', color: "#101010", position: "absolute", top: "23px", left: "32px" }}>全国知识产权案例走势统计</div>
+        <div style={{ fontSize: '16px', color: "#101010", position: "absolute", top: "23px", left: "32px", display: "relative", width: "calc(100% - 50px)" }}>
+            全国知识产权案例走势统计
+            <div className="case-rank-items">
+                <div onClick={() => setCategory('刑事案件')} className={category === '刑事案件' ? 'active' : ''}>刑事</div>
+                <div onClick={() => setCategory('民事案件')} className={category === '民事案件' ? 'active' : ''}>民事</div>
+                <div onClick={() => setCategory('行政案件')} className={category === '行政案件' ? 'active' : ''}>行政</div>
+                <div onClick={() => setCategory('')} className={category === '' ? 'active' : ''}>其他</div>
+            </div>
+        </div>
         <Line {...config} />
     </>
 }
 
 
-export const CaseAreaChart = (props: {}) => {
-    const divRef = React.useRef(document.createElement('div'))
+export class CaseAreaChart extends React.Component {
 
-    useEffect(() => {
-        const scene = new Scene({
-            id: divRef.current as HTMLDivElement,
-            map: new Mapbox({
-                pitch: 0,
-                style: 'blank',
-                center: [116.368652, 39.93866],
-                zoom: 10.07
-            })
-        });
-        scene.on('loaded', () => {
-            fetch(
-                'https://gw.alipayobjects.com/os/bmw-prod/d6da7ac1-8b4f-4a55-93ea-e81aa08f0cf3.json'
-            )
-                .then(res => res.json())
-                .then(data => {
-                    const chinaPolygonLayer = new PolygonLayer({
-                        autoFit: true
-                    })
-                        .source(data)
-                        .color(
-                            'name',
-                            [
-                                'rgb(239,243,255)',
-                                'rgb(189,215,231)',
-                                'rgb(107,174,214)',
-                                'rgb(49,130,189)',
-                                'rgb(8,81,156)'
-                            ]
-                        )
-                        .shape('fill')
-                        .style({
-                            opacity: 1
-                        });
-                    //  图层边界
-                    const layer2 = new LineLayer({
-                        zIndex: 2
-                    })
-                        .source(data)
-                        .color('rgb(93,112,146)')
-                        .size(0.6)
-                        .style({
-                            opacity: 1
-                        });
+    divRef = React.createRef<HTMLDivElement>()
 
-                    scene.addLayer(chinaPolygonLayer);
-                    scene.addLayer(layer2);
-                });
-            fetch(
-                'https://gw.alipayobjects.com/os/bmw-prod/c4a6aa9d-8923-4193-a695-455fd8f6638c.json' //  标注数据
-            ).then(res => res.json())
-                .then(data => {
-                    const labelLayer = new PointLayer({
-                        zIndex: 5
-                    })
-                        .source(data, {
-                            parser: {
-                                type: 'json',
-                                coordinates: 'center'
-                            }
-                        })
-                        .color('#fff')
-                        .shape('name', 'text')
-                        .size(12)
-                        .style({
-                            opacity: 1,
-                            stroke: '#fff',
-                            strokeWidth: 0,
-                            padding: [5, 5],
-                            textAllowOverlap: false
-                        });
+    componentDidMount() {
+    }
 
-                    scene.addLayer(labelLayer);
-                });
-        });
-    }, [divRef])
+    render() {
+        return <>
+            <div style={{ fontSize: '16px', color: "#101010", position: "absolute", top: "23px", left: "32px" }}>案件区域分布</div>
+            <div style={{ width: '100%', height: "100%", padding: "12px" }}>
+                <MapboxScene
+                    onSceneLoaded={scene => {
+                        axios.get("/api/statistics/national/area")
+                            .then(res => {
+                                let tmp = res.data;
+                                let data = [{
+                                    name: '云南省',
+                                    code: 530000,
+                                    value: tmp.yunnan
+                                },
+                                {
+                                    name: '黑龙江省',
+                                    code: 230000,
+                                    value: tmp.heilongjiang
+                                },
+                                {
+                                    name: '贵州省',
+                                    code: 520000,
+                                    value: tmp.guizhou
+                                },
+                                {
+                                    name: '北京市',
+                                    code: 110000,
+                                    value: tmp.beijing
+                                },
+                                {
+                                    name: '河北省',
+                                    code: 130000,
+                                    value: tmp.hebei
+                                },
+                                {
+                                    name: '山西省',
+                                    code: 140000,
+                                    value: tmp.shanxi
+                                },
+                                {
+                                    name: '吉林省',
+                                    code: 220000,
+                                    value: tmp.jilin
+                                },
+                                {
+                                    name: '宁夏回族自治区',
+                                    code: 640000,
+                                    value: tmp.ningxia
+                                },
+                                {
+                                    name: '辽宁省',
+                                    code: 210000,
+                                    value: tmp.liaoning
+                                },
+                                {
+                                    name: '海南省',
+                                    code: 460000,
+                                    value: tmp.hainan
+                                },
+                                {
+                                    name: '内蒙古自治区',
+                                    code: 150000,
+                                    value: tmp.neimeng
+                                },
+                                {
+                                    name: '天津市',
+                                    code: 120000,
+                                    value: tmp.tianjin
+                                },
+                                {
+                                    name: '新疆维吾尔自治区',
+                                    code: 650000,
+                                    value: tmp.xinjiang
+                                },
+                                {
+                                    name: '上海市',
+                                    code: 310000,
+                                    value: tmp.shanghai
+                                },
+                                {
+                                    name: '陕西省',
+                                    code: 610000,
+                                    value: tmp.shanxi
+                                },
+                                {
+                                    name: '甘肃省',
+                                    code: 620000,
+                                    value: tmp.ganshu
+                                },
+                                {
+                                    name: '安徽省',
+                                    code: 340000,
+                                    value: tmp.anhui
+                                },
+                                {
+                                    name: '香港特别行政区',
+                                    code: 810000,
+                                    value: tmp.xianggang
+                                },
+                                {
+                                    name: '广东省',
+                                    code: 440000,
+                                    value: tmp.guangdong
+                                },
+                                {
+                                    name: '河南省',
+                                    code: 410000,
+                                    value: tmp.henan
+                                },
+                                {
+                                    name: '湖南省',
+                                    code: 430000,
+                                    value: tmp.hunan
+                                },
+                                {
+                                    name: '江西省',
+                                    code: 360000,
+                                    value: tmp.jiangxi
+                                },
+                                {
+                                    name: '四川省',
+                                    code: 510000,
+                                    value: tmp.sichuan
+                                },
+                                {
+                                    name: '广西壮族自治区',
+                                    code: 450000,
+                                    value: tmp.guangxi
+                                },
+                                {
+                                    name: '江苏省',
+                                    code: 320000,
+                                    value: tmp.jiangsu
+                                },
+                                {
+                                    name: '澳门特别行政区',
+                                    code: 820000,
+                                    value: 0
+                                },
+                                {
+                                    name: '浙江省',
+                                    code: 330000,
+                                    value: tmp.zhejiang
+                                },
+                                {
+                                    name: '山东省',
+                                    code: 370000,
+                                    value: tmp.shandong
+                                },
+                                {
+                                    name: '青海省',
+                                    code: 630000,
+                                    value: tmp.qinghai
+                                },
+                                {
+                                    name: '重庆市',
+                                    code: 500000,
+                                    value: tmp.chongqing
+                                },
+                                {
+                                    name: '福建省',
+                                    code: 350000,
+                                    value: tmp.fujian
+                                },
+                                {
+                                    name: '湖北省',
+                                    code: 420000,
+                                    value: tmp.hubei
+                                },
+                                {
+                                    name: '西藏自治区',
+                                    code: 540000,
+                                    value: tmp.xizang
+                                },
+                                {
+                                    name: '台湾省',
+                                    code: 710000,
+                                    value: 0
+                                }
+                                ];
+                                new CountryLayer(scene, {
+                                    data,
+                                    joinBy: ['NAME_CHN', 'name'],
+                                    depth: 1,
+                                    provinceStroke: '#783D2D',
+                                    cityStroke: '#EBCCB4',
+                                    cityStrokeWidth: 1,
+                                    fill: {
+                                        color: {
+                                            field: 'value',
+                                            values: [
+                                                '#feedde',
+                                                '#fdd0a2',
+                                                '#fdae6b',
+                                                '#fd8d3c',
+                                                '#e6550d',
+                                                '#a63603'
+                                            ]
+                                        }
+                                    },
+                                    popup: {
+                                        enable: true,
+                                        Html: props => {
+                                            return `<div>
+                                        <div>${props.NAME_CHN}</div>
+                                        <div>案例总量：${props.value}件</div>
+                                    </div>`;
+                                        }
+                                    }
+                                });
+                            })
 
-    return <>
-        <div style={{ fontSize: '16px', color: "#101010", position: "absolute", top: "23px", left: "32px" }}>案件区域分布</div>
-        <div style={{ width: '100%', height: "100%", padding: "12px" }} ref={divRef}></div>
-    </>
+                    }}
+                    map={{
+                        center: [116.2825, 39.9],
+                        pitch: 0,
+                        style: 'blank',
+                        zoom: 3,
+                        minZoom: 0,
+                        maxZoom: 10
+                    }}
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0
+                    }}
+                ></MapboxScene>
+            </div>
+        </>
+    }
+
 }
 
 export const CaseCategoryChart = () => {

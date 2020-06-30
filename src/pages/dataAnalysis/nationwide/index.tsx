@@ -1,11 +1,10 @@
 import React from "react";
 import Breadscrum from "components/breadscrum";
 import { BoxContainer, BoxContainerInner } from "components/layout";
-import { TableListOpsHelper } from "components/table/tableListOpsContext";
-import { Row, Col } from "antd";
-import { OptionsDateRangePicker, TableListOpsValueType } from "components/table/tableListOpsComponents";
+import { TableListOpsValueType } from "components/table/tableListOpsComponents";
 import { ChartRow } from "../components";
 import { CaseRankChart, CaseAreaChart, CaseCategoryChart, IndustryStatisticsChart, ProvinceCaseRankChart, ProcuratorationCaseRankChart, TrialProcedureChart, TrialDurationChart, YiShenChart, ErShenChart, ProceduralLawChart, SubstantiveLawChart } from "./charts";
+import "./index.less";
 
 class NationwideDataAnalysis extends React.Component {
 
@@ -21,7 +20,7 @@ class NationwideDataAnalysis extends React.Component {
         }}>
             <Breadscrum data={["决策辅助"]}></Breadscrum>
             <BoxContainer>
-                <BoxContainerInner>
+                {/* <BoxContainerInner>
                     <TableListOpsHelper
                         onChanged={changed =>
                             this.setState({
@@ -47,7 +46,7 @@ class NationwideDataAnalysis extends React.Component {
                             </div>
                         </div>
                     </TableListOpsHelper>
-                </BoxContainerInner>
+                </BoxContainerInner> */}
                 <BoxContainerInner flex={1} noPadding noBorder>
                     <ChartRow leftContent={<CaseRankChart></CaseRankChart>} rightContent={<CaseAreaChart></CaseAreaChart>}></ChartRow>
                     <ChartRow leftContent={<CaseCategoryChart></CaseCategoryChart>} rightContent={<IndustryStatisticsChart></IndustryStatisticsChart>}></ChartRow>

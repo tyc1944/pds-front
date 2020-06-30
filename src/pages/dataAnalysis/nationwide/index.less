@@ -1,0 +1,28 @@
+.case-rank-items {
+    position       : absolute;
+    right          : 0;
+    top            : 0;
+    display        : flex;
+    width          : 60%;
+    justify-content: space-around;
+
+    &>div {
+        color           : #A6A6A6;
+        background-color: #F4F4F4;
+        border-radius   : 14px;
+        width           : 86px;
+        font-size       : 14px;
+        height          : 32px;
+        display         : flex;
+        justify-content : center;
+        align-items     : center;
+        cursor          : pointer;
+
+        &:hover,
+        &.active {
+            color           : #4084F0;
+            border          : 1px solid #4084F0;
+            background-color: #FFFFFF;
+        }
+    }
+}
