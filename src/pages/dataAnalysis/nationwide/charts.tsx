@@ -5,6 +5,7 @@ import { CountryLayer } from '@antv/l7-district';
 import { Donut, Area, Rose, Pie } from '@ant-design/charts';
 import { Progress } from "antd";
 import { axios } from "utils/RequestUtil";
+import _ from "lodash";
 
 export const CaseRankChart = () => {
 
@@ -297,7 +298,10 @@ export class CaseAreaChart extends React.Component {
                         style: 'blank',
                         zoom: 3,
                         minZoom: 0,
-                        maxZoom: 10
+                        maxZoom: 10,
+                    }}
+                    option={{
+                        logoVisible: false
                     }}
                     style={{
                         position: 'absolute',
@@ -314,32 +318,39 @@ export class CaseAreaChart extends React.Component {
 }
 
 export const CaseCategoryChart = () => {
-    const data = [
-        {
-            type: '分类一',
-            value: 27,
-        },
-        {
-            type: '分类二',
-            value: 25,
-        },
-        {
-            type: '分类三',
-            value: 18,
-        },
-        {
-            type: '分类四',
-            value: 15,
-        },
-        {
-            type: '分类五',
-            value: 10,
-        },
-        {
-            type: '其它',
-            value: 5,
-        },
-    ];
+
+    const [data, setData] = React.useState([] as any[]);
+    const [tmpData, setTmpData] = React.useState({} as any);
+
+    useEffect(() => {
+        axios.get("/api/statistics/national/category")
+            .then(res => {
+                let tmp = res.data;
+                setTmpData(tmp);
+                setData([
+                    {
+                        type: '民事',
+                        value: tmp.civilCaseCount,
+                    },
+                    {
+                        type: '刑事',
+                        value: tmp.criminalCaseCount,
+                    },
+                    {
+                        type: '行政',
+                        value: tmp.adminCaseCount,
+                    },
+                    {
+                        type: '执行',
+                        value: tmp.executionCaseCount,
+                    },
+                    {
+                        type: '其他',
+                        value: tmp.othersCaseCount
+                    }
+                ])
+            })
+    }, [true])
     const config = {
         forceFit: true,
         title: {
@@ -350,11 +361,42 @@ export const CaseCategoryChart = () => {
             visible: false,
             text: '',
         },
+        statistic: {
+            visible: true
+        },
+        label: {
+            visible: true,
+            formatter: (text: string | number | undefined | null, item: any, idx: number) => {
+                return Math.round(item.percent * 1000) / 10 + "%";
+            }
+        },
         radius: 0.8,
         padding: 'auto',
         data,
         angleField: 'value',
         colorField: 'type',
+        legend: {
+            text: {
+                style: {
+                    fontSize: 18,
+                    color: '#101010'
+                },
+                formatter: (text: string, cfg: any) => {
+                    switch (text) {
+                        case '民事':
+                            return `${text}   ${tmpData.civilCaseCount}`
+                        case '刑事':
+                            return `${text}   ${tmpData.criminalCaseCount}`
+                        case '行政':
+                            return `${text}   ${tmpData.adminCaseCount}`
+                        case '执行':
+                            return `${text}   ${tmpData.executionCaseCount}`
+                        default:
+                            return `${text}   ${tmpData.othersCaseCount}`
+                    }
+                }
+            }
+        }
     };
     return <>
         <div style={{ fontSize: '16px', color: "#101010", position: "absolute", top: "23px", left: "32px" }}>案件类型统计</div>
@@ -366,10 +408,266 @@ export const CaseCategoryChart = () => {
 export const IndustryStatisticsChart = () =>
     <>
         <div style={{ fontSize: '16px', color: "#101010", position: "absolute", top: "23px", left: "32px" }}>行业统计</div>
+        <div style={{
+            position: "absolute",
+            left: "0px",
+            top: "0px",
+            width: "100%",
+            height: "100%",
+            display: 'relative'
+        }}>
+            <div style={{
+                backgroundColor: "#85B4FF",
+                color: "#FFFFFF",
+                width: "215px",
+                height: '215px',
+                fontSize: "28px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: 'center',
+                borderRadius: "50%",
+                position: "absolute",
+                top: "100px",
+                left: "calc(50% - 99px)"
+            }}>制造业</div>
+            <div style={{
+                backgroundColor: "#65E3DA",
+                color: "#FFFFFF",
+                width: "170px",
+                height: '170px',
+                fontSize: "18px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: 'center',
+                borderRadius: "50%",
+                position: "absolute",
+                top: "26px",
+                right: "20px"
+            }}>批发和零售业</div>
+            <div style={{
+                backgroundColor: "#C29FFD",
+                color: "#FFFFFF",
+                width: "92px",
+                height: '92px',
+                fontSize: "20px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: 'center',
+                borderRadius: "50%",
+                position: "absolute",
+                top: "26px",
+                left: "calc(50% - 60px)"
+            }}>制造业</div>
+            <div style={{
+                backgroundColor: "#57C88C",
+                color: "#FFFFFF",
+                width: "136px",
+                height: '136px',
+                fontSize: "16px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: 'center',
+                borderRadius: "50%",
+                position: "absolute",
+                bottom: "50px",
+                right: "0px"
+            }}>信息传输、软件和信息技术服务业</div>
+            <div style={{
+                backgroundColor: "#FFAD56",
+                color: "#FFFFFF",
+                width: "92px",
+                height: '92px',
+                fontSize: "14px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: 'center',
+                borderRadius: "50%",
+                position: "absolute",
+                bottom: "8px",
+                right: "90px"
+            }}>租赁和商务服务业</div>
+            <div style={{
+                backgroundColor: "#85E5FF",
+                color: "#FFFFFF",
+                width: "157px",
+                height: '157px',
+                fontSize: "16px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: 'center',
+                borderRadius: "50%",
+                position: "absolute",
+                bottom: "8px",
+                left: "65px"
+            }}>科学研究和技术服务业</div>
+            <div style={{
+                backgroundColor: "#FF76A5",
+                color: "#FFFFFF",
+                width: "70px",
+                height: '70px',
+                fontSize: "14px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: 'center',
+                borderRadius: "50%",
+                position: "absolute",
+                left: "90px",
+                top: "65px"
+            }}>其他行业</div>
+        </div>
     </>
 
-export const ProvinceCaseRankChart = () =>
-    <>
+export const ProvinceCaseRankChart = () => {
+    const [provinceList, setProvinceList] = React.useState([] as any[])
+    const [totalCount, setTotalCount] = React.useState(0)
+    useEffect(() => {
+        axios.get("/api/statistics/national/area")
+            .then(res => {
+                let tmp = res.data;
+                let data = [{
+                    name: '云南省',
+                    value: tmp.yunnan
+                },
+                {
+                    name: '黑龙江省',
+                    value: tmp.heilongjiang
+                },
+                {
+                    name: '贵州省',
+                    value: tmp.guizhou
+                },
+                {
+                    name: '北京市',
+                    value: tmp.beijing
+                },
+                {
+                    name: '河北省',
+                    value: tmp.hebei
+                },
+                {
+                    name: '山西省',
+                    value: tmp.shanxi
+                },
+                {
+                    name: '吉林省',
+                    value: tmp.jilin
+                },
+                {
+                    name: '宁夏回族自治区',
+                    value: tmp.ningxia
+                },
+                {
+                    name: '辽宁省',
+                    value: tmp.liaoning
+                },
+                {
+                    name: '海南省',
+                    value: tmp.hainan
+                },
+                {
+                    name: '内蒙古自治区',
+                    value: tmp.neimeng
+                },
+                {
+                    name: '天津市',
+                    value: tmp.tianjin
+                },
+                {
+                    name: '新疆维吾尔自治区',
+                    value: tmp.xinjiang
+                },
+                {
+                    name: '上海市',
+                    value: tmp.shanghai
+                },
+                {
+                    name: '陕西省',
+                    value: tmp.shanxi
+                },
+                {
+                    name: '甘肃省',
+                    value: tmp.ganshu
+                },
+                {
+                    name: '安徽省',
+                    value: tmp.anhui
+                },
+                {
+                    name: '香港特别行政区',
+                    value: tmp.xianggang
+                },
+                {
+                    name: '广东省',
+                    value: tmp.guangdong
+                },
+                {
+                    name: '河南省',
+                    value: tmp.henan
+                },
+                {
+                    name: '湖南省',
+                    value: tmp.hunan
+                },
+                {
+                    name: '江西省',
+                    value: tmp.jiangxi
+                },
+                {
+                    name: '四川省',
+                    value: tmp.sichuan
+                },
+                {
+                    name: '广西壮族自治区',
+                    value: tmp.guangxi
+                },
+                {
+                    name: '江苏省',
+                    value: tmp.jiangsu
+                },
+                {
+                    name: '澳门特别行政区',
+                    value: 0
+                },
+                {
+                    name: '浙江省',
+                    value: tmp.zhejiang
+                },
+                {
+                    name: '山东省',
+                    value: tmp.shandong
+                },
+                {
+                    name: '青海省',
+                    value: tmp.qinghai
+                },
+                {
+                    name: '重庆市',
+                    value: tmp.chongqing
+                },
+                {
+                    name: '福建省',
+                    value: tmp.fujian
+                },
+                {
+                    name: '湖北省',
+                    value: tmp.hubei
+                },
+                {
+                    name: '西藏自治区',
+                    value: tmp.xizang
+                },
+                {
+                    name: '台湾省',
+                    value: 0
+                }
+                ];
+                data = data.filter(item => item.value)
+                data = _.orderBy(data, 'value', 'desc').slice(0, 5)
+                setProvinceList(data)
+                setTotalCount(data.map(item => item.value).reduce((p, c) => p + c))
+            })
+    }, [true])
+    return <>
         <div style={{ fontSize: '16px', color: "#101010", position: "absolute", top: "23px", left: "32px" }}>地市案例统计</div>
         <div style={{
             height: "336px",
@@ -379,32 +677,31 @@ export const ProvinceCaseRankChart = () =>
             width: "90%",
             margin: "0 auto"
         }}>
-            <div>
-                <div style={{ color: "#101010" }}>北京市</div>
-                <Progress percent={30} />
-            </div>
-            <div>
-                <div style={{ color: "#101010" }}>北京市</div>
-                <Progress percent={30} />
-            </div>
-            <div>
-                <div style={{ color: "#101010" }}>北京市</div>
-                <Progress percent={30} />
-            </div>
-            <div>
-                <div style={{ color: "#101010" }}>北京市</div>
-                <Progress percent={30} />
-            </div>
-            <div>
-                <div style={{ color: "#101010" }}>北京市</div>
-                <Progress percent={30} />
-            </div>
+            {
+                provinceList.map((item, index) =>
+                    <div key={index}>
+                        <div style={{ color: "#101010" }}>{item.name}</div>
+                        <Progress percent={Math.round((item.value / totalCount) * 1000) / 10} />
+                    </div>
+                )
+            }
         </div>
     </>
+}
 
-export const ProcuratorationCaseRankChart = () =>
-    <>
-        <div style={{ fontSize: '16px', color: "#101010", position: "absolute", top: "23px", left: "32px" }}>法院统计</div>
+export const ProcuratorationCaseRankChart = () => {
+
+    const [courtList, setCourtList] = React.useState([] as any[])
+    const [totalCount, setTotalCount] = React.useState(0)
+    useEffect(() => {
+        axios.get("/api/statistics/national/court")
+            .then(res => {
+                let tmp = res.data as any[];
+                setCourtList(tmp)
+                setTotalCount(tmp.map(item => item.ipCount).reduce((p, c) => p + c))
+            })
+    }, [true])
+    return <> <div style={{ fontSize: '16px', color: "#101010", position: "absolute", top: "23px", left: "32px" }}>法院统计</div>
         <div style={{
             height: "336px",
             display: "flex",
@@ -413,56 +710,45 @@ export const ProcuratorationCaseRankChart = () =>
             width: "90%",
             margin: "0 auto"
         }}>
-            <div>
-                <div style={{ color: "#101010" }}>北京市</div>
-                <Progress percent={30} />
-            </div>
-            <div>
-                <div style={{ color: "#101010" }}>北京市</div>
-                <Progress percent={30} />
-            </div>
-            <div>
-                <div style={{ color: "#101010" }}>北京市</div>
-                <Progress percent={30} />
-            </div>
-            <div>
-                <div style={{ color: "#101010" }}>北京市</div>
-                <Progress percent={30} />
-            </div>
-            <div>
-                <div style={{ color: "#101010" }}>北京市</div>
-                <Progress percent={30} />
-            </div>
+            {
+                courtList.map((item, index) =>
+                    <div key={index}>
+                        <div style={{ color: "#101010" }}>{item.courtName}</div>
+                        <Progress percent={Math.floor((item.ipCount / totalCount) * 1000) / 10} />
+                    </div>
+                )
+            }
         </div>
     </>
+}
 
 export const TrialProcedureChart = () => {
-    const data = [
-        {
-            type: '分类一',
-            value: 27,
-        },
-        {
-            type: '分类二',
-            value: 25,
-        },
-        {
-            type: '分类三',
-            value: 18,
-        },
-        {
-            type: '分类四',
-            value: 15,
-        },
-        {
-            type: '分类五',
-            value: 10,
-        },
-        {
-            type: '其它',
-            value: 5,
-        },
-    ];
+    const [data, setData] = React.useState([] as any[])
+
+    useEffect(() => {
+        axios.get("/api/statistics/national/procedure")
+            .then(res => {
+                let tmp = res.data;
+                let data = [{
+                    type: '一审',
+                    value: tmp.yishen
+                }, {
+                    type: '二审',
+                    value: tmp.ershen
+                }, {
+                    type: '二审',
+                    value: tmp.zaishen
+                }, {
+                    type: '执行',
+                    value: tmp.zhixing
+                }, {
+                    type: '其他',
+                    value: tmp.other
+                }]
+                setData(data)
+            })
+    }, [true])
+
     const config = {
         forceFit: true,
         title: {
