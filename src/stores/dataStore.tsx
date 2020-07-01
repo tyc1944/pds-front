@@ -45,6 +45,16 @@ export interface WikiDecision {
     name: string;
 }
 
+export interface WikiNationalSearch {
+    caseType?: string;
+    keyword?: string;
+    trialProcedure?: string;
+    courtLevel?: string;
+    documentType?: string;
+    page?: number;
+    pageSize?: number;
+}
+
 export default class DataStore {
 
     @observable
@@ -89,5 +99,20 @@ export default class DataStore {
 
     getWikiDecisionDetail(id: string) {
         return axios.get(`/api/wiki/decision/${id}`)
+    }
+
+    getWikiNational(params: WikiNationalSearch) {
+        if (params.trialProcedure === "不限") {
+            delete params.trialProcedure;
+        }
+        if (params.courtLevel === "不限") {
+            delete params.courtLevel;
+        }
+        if (params.documentType === "不限") {
+            delete params.documentType;
+        }
+        return axios.get("/api/wiki/nationalIpCase", {
+            params
+        })
     }
 }
