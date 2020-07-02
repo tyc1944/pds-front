@@ -55,6 +55,15 @@ export interface WikiNationalSearch {
     pageSize?: number;
 }
 
+export interface WikiLawsSearch {
+    category?: string;
+    keyword?: string;
+    revisionYear?: string;
+    subcategory?: string;
+    page?: number;
+    pageSize?: number;
+}
+
 export default class DataStore {
 
     @observable
@@ -114,5 +123,15 @@ export default class DataStore {
         return axios.get("/api/wiki/nationalIpCase", {
             params
         })
+    }
+
+    getWikiLaws(params: WikiLawsSearch) {
+        return axios.get("/api/wiki/laws", {
+            params
+        })
+    }
+
+    getWikiLawsDetail(id: string) {
+        return axios.get(`/api/wiki/laws/${id}`)
     }
 }

@@ -1,14 +1,16 @@
 import React from "react";
-import Breadscrum from "components/breadscrum";
-import {BoxContainer, BoxContainerInner} from "components/layout";
-import {TableSearch} from "./tableSearch";
-import {TableColumn} from "./tableConfig";
-import {TableList} from "components/table";
-import {inject, observer} from "mobx-react";
-import DataStore from "../../../../stores/dataStore";
+import { BoxContainer, BoxContainerInner } from "components/layout";
+import { TableSearch } from "./tableSearch";
+import { TableColumn } from "./tableConfig";
+import { TableList } from "components/table";
+import { inject, observer } from "mobx-react";
+import DataStore, { WikiLawsSearch } from "../../../../stores/dataStore";
+import { fillObjectFromOpsValue } from "components/table/tableListOpsComponents";
+import { History } from "history/index"
 
 interface IndustryStandardDataProps {
-    data?: DataStore
+    data?: DataStore,
+    history: History
 }
 
 
@@ -22,11 +24,24 @@ class IndustryStandardData extends React.Component<IndustryStandardDataProps> {
         dataList: []
     }
 
-    onDetailClick = () => {
-
+    onDetailClick = (id: number) => {
+        this.props.history.push(`/index/data/retrieval/laws/${id}`)
     }
 
     componentDidMount() {
+        this.getWikiLaws()
+    }
+
+    getWikiLaws = (params: WikiLawsSearch = { category: '行业标准' }) => {
+        this.props.data!
+            .getWikiLaws(params)
+            .then(res => {
+                this.setState({
+                    dataList: res.data.records,
+                    totalPages: res.data.pages,
+                    totalCount: res.data.total
+                })
+            })
     }
 
     render() {
@@ -37,8 +52,9 @@ class IndustryStandardData extends React.Component<IndustryStandardDataProps> {
             flexDirection: 'column'
         }}>
             <BoxContainer noPadding>
-                <BoxContainerInner minHeight={"160px"}>
+                <BoxContainerInner>
                     <TableSearch onSearch={changed => {
+                        this.getWikiLaws(fillObjectFromOpsValue({ category: '行业标准' }, changed))
                     }}></TableSearch>
                 </BoxContainerInner>
                 <BoxContainerInner flex={1} noPadding>
@@ -49,6 +65,11 @@ class IndustryStandardData extends React.Component<IndustryStandardDataProps> {
                         data={this.state.dataList}
                         columns={TableColumn(this.onDetailClick)}
                         onChange={(page, pageSize) => {
+                            this.getWikiLaws({
+                                category: '行业标准',
+                                page,
+                                pageSize
+                            })
                         }}
                     />
                 </BoxContainerInner>

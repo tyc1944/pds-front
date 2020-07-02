@@ -6,13 +6,13 @@ export const TableColumn = (
 ) => [
     {
         title: "标题",
-        dataIndex: "title",
-        key: "title"
+        dataIndex: "name",
+        key: "name"
     },
     {
         title: "修订年份",
-        dataIndex: "modifiedYear",
-        key: "modifiedYear"
+        dataIndex: "revisionYear",
+        key: "revisionYear"
     },
     {
         title: "类型",

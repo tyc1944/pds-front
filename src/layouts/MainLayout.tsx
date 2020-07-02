@@ -46,6 +46,7 @@ import DataStore from "stores/dataStore";
 import _ from "lodash";
 import SearchResultDetail from "pages/search/detail";
 import WikiDecisionDetail from "pages/wiki/decision/detail";
+import LawsDetail from "pages/dataRetrieval/lawsAndRegulations/detail";
 
 const { Header, Sider, Content } = Layout;
 
@@ -397,6 +398,7 @@ class MainLayout extends Component<MainLayoutProps, object> {
                             <Route path="/index/data/analysis/district" exact component={DistrictDataAnalysis} />
                             {/*资料检索*/}
                             <Route path="/index/data/retrieval/laws" exact component={LawsAndRegulationsDataRetrieval} />
+                            <Route path="/index/data/retrieval/laws/:id" exact component={LawsDetail} />
                             <Route path="/index/data/retrieval/typical" exact component={TypicalCasesDataRetrieval} />
                             <Route path="/index/data/retrieval/domestic" exact component={DomesticCasesDataRetrieval} />
                             <Route path="/index/data/retrieval/wuxi" exact component={WuxiCasesDataRetrieval} />
