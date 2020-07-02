@@ -47,6 +47,7 @@ import _ from "lodash";
 import SearchResultDetail from "pages/search/detail";
 import WikiDecisionDetail from "pages/wiki/decision/detail";
 import LawsDetail from "pages/dataRetrieval/lawsAndRegulations/detail";
+import DomesticCasesDetail from "pages/dataRetrieval/domesticCases/detail";
 
 const { Header, Sider, Content } = Layout;
 
@@ -401,6 +402,7 @@ class MainLayout extends Component<MainLayoutProps, object> {
                             <Route path="/index/data/retrieval/laws/:id" exact component={LawsDetail} />
                             <Route path="/index/data/retrieval/typical" exact component={TypicalCasesDataRetrieval} />
                             <Route path="/index/data/retrieval/domestic" exact component={DomesticCasesDataRetrieval} />
+                            <Route path="/index/data/retrieval/domestic/:id" exact component={DomesticCasesDetail} />
                             <Route path="/index/data/retrieval/wuxi" exact component={WuxiCasesDataRetrieval} />
                             {/*知识宣传*/}
                             <Route path="/index/wiki/decision" exact component={DecisionWiki} />

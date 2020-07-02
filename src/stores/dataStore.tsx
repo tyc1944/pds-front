@@ -125,6 +125,10 @@ export default class DataStore {
         })
     }
 
+    getWikiNationalDetail(id: string) {
+        return axios.get(`/api/wiki/nationalIpCase/${id}`)
+    }
+
     getWikiLaws(params: WikiLawsSearch) {
         return axios.get("/api/wiki/laws", {
             params

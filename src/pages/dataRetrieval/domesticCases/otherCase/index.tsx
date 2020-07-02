@@ -9,6 +9,7 @@ import { fillObjectFromOpsValue } from "components/table/tableListOpsComponents"
 
 interface OtherCaseProps {
     data?: DataStore
+    onDetailClick: (id: number) => void;
 }
 
 
@@ -20,10 +21,6 @@ class OtherCase extends React.Component<OtherCaseProps> {
         totalCount: 0,
         totalPages: 0,
         dataList: []
-    }
-
-    onDetailClick = () => {
-
     }
 
     componentDidMount() {
@@ -60,7 +57,7 @@ class OtherCase extends React.Component<OtherCaseProps> {
                         total={this.state.totalCount}
                         pages={this.state.totalPages}
                         data={this.state.dataList}
-                        columns={TableColumn(this.onDetailClick)}
+                        columns={TableColumn(this.props.onDetailClick)}
                         onChange={(page, pageSize) => {
                             this.getWIkiNational({
                                 page,

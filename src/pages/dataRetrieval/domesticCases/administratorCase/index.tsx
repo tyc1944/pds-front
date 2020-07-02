@@ -9,6 +9,7 @@ import { fillObjectFromOpsValue } from "components/table/tableListOpsComponents"
 
 interface AdministratorCaseProps {
     data?: DataStore
+    onDetailClick: (id: number) => void;
 }
 
 
@@ -20,10 +21,6 @@ class AdministratorCase extends React.Component<AdministratorCaseProps> {
         totalCount: 0,
         totalPages: 0,
         dataList: []
-    }
-
-    onDetailClick = () => {
-
     }
 
     componentDidMount() {
@@ -65,7 +62,7 @@ class AdministratorCase extends React.Component<AdministratorCaseProps> {
                         total={this.state.totalCount}
                         pages={this.state.totalPages}
                         data={this.state.dataList}
-                        columns={TableColumn(this.onDetailClick)}
+                        columns={TableColumn(this.props.onDetailClick)}
                         onChange={(page, pageSize) => {
                             this.getWIkiNational({
                                 caseType: '行政案件',

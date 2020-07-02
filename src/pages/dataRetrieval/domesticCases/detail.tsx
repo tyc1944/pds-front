@@ -14,7 +14,7 @@ interface LawsDetailProps extends RouteComponentProps<RouterParams> {
 }
 
 @inject("data")
-class LawsDetail extends React.Component<LawsDetailProps> {
+class DomesticCasesDetail extends React.Component<LawsDetailProps> {
 
     state = {
         detail: ""
@@ -22,7 +22,7 @@ class LawsDetail extends React.Component<LawsDetailProps> {
 
 
     componentDidMount() {
-        this.props.data.getWikiLawsDetail(this.props.match.params.id)
+        this.props.data.getWikiNationalDetail(this.props.match.params.id)
             .then(res => this.setState({
                 detail: res.data
             }))
@@ -35,19 +35,18 @@ class LawsDetail extends React.Component<LawsDetailProps> {
             width: '100%',
             flexDirection: 'column'
         }}>
-            <Breadscrum data={["资料检索", "法律法规"]}></Breadscrum>
+            <Breadscrum data={["资料检索", "全国案例"]}></Breadscrum>
             <BoxContainer>
                 <BoxContainerInner>
                     <div style={{
                         whiteSpace: "pre-line"
-                    }}
-                        dangerouslySetInnerHTML={{
-                            __html: this.state.detail
-                        }}></div>
+                    }} dangerouslySetInnerHTML={{
+                        __html: this.state.detail
+                    }}></div>
                 </BoxContainerInner>
             </BoxContainer>
         </div>
     }
 }
 
-export default LawsDetail;
+export default DomesticCasesDetail;
