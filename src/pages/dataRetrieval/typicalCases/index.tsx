@@ -1,15 +1,16 @@
 import React from "react";
 import Breadscrum from "components/breadscrum";
-import {BoxContainer, BoxContainerInner} from "components/layout";
-import {Tabs} from "antd";
-import {TableNameWithNumber} from "../../../components/tabs";
+import { BoxContainer, BoxContainerInner } from "components/layout";
+import { Tabs } from "antd";
+import { TableNameWithNumber } from "../../../components/tabs";
 import CourtCase from "./courtCase";
 import ProcuratorateCase from "./procuratorateCase";
 import AdministratorCase from "./administratorCase";
+import { RouteComponentProps } from "react-router-dom";
 
-const {TabPane} = Tabs;
+const { TabPane } = Tabs;
 
-class LawsAndRegulationsDataRetrieval extends React.Component {
+class LawsAndRegulationsDataRetrieval extends React.Component<RouteComponentProps> {
 
     state = {
         activeTabIndex: "1"
@@ -19,6 +20,10 @@ class LawsAndRegulationsDataRetrieval extends React.Component {
         this.setState({
             activeTabIndex: key
         })
+    }
+
+    onDetailClick = (id: number) => {
+        this.props.history.push(`/index/data/retrieval/typical/${id}`)
     }
 
     render() {
@@ -31,14 +36,14 @@ class LawsAndRegulationsDataRetrieval extends React.Component {
             <BoxContainer>
                 <BoxContainerInner flex={1} noPadding noBorder>
                     <Tabs defaultActiveKey="1" onChange={this.onTabChange}>
-                        <TabPane tab={<TableNameWithNumber name="法院案例" count={0}/>} key="1">
-                            <CourtCase></CourtCase>
+                        <TabPane tab={<TableNameWithNumber name="法院案例" count={0} />} key="1">
+                            <CourtCase onDetailClick={this.onDetailClick}></CourtCase>
                         </TabPane>
-                        <TabPane tab={<TableNameWithNumber name="检查案例" count={0}/>} key="2">
-                            <ProcuratorateCase></ProcuratorateCase>
+                        <TabPane tab={<TableNameWithNumber name="检查案例" count={0} />} key="2">
+                            <ProcuratorateCase onDetailClick={this.onDetailClick}></ProcuratorateCase>
                         </TabPane>
-                        <TabPane tab={<TableNameWithNumber name="行政执法案例" count={0}/>} key="3">
-                            <AdministratorCase></AdministratorCase>
+                        <TabPane tab={<TableNameWithNumber name="行政执法案例" count={0} />} key="3">
+                            <AdministratorCase onDetailClick={this.onDetailClick}></AdministratorCase>
                         </TabPane>
                     </Tabs>
                 </BoxContainerInner>

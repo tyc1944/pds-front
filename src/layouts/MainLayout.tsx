@@ -48,6 +48,7 @@ import SearchResultDetail from "pages/search/detail";
 import WikiDecisionDetail from "pages/wiki/decision/detail";
 import LawsDetail from "pages/dataRetrieval/lawsAndRegulations/detail";
 import DomesticCasesDetail from "pages/dataRetrieval/domesticCases/detail";
+import TypicalCaseDetail from "pages/dataRetrieval/typicalCases/detail";
 
 const { Header, Sider, Content } = Layout;
 
@@ -401,6 +402,7 @@ class MainLayout extends Component<MainLayoutProps, object> {
                             <Route path="/index/data/retrieval/laws" exact component={LawsAndRegulationsDataRetrieval} />
                             <Route path="/index/data/retrieval/laws/:id" exact component={LawsDetail} />
                             <Route path="/index/data/retrieval/typical" exact component={TypicalCasesDataRetrieval} />
+                            <Route path="/index/data/retrieval/typical/:id" exact component={TypicalCaseDetail} />
                             <Route path="/index/data/retrieval/domestic" exact component={DomesticCasesDataRetrieval} />
                             <Route path="/index/data/retrieval/domestic/:id" exact component={DomesticCasesDetail} />
                             <Route path="/index/data/retrieval/wuxi" exact component={WuxiCasesDataRetrieval} />

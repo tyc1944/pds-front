@@ -1,14 +1,12 @@
 import React from "react";
-import {TableListOpsHelper} from "components/table/tableListOpsContext";
+import { TableListOpsHelper } from "components/table/tableListOpsContext";
 import {
     TableListOpsValueType,
     InputWithoutIcon,
     SingleSelectionGroup,
-    MultiSelectionGroup,
-    OptionsDateRangePicker
 } from "components/table/tableListOpsComponents";
-import {Row, Col} from "antd";
-import {ColorButton} from "components/buttons";
+import { Row, Col } from "antd";
+import { ColorButton } from "components/buttons";
 
 export const TableSearch = (props: {
     onSearch: (changed: TableListOpsValueType[]) => void;
@@ -24,7 +22,7 @@ export const TableSearch = (props: {
         }}
         initData={changed}
     >
-        <div style={{
+        <div className="table-search-container" style={{
             margin: '18px 0px',
             display: "flex",
             flexDirection: "column",
@@ -37,32 +35,24 @@ export const TableSearch = (props: {
                         <div style={{
                             display: "flex",
                         }}>
-                            <InputWithoutIcon style={{width: "290px"}} name="keyword"
-                                              placeholder="输入关键词进行搜索"></InputWithoutIcon>
+                            <InputWithoutIcon style={{ width: "290px" }} name="keyword"
+                                placeholder="输入关键词进行搜索"></InputWithoutIcon>
                             <ColorButton width="76px" bgColor="#4084F0"
-                                         onClick={() => props.onSearch(changed)}>查询</ColorButton>
+                                onClick={() => props.onSearch(changed)}>查询</ColorButton>
                             <ColorButton width="76px" bgColor="#FFFFFF" fontColor="#72757B" onClick={() => {
                                 setChanged([])
                                 setKey(Date.now())
+                                props.onSearch([])
                             }}>清空</ColorButton>
                         </div>
                     </Col>
                 </Row>
             </div>
             <div>
-                <Row>
-                    <Col xl={2} xs={4} style={{color: '#9099A2'}}>修订年份</Col>
-                    <Col>
-                        <OptionsDateRangePicker name={["modifiedDateStart", "modifiedDateEnd"]}></OptionsDateRangePicker>
-                    </Col>
-                </Row>
-            </div>
-            <div>
-                <Row>
-                    <Col xl={2} xs={4} style={{color: '#9099A2'}}>类别</Col>
+                <Row> <Col xl={2} xs={4} style={{ color: '#9099A2' }}>案例年份</Col>
                     <Col xl={22} xs={20}>
-                        <SingleSelectionGroup name="category" defaultValue="不限"
-                                              selectItems={["不限", "法律", "行政法规", "部门规章", "司法解释"]}></SingleSelectionGroup>
+                        <SingleSelectionGroup name="year" defaultValue="不限"
+                            selectItems={["不限", "2018年", "2017年", "2016年"]}></SingleSelectionGroup>
                     </Col>
                 </Row>
             </div>

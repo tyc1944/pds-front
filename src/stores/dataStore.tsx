@@ -64,6 +64,14 @@ export interface WikiLawsSearch {
     pageSize?: number;
 }
 
+export interface WikiTypicalCasesSearch {
+    category?: string;
+    keyword?: string;
+    year?: string;
+    page?: number;
+    pageSize?: number;
+}
+
 export default class DataStore {
 
     @observable
@@ -137,5 +145,18 @@ export default class DataStore {
 
     getWikiLawsDetail(id: string) {
         return axios.get(`/api/wiki/laws/${id}`)
+    }
+
+    getWikiTypicalCases(params: WikiTypicalCasesSearch) {
+        if (params.year === "不限") {
+            delete params.year;
+        }
+        return axios.get("/api/wiki/typicalCases", {
+            params
+        })
+    }
+
+    getWikiTypicalCasesDetail(id: string) {
+        return axios.get(`/api/wiki/typicalCases/${id}`)
     }
 }

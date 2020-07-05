@@ -10,14 +10,14 @@ export const TableColumn = (
         key: "title"
     },
     {
-        title: "修订年份",
-        dataIndex: "modifiedYear",
-        key: "modifiedYear"
+        title: "内容",
+        dataIndex: "briefContent",
+        key: "briefContent"
     },
     {
-        title: "类型",
-        dataIndex: "category",
-        key: "category"
+        title: "案例年份",
+        dataIndex: "contentYear",
+        key: "contentYear"
     },
     {
         title: "操作",

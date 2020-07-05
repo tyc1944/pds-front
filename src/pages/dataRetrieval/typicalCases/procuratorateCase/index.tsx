@@ -1,13 +1,15 @@
 import React from "react";
-import {BoxContainer, BoxContainerInner} from "components/layout";
-import {TableSearch} from "./tableSearch";
-import {TableColumn} from "./tableConfig";
-import {TableList} from "components/table";
-import {inject, observer} from "mobx-react";
-import DataStore from "../../../../stores/dataStore";
+import { BoxContainer, BoxContainerInner } from "components/layout";
+import { TableSearch } from "../tableSearch";
+import { TableColumn } from "../tableConfig";
+import { TableList } from "components/table";
+import { inject, observer } from "mobx-react";
+import DataStore, { WikiTypicalCasesSearch } from "../../../../stores/dataStore";
+import { fillObjectFromOpsValue } from "components/table/tableListOpsComponents";
 
 interface ProcuratorateCaseProps {
     data?: DataStore
+    onDetailClick: (id: number) => void;
 }
 
 
@@ -26,6 +28,20 @@ class ProcuratorateCase extends React.Component<ProcuratorateCaseProps> {
     }
 
     componentDidMount() {
+        this.getWikiTypicalCases()
+    }
+
+    getWikiTypicalCases = (params: WikiTypicalCasesSearch = {
+        category: '检察'
+    }) => {
+        this.props.data!.getWikiTypicalCases(params)
+            .then(res => {
+                this.setState({
+                    dataList: res.data.records,
+                    totalCount: res.data.total,
+                    totalPages: res.data.pages
+                })
+            })
     }
 
     render() {
@@ -36,18 +52,24 @@ class ProcuratorateCase extends React.Component<ProcuratorateCaseProps> {
             flexDirection: 'column'
         }}>
             <BoxContainer noPadding>
-                <BoxContainerInner minHeight={"160px"}>
+                <BoxContainerInner>
                     <TableSearch onSearch={changed => {
+                        this.getWikiTypicalCases(fillObjectFromOpsValue({ category: '检察' }, changed))
                     }}></TableSearch>
                 </BoxContainerInner>
                 <BoxContainerInner flex={1} noPadding>
                     <TableList
-                        title="法律法规"
+                        title="案例列表"
                         total={this.state.totalCount}
                         pages={this.state.totalPages}
                         data={this.state.dataList}
-                        columns={TableColumn(this.onDetailClick)}
+                        columns={TableColumn(this.props.onDetailClick)}
                         onChange={(page, pageSize) => {
+                            this.getWikiTypicalCases({
+                                category: '检察',
+                                page,
+                                pageSize
+                            })
                         }}
                     />
                 </BoxContainerInner>
