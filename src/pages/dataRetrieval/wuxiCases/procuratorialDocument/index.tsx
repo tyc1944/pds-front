@@ -1,10 +1,11 @@
 import React from "react";
-import {BoxContainer, BoxContainerInner} from "components/layout";
-import {TableSearch} from "./tableSearch";
-import {TableColumn} from "./tableConfig";
-import {TableList} from "components/table";
-import {inject, observer} from "mobx-react";
-import DataStore from "../../../../stores/dataStore";
+import { BoxContainer, BoxContainerInner } from "components/layout";
+import { TableSearch } from "./tableSearch";
+import { TableColumn } from "./tableConfig";
+import { TableList } from "components/table";
+import { inject, observer } from "mobx-react";
+import DataStore, { WikiProcuratorialDocumentSearch } from "../../../../stores/dataStore";
+import { fillObjectFromOpsValue } from "components/table/tableListOpsComponents";
 
 interface ProcuratorialDocumentProps {
     data?: DataStore
@@ -26,6 +27,18 @@ class ProcuratorialDocument extends React.Component<ProcuratorialDocumentProps> 
     }
 
     componentDidMount() {
+        this.getWikiProcuratorialDocument()
+    }
+
+    getWikiProcuratorialDocument = (params: WikiProcuratorialDocumentSearch = {}) => {
+        this.props.data!.getWikiProcuratorialDocument(params)
+            .then(res => {
+                this.setState({
+                    totalCount: res.data.total,
+                    totalPages: res.data.pages,
+                    dataList: res.data.records
+                })
+            })
     }
 
     render() {
@@ -36,18 +49,23 @@ class ProcuratorialDocument extends React.Component<ProcuratorialDocumentProps> 
             flexDirection: 'column'
         }}>
             <BoxContainer noPadding>
-                <BoxContainerInner minHeight={"160px"}>
+                <BoxContainerInner>
                     <TableSearch onSearch={changed => {
+                        this.getWikiProcuratorialDocument(fillObjectFromOpsValue({}, changed))
                     }}></TableSearch>
                 </BoxContainerInner>
                 <BoxContainerInner flex={1} noPadding>
                     <TableList
-                        title="法律法规"
+                        title="案件列表"
                         total={this.state.totalCount}
                         pages={this.state.totalPages}
                         data={this.state.dataList}
                         columns={TableColumn(this.onDetailClick)}
                         onChange={(page, pageSize) => {
+                            this.getWikiProcuratorialDocument({
+                                page,
+                                pageSize
+                            })
                         }}
                     />
                 </BoxContainerInner>

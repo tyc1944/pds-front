@@ -72,6 +72,25 @@ export interface WikiTypicalCasesSearch {
     pageSize?: number;
 }
 
+export interface WikiProcuratorialDocumentSearch {
+    docDateStart?: string;
+    docDateEnd?: string;
+    category?: string;
+    keyword?: string;
+    page?: number;
+    pageSize?: number;
+}
+
+export interface WikiCourtDocumentSearch {
+    docDateStart?: string;
+    docDateEnd?: string;
+    category?: string;
+    keyword?: string;
+    courtName?: string;
+    page?: number;
+    pageSize?: number;
+}
+
 export default class DataStore {
 
     @observable
@@ -158,5 +177,25 @@ export default class DataStore {
 
     getWikiTypicalCasesDetail(id: string) {
         return axios.get(`/api/wiki/typicalCases/${id}`)
+    }
+
+    getWikiProcuratorialDocument(params: WikiProcuratorialDocumentSearch) {
+        return axios.get("/api/wiki/procuratorateDocument", {
+            params
+        })
+    }
+
+    getWikiProcuratorialDocumentDetail(id: string) {
+        return axios.get(`/api/wiki/procuratorateDocument/${id}`)
+    }
+
+    getWikiCourtDocument(params: WikiCourtDocumentSearch) {
+        return axios.get("/api/wiki/courtDocument", {
+            params
+        })
+    }
+
+    getWikiCourtDocumentDetail(id: string) {
+        return axios.get(`/api/wiki/courtDocument/${id}`)
     }
 }
