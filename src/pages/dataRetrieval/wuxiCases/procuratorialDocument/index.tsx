@@ -9,6 +9,7 @@ import { fillObjectFromOpsValue } from "components/table/tableListOpsComponents"
 
 interface ProcuratorialDocumentProps {
     data?: DataStore
+    onDetailClick: (id: number, category: string) => void;
 }
 
 
@@ -20,10 +21,6 @@ class ProcuratorialDocument extends React.Component<ProcuratorialDocumentProps> 
         totalCount: 0,
         totalPages: 0,
         dataList: []
-    }
-
-    onDetailClick = () => {
-
     }
 
     componentDidMount() {
@@ -60,7 +57,7 @@ class ProcuratorialDocument extends React.Component<ProcuratorialDocumentProps> 
                         total={this.state.totalCount}
                         pages={this.state.totalPages}
                         data={this.state.dataList}
-                        columns={TableColumn(this.onDetailClick)}
+                        columns={TableColumn(id => this.props.onDetailClick(id, 'procuratorial'))}
                         onChange={(page, pageSize) => {
                             this.getWikiProcuratorialDocument({
                                 page,

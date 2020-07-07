@@ -9,6 +9,7 @@ import { fillObjectFromOpsValue } from "components/table/tableListOpsComponents"
 
 interface AdministrativeCaseProps {
     data?: DataStore
+    onDetailClick: (id: number, category: string) => void;
 }
 
 
@@ -60,7 +61,7 @@ class AdministrativeCase extends React.Component<AdministrativeCaseProps> {
                         total={this.state.totalCount}
                         pages={this.state.totalPages}
                         data={this.state.dataList}
-                        columns={TableColumn(this.onDetailClick)}
+                        columns={TableColumn(id => this.props.onDetailClick(id, 'admin'))}
                         onChange={(page, pageSize) => {
                             this.getAdministraionData({ page, pageSize })
                         }}

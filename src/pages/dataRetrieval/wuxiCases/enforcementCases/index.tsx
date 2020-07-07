@@ -9,6 +9,7 @@ import { fillObjectFromOpsValue } from "components/table/tableListOpsComponents"
 
 interface EnforcementCaseProps {
     data?: DataStore
+    onDetailClick: (id: number, category: string) => void;
 }
 
 
@@ -60,7 +61,7 @@ class EnforcementCase extends React.Component<EnforcementCaseProps> {
                         total={this.state.totalCount}
                         pages={this.state.totalPages}
                         data={this.state.dataList}
-                        columns={TableColumn(this.onDetailClick)}
+                        columns={TableColumn(id => this.props.onDetailClick(id, 'execution'))}
                         onChange={(page, pageSize) => {
                             this.getExecution({
                                 page,

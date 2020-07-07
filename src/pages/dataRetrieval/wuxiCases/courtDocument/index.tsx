@@ -9,6 +9,7 @@ import { fillObjectFromOpsValue } from "components/table/tableListOpsComponents"
 
 interface CourtDocumentProps {
     data?: DataStore
+    onDetailClick: (id: number, category: string) => void;
 }
 
 
@@ -60,7 +61,7 @@ class CourtDocument extends React.Component<CourtDocumentProps> {
                         total={this.state.totalCount}
                         pages={this.state.totalPages}
                         data={this.state.dataList}
-                        columns={TableColumn(this.onDetailClick)}
+                        columns={TableColumn(id => this.props.onDetailClick(id, 'court'))}
                         onChange={(page, pageSize) => {
                             this.getWikiCourtDocument({
                                 page,

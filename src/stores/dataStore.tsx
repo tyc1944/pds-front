@@ -209,6 +209,10 @@ export default class DataStore {
         return axios.get(`/api/wiki/procuratorateDocument/${id}`)
     }
 
+    getWikiProcuratorialDocumentDownload(id: string) {
+        return axios.get(`/api/wiki/procuratorateDocument/${id}/download`)
+    }
+
     getWikiCourtDocument(params: WikiCourtDocumentSearch) {
         return axios.get("/api/wiki/courtDocument", {
             params
@@ -217,6 +221,10 @@ export default class DataStore {
 
     getWikiCourtDocumentDetail(id: string) {
         return axios.get(`/api/wiki/courtDocument/${id}`)
+    }
+
+    getWikiCourtDocumentDonwload(id: string) {
+        return axios.get(`/api/wiki/courtDocument/${id}/download`)
     }
 
     getWikiAministrationData(params: WikiAdministrationSearch) {
@@ -236,6 +244,6 @@ export default class DataStore {
     }
 
     getWikiExecutionDataDetail(id: string) {
-        return axios.get(`/api/wiki/execution/${id}`)
+        return axios.get(`/api/wiki/execution/${id}/dataMap`)
     }
 }
