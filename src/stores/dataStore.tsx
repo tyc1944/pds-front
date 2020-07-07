@@ -91,6 +91,26 @@ export interface WikiCourtDocumentSearch {
     pageSize?: number;
 }
 
+export interface WikiAdministrationSearch {
+    createDateStart?: string;
+    createDateEnd?: string;
+    endDateStart?: string;
+    endDateEnd?: string;
+    keyword?: string;
+    page?: number;
+    pageSize?: number;
+}
+
+export interface WikiExecutionSearch {
+    createDateStart?: string;
+    createDateEnd?: string;
+    endDateStart?: string;
+    endDateEnd?: string;
+    keyword?: string;
+    page?: number;
+    pageSize?: number;
+}
+
 export default class DataStore {
 
     @observable
@@ -197,5 +217,25 @@ export default class DataStore {
 
     getWikiCourtDocumentDetail(id: string) {
         return axios.get(`/api/wiki/courtDocument/${id}`)
+    }
+
+    getWikiAministrationData(params: WikiAdministrationSearch) {
+        return axios.get("/api/wiki/administration", {
+            params
+        })
+    }
+
+    getWikiAministrationDataDetail(id: string) {
+        return axios.get(`/api/wiki/administration/${id}`)
+    }
+
+    getWikiExecutionData(params: WikiExecutionSearch) {
+        return axios.get("/api/wiki/execution", {
+            params
+        })
+    }
+
+    getWikiExecutionDataDetail(id: string) {
+        return axios.get(`/api/wiki/execution/${id}`)
     }
 }

@@ -1,10 +1,11 @@
 import React from "react";
-import {BoxContainer, BoxContainerInner} from "components/layout";
-import {TableSearch} from "./tableSearch";
-import {TableColumn} from "./tableConfig";
-import {TableList} from "components/table";
-import {inject, observer} from "mobx-react";
-import DataStore from "../../../../stores/dataStore";
+import { BoxContainer, BoxContainerInner } from "components/layout";
+import { TableSearch } from "./tableSearch";
+import { TableColumn } from "./tableConfig";
+import { TableList } from "components/table";
+import { inject, observer } from "mobx-react";
+import DataStore, { WikiAdministrationSearch } from "../../../../stores/dataStore";
+import { fillObjectFromOpsValue } from "components/table/tableListOpsComponents";
 
 interface AdministrativeCaseProps {
     data?: DataStore
@@ -26,6 +27,18 @@ class AdministrativeCase extends React.Component<AdministrativeCaseProps> {
     }
 
     componentDidMount() {
+        this.getAdministraionData()
+    }
+
+    getAdministraionData = (params: WikiAdministrationSearch = {}) => {
+        this.props.data!.getWikiAministrationData(params)
+            .then(res => {
+                this.setState({
+                    dataList: res.data.records,
+                    totalCount: res.data.total,
+                    totalPages: res.data.pages
+                })
+            })
     }
 
     render() {
@@ -36,18 +49,20 @@ class AdministrativeCase extends React.Component<AdministrativeCaseProps> {
             flexDirection: 'column'
         }}>
             <BoxContainer noPadding>
-                <BoxContainerInner minHeight={"160px"}>
+                <BoxContainerInner>
                     <TableSearch onSearch={changed => {
+                        this.getAdministraionData(fillObjectFromOpsValue({}, changed))
                     }}></TableSearch>
                 </BoxContainerInner>
                 <BoxContainerInner flex={1} noPadding>
                     <TableList
-                        title="法律法规"
+                        title="案件列表"
                         total={this.state.totalCount}
                         pages={this.state.totalPages}
                         data={this.state.dataList}
                         columns={TableColumn(this.onDetailClick)}
                         onChange={(page, pageSize) => {
+                            this.getAdministraionData({ page, pageSize })
                         }}
                     />
                 </BoxContainerInner>
