@@ -6,6 +6,7 @@ import { Donut, Area, Rose, Pie } from '@ant-design/charts';
 import { Progress, Tooltip } from "antd";
 import { axios } from "utils/RequestUtil";
 import _ from "lodash";
+import echarts from "echarts";
 
 export const CaseRankChart = () => {
 
@@ -409,111 +410,130 @@ export const IndustryStatisticsChart = () =>
     <>
         <div style={{ fontSize: '16px', color: "#101010", position: "absolute", top: "23px", left: "32px" }}>行业统计</div>
         <div style={{
-            position: "absolute",
-            left: "0px",
-            top: "0px",
-            width: "100%",
-            height: "100%",
-            display: 'relative'
+            width: '100%',
+            height: "100%"
         }}>
             <div style={{
-                backgroundColor: "#85B4FF",
-                color: "#FFFFFF",
-                width: "215px",
-                height: '215px',
-                fontSize: "28px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: 'center',
-                borderRadius: "50%",
-                position: "absolute",
-                top: "100px",
-                left: "calc(50% - 99px)"
-            }}>制造业</div>
-            <div style={{
-                backgroundColor: "#65E3DA",
-                color: "#FFFFFF",
-                width: "170px",
-                height: '170px',
-                fontSize: "18px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: 'center',
-                borderRadius: "50%",
-                position: "absolute",
-                top: "26px",
-                right: "20px"
-            }}>批发和零售业</div>
-            <div style={{
-                backgroundColor: "#C29FFD",
-                color: "#FFFFFF",
-                width: "92px",
-                height: '92px',
-                fontSize: "20px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: 'center',
-                borderRadius: "50%",
-                position: "absolute",
-                top: "26px",
-                left: "calc(50% - 60px)"
-            }}>制造业</div>
-            <div style={{
-                backgroundColor: "#57C88C",
-                color: "#FFFFFF",
-                width: "136px",
-                height: '136px',
-                fontSize: "16px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: 'center',
-                borderRadius: "50%",
-                position: "absolute",
-                bottom: "50px",
-                right: "0px"
-            }}>信息传输、软件和信息技术服务业</div>
-            <div style={{
-                backgroundColor: "#FFAD56",
-                color: "#FFFFFF",
-                width: "92px",
-                height: '92px',
-                fontSize: "14px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: 'center',
-                borderRadius: "50%",
-                position: "absolute",
-                bottom: "8px",
-                right: "90px"
-            }}>租赁和商务服务业</div>
-            <div style={{
-                backgroundColor: "#85E5FF",
-                color: "#FFFFFF",
-                width: "157px",
-                height: '157px',
-                fontSize: "16px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: 'center',
-                borderRadius: "50%",
-                position: "absolute",
-                bottom: "8px",
-                left: "65px"
-            }}>科学研究和技术服务业</div>
-            <div style={{
-                backgroundColor: "#FF76A5",
-                color: "#FFFFFF",
-                width: "70px",
-                height: '70px',
-                fontSize: "14px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: 'center',
-                borderRadius: "50%",
-                position: "absolute",
-                left: "90px",
-                top: "65px"
-            }}>其他行业</div>
+                position: "relative",
+                width: "500px",
+                height: "100%",
+                margin: '0 auto'
+            }}>
+                <div style={{
+                    backgroundColor: "#85B4FF",
+                    color: "#FFFFFF",
+                    width: "215px",
+                    height: '215px',
+                    fontSize: "28px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: 'center',
+                    borderRadius: "50%",
+                    position: "absolute",
+                    top: "100px",
+                    left: "calc(50% - 99px)"
+                }}>制造业</div>
+                <div style={{
+                    backgroundColor: "#65E3DA",
+                    color: "#FFFFFF",
+                    width: "170px",
+                    height: '170px',
+                    fontSize: "18px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: 'center',
+                    borderRadius: "50%",
+                    position: "absolute",
+                    top: "26px",
+                    right: "20px"
+                }}>批发和零售业</div>
+                <div style={{
+                    backgroundColor: "#C29FFD",
+                    color: "#FFFFFF",
+                    width: "92px",
+                    height: '92px',
+                    fontSize: "20px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: 'center',
+                    borderRadius: "50%",
+                    position: "absolute",
+                    top: "26px",
+                    left: "calc(50% - 60px)"
+                }}>制造业</div>
+                <div style={{
+                    backgroundColor: "#57C88C",
+                    color: "#FFFFFF",
+                    width: "136px",
+                    height: '136px',
+                    fontSize: "16px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: 'center',
+                    borderRadius: "50%",
+                    position: "absolute",
+                    bottom: "50px",
+                    right: "0px",
+                    flexDirection: "column"
+                }}>
+                    <div>信息传输、软件和</div>
+                    <div>信息技术服务业</div>
+                </div>
+                <div style={{
+                    backgroundColor: "#FFAD56",
+                    color: "#FFFFFF",
+                    width: "92px",
+                    height: '92px',
+                    fontSize: "14px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: 'center',
+                    borderRadius: "50%",
+                    position: "absolute",
+                    bottom: "8px",
+                    right: "90px",
+                    flexDirection: "column"
+                }}><div>租赁和商务
+               </div> <div>服务业
+</div>
+                </div>
+                <div style={{
+                    backgroundColor: "#85E5FF",
+                    color: "#FFFFFF",
+                    width: "157px",
+                    height: '157px',
+                    fontSize: "16px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: 'center',
+                    borderRadius: "50%",
+                    position: "absolute",
+                    bottom: "8px",
+                    left: "65px",
+                    flexDirection: "column"
+                }}>
+                    <div>
+                        科学研究和技术
+                </div>
+                    <div>
+                        服务业
+                    </div>
+                </div>
+                <div style={{
+                    backgroundColor: "#FF76A5",
+                    color: "#FFFFFF",
+                    width: "70px",
+                    height: '70px',
+                    fontSize: "14px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: 'center',
+                    borderRadius: "50%",
+                    position: "absolute",
+                    left: "90px",
+                    top: "65px"
+                }}>其他行业</div>
+            </div>
         </div>
     </>
 
@@ -722,6 +742,23 @@ export const ProcuratorationCaseRankChart = () => {
     </>
 }
 
+const TrialProcedure = (props: {
+    color: string,
+    name: string,
+    count: number
+}) =>
+    <div style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100%"
+    }}>
+        <div style={{ width: "20px", height: "20px", backgroundColor: props.color }}></div>
+        <div style={{ flex: 0.5, textAlign: "center" }}>{props.name}</div>
+        <div style={{ color: "#1E1E1E", fontSize: "18px", flex: 1 }}>{props.count}件</div>
+    </div>
+
+
 export const TrialProcedureChart = () => {
     const [data, setData] = React.useState([] as any[])
 
@@ -736,7 +773,7 @@ export const TrialProcedureChart = () => {
                     type: '二审',
                     value: tmp.ershen
                 }, {
-                    type: '二审',
+                    type: '再审',
                     value: tmp.zaishen
                 }, {
                     type: '执行',
@@ -764,123 +801,269 @@ export const TrialProcedureChart = () => {
         data,
         angleField: 'value',
         colorField: 'type',
+        legend: {
+            visible: false
+        }
     };
     return <>
         <div style={{ fontSize: '16px', color: "#101010", position: "absolute", top: "23px", left: "32px" }}>审理程序</div>
-        <Donut {...config} />
+        <div style={{
+            display: "flex"
+        }}>
+            <div style={{
+                flex: 1
+            }}>
+                <div style={{
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    alignItems: 'center',
+                    padding: '60px 0',
+                    width: "160px",
+                    margin: "0 auto"
+                }}>
+                    <TrialProcedure color="#35A8E0" name="一审" count={data.length > 0 ? data.filter(item => item.type === "一审")[0].value : 0}></TrialProcedure>
+                    <TrialProcedure color="#6C469D" name="二审" count={data.length > 0 ? data.filter(item => item.type === "二审")[0].value : 0}></TrialProcedure>
+                    <TrialProcedure color="#3C5A98" name="再审" count={data.length > 0 ? data.filter(item => item.type === "再审")[0].value : 0}></TrialProcedure>
+                    <TrialProcedure color="#E1524A" name="执行" count={data.length > 0 ? data.filter(item => item.type === "执行")[0].value : 0}></TrialProcedure>
+                    <TrialProcedure color="#4EB260" name="其他" count={data.length > 0 ? data.filter(item => item.type === "其他")[0].value : 0}></TrialProcedure>
+                </div>
+            </div>
+            <div style={{
+                flex: 1
+            }}>
+                <Donut {...config} />
+            </div>
+        </div>
     </>
 }
 
 export const TrialDurationChart = () => {
     const [data, setData] = React.useState([]);
+    const divRef = React.useRef<HTMLDivElement>(null)
     useEffect(() => {
-        asyncFetch();
-    }, []);
-    const asyncFetch = () => {
-        fetch('https://gw.alipayobjects.com/os/antfincdn/YdLK%24VvSkW/fireworks-sales.json')
-            .then((response) => response.json())
-            .then((json) => setData(json))
-            .catch((error) => {
-                console.log('fetch data failed', error);
-            });
-    };
-    const config = {
-        title: {
-            visible: false,
-            text: '基础面积图',
-        },
-        data,
-        xField: 'Date',
-        yField: 'scales',
-        xAxis: {
-            tickCount: 5,
-        },
-    };
+        var myChart = echarts.init(divRef.current as HTMLDivElement);
+
+        var option = {
+            xAxis: {
+                data: ['30天以内', '31-60天', '61-90天', '91-180天', '181-365天', '365天'],
+                axisTick: { show: false },
+                axisLine: { show: false },
+                axisLabel: {
+                    color: '#101010'
+                }
+            },
+            yAxis: {
+                splitLine: { show: false },
+                axisTick: { show: false },
+                axisLine: { show: false },
+                axisLabel: { show: false }
+            },
+            color: ['#45F2FF'],
+            series: [{
+                name: 'hill',
+                type: 'pictorialBar',
+                barCategoryGap: '-130%',
+                // symbol: 'path://M0,10 L10,10 L5,0 L0,10 z',
+                symbol: 'path://M0,10 L10,10 C5.5,10 5.5,5 5,0 C4.5,5 4.5,10 0,10 z',
+                itemStyle: {
+                    opacity: 0.8
+                },
+                emphasis: {
+                    itemStyle: {
+                        opacity: 1
+                    }
+                },
+                data: [987, 2343, 3423, 1407, 2187, 102],
+                z: 10
+            }, {
+                name: 'glyph',
+                type: 'pictorialBar',
+                barGap: '-100%',
+                symbol: 'none',
+                label: {
+                    show: true,
+                    position: 'top',
+                    formatter: '{c}件',
+                    fontSize: 16,
+                    color: '#101010'
+                },
+                symbolOffset: [0, '50%'],
+                data: [{
+                    value: 987,
+                    symbolSize: [60, 60]
+                }, {
+                    value: 2343,
+                    symbolSize: [50, 60]
+                }, {
+                    value: 3423,
+                    symbolSize: [65, 35]
+                }, {
+                    value: 1407,
+                    symbolSize: [50, 30]
+                }, {
+                    value: 2187,
+                    symbolSize: [50, 35]
+                }, {
+                    value: 102,
+                    symbolSize: [40, 30]
+                }]
+            }]
+        };
+
+        myChart.setOption(option);
+    }, [divRef]);
     return <>
         <div style={{ fontSize: '16px', color: "#101010", position: "absolute", top: "23px", left: "32px" }}>审理期限</div>
-        <Area {...config} />
+        <div style={{ width: "100%", height: "80%" }}>
+            <div ref={divRef} style={{ width: "80%", height: "100%", margin: '0 auto' }}>
+
+            </div>
+        </div>
     </>
 }
 
+const YiShen = (props: {
+    data: {
+        value: number,
+        name: string,
+        color: string
+    }[]
+}) =>
+    <div style={{
+        width: "100%",
+        display: 'flex',
+        height: "70px",
+        alignItems: "center",
+        justifyContent: 'space-between'
+    }}>
+        {
+            props.data.map((item, index) =>
+                <div key={index} style={{
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: 'column',
+                    alignItems: "center",
+                    justifyContent: "space-between"
+                }}>
+                    <div style={{ color: item.color, fontSize: "20px" }}>{item.value}</div>
+                    <div style={{ width: "60px", height: "4px", backgroundColor: item.color }}></div>
+                    <div>{item.name}</div>
+                </div>
+            )
+        }
+    </div>
+
 export const YiShenChart = () => {
-    const data = [
+    const [data, setData] = React.useState([
         {
-            type: '分类一',
-            value: 27,
-        },
-        {
-            type: '分类二',
-            value: 25,
+            value: 103010,
+            name: '全部/部分支持',
+            color: '#0090E9'
         },
         {
-            type: '分类三',
-            value: 18,
+            value: 37358,
+            name: '全部驳回',
+            color: '#26C6DA'
         },
         {
-            type: '分类四',
-            value: 15,
+            value: 26554,
+            name: '撤回起诉',
+            color: '#D4E157'
         },
         {
-            type: '分类五',
-            value: 10,
+            value: 12733,
+            name: '其他',
+            color: '#FFCA28'
         },
         {
-            type: '其它',
-            value: 5,
+            value: 8194,
+            name: '驳回起诉',
+            color: '#FF6F44'
         },
-    ];
-    const config = {
-        forceFit: true,
-        title: {
-            visible: false,
-            text: '',
-        },
-        description: {
-            visible: false,
-            text: '',
-        },
-        radius: 0.8,
-        data,
-        radiusField: 'value',
-        categoryField: 'type',
-        colorField: 'type',
-        label: {
-            visible: true,
-            type: 'outer',
-            content: (text: any) => text.value,
-        },
-    };
+        {
+            value: 417,
+            name: '不予受理',
+            color: '#AB47BC'
+        }
+    ])
+    const divRef = React.useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        var myChart = echarts.init(divRef.current as HTMLDivElement);
+        var option = {
+            series: [
+                {
+                    name: '半径模式',
+                    type: 'pie',
+                    radius: [20, 110],
+                    center: ['50%', '50%'],
+                    roseType: 'radius',
+                    label: {
+                        show: false
+                    },
+                    emphasis: {
+                        label: {
+                            show: true
+                        }
+                    },
+                    data: data.map(item => ({
+                        ...item,
+                        itemStyle: {
+                            color: item.color
+                        }
+                    }))
+                }
+            ]
+        };
+        myChart.setOption(option);
+
+    }, [divRef]);
     return <>
         <div style={{ fontSize: '16px', color: "#101010", position: "absolute", top: "23px", left: "32px" }}>一审裁判结果</div>
-        <Rose {...config} />
+        <div style={{
+            display: "flex",
+            height: "90%",
+            width: '100%'
+        }}>
+            <div style={{ flex: 0.8 }} ref={divRef}></div>
+            <div style={{
+                flex: 1,
+                padding: "60px 40px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-around",
+                alignItems: "center"
+            }}>
+                <YiShen data={data.slice(0, 3)}></YiShen>
+                <YiShen data={data.slice(3, 6)}></YiShen>
+            </div>
+        </div>
     </>
 }
 
 export const ErShenChart = () => {
     const data = [
         {
-            type: '分类一',
-            value: 27,
+            type: '其他',
+            value: 4148,
         },
         {
-            type: '分类二',
-            value: 25,
+            type: '撤回上诉',
+            value: 5059,
         },
         {
-            type: '分类三',
-            value: 18,
+            type: '发回重审',
+            value: 368,
         },
         {
-            type: '分类四',
-            value: 15,
+            type: '改判',
+            value: 9679,
         },
         {
-            type: '分类五',
-            value: 10,
-        },
-        {
-            type: '其它',
-            value: 5,
+            type: '维持原判',
+            value: 67340,
         },
     ];
     const config = {
@@ -901,7 +1084,16 @@ export const ErShenChart = () => {
             visible: true,
             type: 'outer',
             offset: 20,
+            formatter: (text: any, item: any) => {
+                return `${item._origin.type}\n${item._origin.value}`;
+            },
+            style: {
+                fontSize: 14
+            }
         },
+        legend: {
+            visible: false
+        }
     };
     return <>
         <div style={{ fontSize: '16px', color: "#101010", position: "absolute", top: "23px", left: "32px" }}>二审裁判结果</div>
@@ -931,10 +1123,15 @@ const ColorLine = (props: {
             </Tooltip>
         </div>
         <div style={{
+            ...(props.direction === "right" ? {
+                borderTopLeftRadius: "10px",
+                borderBottomLeftRadius: "10px",
+            } : {
+                    borderTopRightRadius: "10px",
+                    borderBottomRightRadius: "10px",
+                }),
             height: "12px",
             backgroundColor: props.color,
-            borderTopLeftRadius: "10px",
-            borderBottomLeftRadius: "10px",
             width: `${props.percent}%`,
             position: "relative",
             boxShadow: `1px 2px 4px ${props.color}`
