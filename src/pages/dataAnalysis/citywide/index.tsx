@@ -5,7 +5,11 @@ import { TableListOpsHelper } from "components/table/tableListOpsContext";
 import { Row, Col } from "antd";
 import { OptionsDateRangePicker, TableListOpsValueType } from "components/table/tableListOpsComponents";
 import { ChartRow } from "../components";
-import { CaseRankChart, CaseAreaChart, CaseCategoryChart, CaseReasonChart, ProcuratorateJobChart, ProcuratorJobChart, TrialProcedureChart, TrialDurationChart, SubstantiveLawChart, ProceduralLawChart } from "./charts";
+import {
+    CaseRankChart, CaseAreaChart, CaseCategoryChart, CaseReasonChart, ProcuratorateJobChart, ProcuratorJobChart, TrialProcedureChart, TrialDurationChart
+} from "./charts";
+
+import { SubstantiveLawChart, ProceduralLawChart } from "../nationwide/charts"
 
 class CitywideDataAnalysis extends React.Component {
 

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Line } from '@ant-design/charts';
 import { MapboxScene } from '@antv/l7-react';
 import { CountryLayer } from '@antv/l7-district';
-import { Donut, Area, Rose, Pie } from '@ant-design/charts';
+import { Donut, Pie } from '@ant-design/charts';
 import { Progress, Tooltip } from "antd";
 import { axios } from "utils/RequestUtil";
 import _ from "lodash";
@@ -1101,7 +1101,7 @@ export const ErShenChart = () => {
     </>
 }
 
-const ColorLine = (props: {
+export const ColorLine = (props: {
     color: string,
     percent: number,
     title: string,
