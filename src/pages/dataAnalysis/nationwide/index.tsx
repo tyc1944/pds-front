@@ -5,11 +5,20 @@ import { TableListOpsValueType } from "components/table/tableListOpsComponents";
 import { ChartRow } from "../components";
 import { CaseRankChart, CaseAreaChart, CaseCategoryChart, IndustryStatisticsChart, ProvinceCaseRankChart, ProcuratorationCaseRankChart, TrialProcedureChart, TrialDurationChart, YiShenChart, ErShenChart, ProceduralLawChart, SubstantiveLawChart } from "./charts";
 import "./index.less";
+import html2canvas from "html2canvas";
 
 class NationwideDataAnalysis extends React.Component {
 
     state = {
         changed: [] as TableListOpsValueType[],
+    }
+
+    componentDidMount() {
+        // setTimeout(() => {
+        //     html2canvas(document.getElementById("provinceCaseRankChart") as HTMLElement).then(canvas => {
+        //         document.body.appendChild(canvas);
+        //     })
+        // }, 2000)
     }
 
     render() {

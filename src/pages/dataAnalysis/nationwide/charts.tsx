@@ -3,7 +3,7 @@ import { Line } from '@ant-design/charts';
 import { MapboxScene } from '@antv/l7-react';
 import { CountryLayer } from '@antv/l7-district';
 import { Donut, Area, Rose, Pie } from '@ant-design/charts';
-import { Progress } from "antd";
+import { Progress, Tooltip } from "antd";
 import { axios } from "utils/RequestUtil";
 import _ from "lodash";
 
@@ -58,7 +58,7 @@ export const CaseRankChart = () => {
     }, [category])
 
     return <>
-        <div style={{ fontSize: '16px', color: "#101010", position: "absolute", top: "23px", left: "32px", display: "relative", width: "calc(100% - 50px)" }}>
+        <div id="caseRankChart" style={{ fontSize: '16px', color: "#101010", position: "absolute", top: "23px", left: "32px", display: "relative", width: "calc(100% - 50px)" }}>
             全国知识产权案例走势统计
             <div className="case-rank-items">
                 <div onClick={() => setCategory('刑事案件')} className={category === '刑事案件' ? 'active' : ''}>刑事</div>
@@ -667,8 +667,8 @@ export const ProvinceCaseRankChart = () => {
                 setTotalCount(data.map(item => item.value).reduce((p, c) => p + c))
             })
     }, [true])
-    return <>
-        <div style={{ fontSize: '16px', color: "#101010", position: "absolute", top: "23px", left: "32px" }}>地市案例统计</div>
+    return <div id="provinceCaseRankChart">
+        <div style={{ fontSize: '16px', color: "#101010", position: "absolute", top: "0px", left: "32px" }}>地市案例统计</div>
         <div style={{
             height: "336px",
             display: "flex",
@@ -681,12 +681,12 @@ export const ProvinceCaseRankChart = () => {
                 provinceList.map((item, index) =>
                     <div key={index}>
                         <div style={{ color: "#101010" }}>{item.name}</div>
-                        <Progress percent={Math.round((item.value / totalCount) * 1000) / 10} />
+                        <Progress strokeColor="#59D06E" percent={Math.round((item.value / totalCount) * 1000) / 10} />
                     </div>
                 )
             }
         </div>
-    </>
+    </div>
 }
 
 export const ProcuratorationCaseRankChart = () => {
@@ -909,12 +909,83 @@ export const ErShenChart = () => {
     </>
 }
 
+const ColorLine = (props: {
+    color: string,
+    percent: number,
+    title: string,
+    number: number,
+    numberColor: string,
+    direction: 'left' | 'right'
+}) =>
+    <div style={{
+        width: "100%",
+        height: "45px",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: props.direction === "left" ? 'flex-start' : "flex-end",
+        justifyContent: "center"
+    }}>
+        <div style={{ color: "#555555", fontSize: "14px", cursor: 'pointer' }}>
+            <Tooltip placement="bottom" title={props.title} color="green">
+                <span>{props.title}</span>
+            </Tooltip>
+        </div>
+        <div style={{
+            height: "12px",
+            backgroundColor: props.color,
+            borderTopLeftRadius: "10px",
+            borderBottomLeftRadius: "10px",
+            width: `${props.percent}%`,
+            position: "relative",
+            boxShadow: `1px 2px 4px ${props.color}`
+        }}>
+            <span style={{
+                ...(props.direction === "left" ? {
+                    right: "-38px",
+                } : {
+                        left: "-38px",
+                    }),
+                color: props.numberColor,
+                position: "absolute",
+                top: "-7px",
+                fontSize: "16px"
+            }}>{props.number}</span>
+        </div>
+    </div>
+
+
 export const SubstantiveLawChart = () =>
-    <>
-        <div style={{ fontSize: '16px', color: "#101010", position: "absolute", top: "23px", right: "21px" }}>实体法条</div>
-    </>
+    <div style={{
+        position: "relative",
+        display: "flex",
+        height: "100%",
+        flexDirection: 'column',
+        alignItems: "flex-end",
+        padding: '28px 10px',
+        justifyContent: "space-between"
+    }}>
+        <div style={{ fontSize: '16px', color: "#101010" }}>实体法条</div>
+        <ColorLine number={3210} numberColor="#1200AA" color="#ADA3FF" percent={80} title="著作权法（2010修正）第四十九条" direction="right"></ColorLine>
+        <ColorLine number={2356} numberColor="#1200AA" color="#ADA3FF" percent={70} title="著作权法（2010修正）第四十八条第一项" direction="right"></ColorLine>
+        <ColorLine number={1987} numberColor="#1200AA" color="#ADA3FF" percent={50} title="关于审理著作权民事纠纷案件适用法律上若干问题的解释第二十六条" direction="right"></ColorLine>
+        <ColorLine number={1590} numberColor="#1200AA" color="#ADA3FF" percent={40} title="关于审理著作权民事纠纷案件适用法律若干问题的解释第七条" direction="right"></ColorLine>
+        <ColorLine number={985} numberColor="#1200AA" color="#ADA3FF" percent={30} title="关于审理著作权民事纠纷案件适用法律若干问题的解释第二十五条第七项" direction="right"></ColorLine>
+    </div>
 
 export const ProceduralLawChart = () =>
-    <>
-        <div style={{ fontSize: '16px', color: "#101010", position: "absolute", top: "23px", left: "32px" }}>程序法条</div>
-    </>
+    <div style={{
+        position: "relative",
+        display: "flex",
+        height: "100%",
+        flexDirection: 'column',
+        alignItems: "flex-start",
+        padding: '28px 10px',
+        justifyContent: "space-between"
+    }}>
+        <div style={{ fontSize: '16px', color: "#101010" }}>程序法条</div>
+        <ColorLine number={3210} numberColor="#276C68" color="#4FDAD2" percent={80} title="民事诉讼法（2017修正）第二百五十三条" direction="left"></ColorLine>
+        <ColorLine number={2356} numberColor="#276C68" color="#4FDAD2" percent={70} title="民事诉讼法（2012修正）第二百五十三条" direction="left"></ColorLine>
+        <ColorLine number={1987} numberColor="#276C68" color="#4FDAD2" percent={50} title="民事诉讼法（2017修正）第一百七十条第一款第一项" direction="left"></ColorLine>
+        <ColorLine number={1590} numberColor="#276C68" color="#4FDAD2" percent={40} title="民事诉讼法（2012修正）第一百七十条第一款第一项" direction="left"></ColorLine>
+        <ColorLine number={985} numberColor="#276C68" color="#4FDAD2" percent={30} title="行政诉讼法（2017修正）第六十九条" direction="left"></ColorLine>
+    </div>

@@ -21,6 +21,7 @@
     "@types/react-router-dom": "^5.1.5",
     "antd": "^4.4.0",
     "axios": "^0.19.2",
+    "html2canvas": "^1.0.0-rc.5",
     "husky": "^3.0.9",
     "js-file-download": "^0.4.12",
     "less": "^3.11.3",
