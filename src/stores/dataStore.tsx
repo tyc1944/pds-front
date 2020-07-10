@@ -116,6 +116,16 @@ export default class DataStore {
     @observable
     searchParam = "";
 
+    static DISTRICT_CODE: { [key: string]: string } = {
+        "宜兴市": "320282",
+        "江阴市": "320281",
+        "滨湖区": "320211",
+        "新吴区": "320214",
+        "梁溪区": "320213",
+        "惠山区": "320206",
+        "锡山区": "320205"
+    };
+
     getGlobalSearch(keyword: string, page: number = 1, pageSize: number = 20) {
         return axios.get(`/api/statistics/search`, {
             params: {
@@ -246,4 +256,74 @@ export default class DataStore {
     getWikiExecutionDataDetail(id: string) {
         return axios.get(`/api/wiki/execution/${id}/dataMap`)
     }
+
+    getStatisticsCityCaseRank() {
+        return axios.get("/api/statistics/city/caseRank")
+    }
+
+    getStatisticsCityCaseAreaCount() {
+        return axios.get("/api/statistics/city/caseAreaCount")
+    }
+
+    getStatisticsCityCaseCategoryCount() {
+        return axios.get("/api/statistics/city/caseCategoryCount")
+    }
+
+    getStatisticsCityCaseReasonCount() {
+        return axios.get("/api/statistics/city/caseReasonCount")
+    }
+
+    getStatisticsCityCaseProcuratorateCount() {
+        return axios.get("/api/statistics/city/caseProcuratorateCount")
+    }
+
+    getStatisticsCityProsecutorCaseCount() {
+        return axios.get("/api/statistics/city/prosecutorCaseCount")
+    }
+
+    getStatisticsCityCaseTrialDuration() {
+        return axios.get("/api/statistics/city/cityCaseTrialDuration")
+    }
+
+    getStatisticsDistrictClueCount() {
+        return axios.get("/api/statistics/district/clueCount")
+    }
+
+    getStatisticsDistrictSuperviseDataRank() {
+        return axios.get("/api/statistics/district/superviseDataRank")
+    }
+
+    getStatisticsDistrictClueAreaCount() {
+        return axios.get("/api/statistics/district/clueAreaCount")
+    }
+
+    getStatisticsDistrictSuperviseCategoryCount() {
+        return axios.get("/api/statistics/district/superviseCategoryCount")
+    }
+
+    getStatisticsDistrictClueSourceCount() {
+        return axios.get("/api/statistics/district/clueSourceCount")
+    }
+
+    getStatisticsDistrictExceptionCount() {
+        return axios.get("/api/statistics/district/exceptionCount")
+    }
+
+    getStatisticsDistrictClueCategoryCount() {
+        return axios.get("/api/statistics/district/clueCategoryCount")
+    }
+
+    getStatisticsDistrictClueToSuperviseCount() {
+        return axios.get("/api/statistics/district/clueToSuperviseCount")
+    }
+
+    getStatisticsDistrictClueRateCount() {
+        return axios.get("/api/statistics/district/clueRateCount")
+    }
+
+    getStatisticsDistrictProcessDurationYears() {
+        return axios.get("/api/statistics/district/processDurationYears")
+    }
+
+
 }

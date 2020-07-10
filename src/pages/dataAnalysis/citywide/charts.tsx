@@ -4,72 +4,79 @@ import { EChartOption } from "echarts"
 import { MapboxScene } from '@antv/l7-react';
 import { CityLayer } from '@antv/l7-district';
 import { Donut } from '@ant-design/charts';
-import { ColorLine as ColorLine1 } from "../nationwide/charts"
 import { axios } from "utils/RequestUtil";
+import { inject } from "mobx-react";
+import DataStore from "stores/dataStore";
 
-export const CaseRankChart = () => {
+export const CaseRankChart = inject("data")((props: {
+    data?: DataStore
+}) => {
     const divRef = React.useRef<HTMLDivElement>(null)
     useEffect(() => {
-        var myChart = echarts.init(divRef.current as HTMLDivElement);
-        var option = {
-            color: ["#91DCF4", "#FFCADD", '#EBD0FE'],
-            legend: {
-                right: 80,
-                icon: "rect"
-            },
-            tooltip: {
-                trigger: 'axis' as ("none" | "axis" | "item" | undefined),
-                axisPointer: {
-                    type: 'cross' as ("line" | "none" | "cross" | "shadow" | undefined),
-                    label: {
-                        backgroundColor: '#6a7985'
-                    }
-                }
-            },
-            xAxis: {
-                type: "category" as EChartOption.BasicComponents.CartesianAxis.Type,
-                boundaryGap: false,
-                data: ['2014年', '2015年', '2016年', '2017年', '2018年', '2019年'],
-                axisTick: { show: false }
-            },
-            yAxis: {
-                type: 'value' as EChartOption.BasicComponents.CartesianAxis.Type,
-                nameTextStyle: {
-                    color: "#101010"
-                },
-                axisTick: { show: false }
-            },
-            series: [{
-                data: [820, 932, 901, 934, 1290, 1330],
-                name: '民事',
-                type: 'line',
-                symbol: 'none',
-                smooth: true,
-                areaStyle: {
-                    color: "#91DCF4"
-                }
-            }, {
-                data: [934, 1290, 1330, 820, 932, 901],
-                type: 'line',
-                symbol: 'none',
-                name: '刑事',
-                smooth: true,
-                areaStyle: {
-                    color: "#FFCADD"
-                }
-            }, {
-                data: [1330, 820, 932, 901, 934, 1290],
-                type: 'line',
-                symbol: 'none',
-                name: '行政',
-                smooth: true,
-                areaStyle: {
-                    color: "#EBD0FE"
-                }
-            }]
-        };
+        props.data!.getStatisticsCityCaseRank()
+            .then(res => {
+                let tmpData = res.data;
+                var myChart = echarts.init(divRef.current as HTMLDivElement);
+                var option = {
+                    color: ["#91DCF4", "#FFCADD", '#EBD0FE'],
+                    legend: {
+                        right: 80,
+                        icon: "rect"
+                    },
+                    tooltip: {
+                        trigger: 'axis' as ("none" | "axis" | "item" | undefined),
+                        axisPointer: {
+                            type: 'cross' as ("line" | "none" | "cross" | "shadow" | undefined),
+                            label: {
+                                backgroundColor: '#6a7985'
+                            }
+                        }
+                    },
+                    xAxis: {
+                        type: "category" as EChartOption.BasicComponents.CartesianAxis.Type,
+                        boundaryGap: false,
+                        data: tmpData.map((item: any) => item.year + "年"),
+                        axisTick: { show: false }
+                    },
+                    yAxis: {
+                        type: 'value' as EChartOption.BasicComponents.CartesianAxis.Type,
+                        nameTextStyle: {
+                            color: "#101010"
+                        },
+                        axisTick: { show: false }
+                    },
+                    series: [{
+                        data: tmpData.map((item: any) => item.civilCase),
+                        name: '民事',
+                        type: 'line',
+                        symbol: 'none',
+                        smooth: true,
+                        areaStyle: {
+                            color: "#91DCF4"
+                        }
+                    }, {
+                        data: tmpData.map((item: any) => item.criminalCase),
+                        type: 'line',
+                        symbol: 'none',
+                        name: '刑事',
+                        smooth: true,
+                        areaStyle: {
+                            color: "#FFCADD"
+                        }
+                    }, {
+                        data: tmpData.map((item: any) => item.adminCase),
+                        type: 'line',
+                        symbol: 'none',
+                        name: '行政',
+                        smooth: true,
+                        areaStyle: {
+                            color: "#EBD0FE"
+                        }
+                    }]
+                };
 
-        myChart.setOption(option);
+                myChart.setOption(option);
+            })
     }, [divRef]);
     return <>
         <div style={{ fontSize: '16px', color: "#101010", position: "absolute", top: "23px", left: "32px" }}>案件走势统计</div>
@@ -81,44 +88,62 @@ export const CaseRankChart = () => {
             <div ref={divRef} style={{ width: '90%', height: "100%" }}></div>
         </div>
     </>
-}
+})
 
 
-export const CaseAreaChart = () =>
+export const CaseAreaChart = inject("data")((props: {
+    data?: DataStore
+}) =>
     <>
         <div style={{ fontSize: '16px', color: "#101010", position: "absolute", top: "23px", left: "32px" }}>案件区域分布</div>
         <div style={{ width: '100%', height: "100%", padding: "12px" }}>
             <MapboxScene
                 onSceneLoaded={scene => {
-                    new CityLayer(scene, {
-                        data: [],
-                        joinBy: ['adcode', 'code'],
-                        adcode: ['320000', '320200'],
-                        depth: 3,
-                        label: {
-                            field: 'NAME_CHN',
-                            textAllowOverlap: false
-                        },
-                        fill: {
-                            color: {
-                                field: 'pop',
-                                values: [
-                                    '#feedde',
-                                    '#fdd0a2',
-                                    '#fdae6b',
-                                    '#fd8d3c',
-                                    '#e6550d',
-                                    '#a63603'
-                                ]
-                            }
-                        },
-                        popup: {
-                            enable: true,
-                            Html: props => {
-                                return `<span>${props.NAME_CHN}:</span><span>${props.pop}</span>`;
-                            }
-                        }
-                    });
+                    props.data!.getStatisticsCityCaseAreaCount()
+                        .then(res => {
+                            new CityLayer(scene, {
+                                data: res.data.map((item: any) => ({
+                                    ...item,
+                                    code: DataStore.DISTRICT_CODE[item.areaName],
+                                    NAME_CHN: item.areaName
+                                })),
+                                joinBy: ['adcode', 'code'],
+                                adcode: ['320000', '320200'],
+                                depth: 3,
+                                label: {
+                                    field: 'NAME_CHN',
+                                    textAllowOverlap: false
+                                },
+                                fill: {
+                                    color: {
+                                        field: 'totalCount',
+                                        values: [
+                                            '#C7FCF1',
+                                            '#ACF4F4',
+                                            '#9CE2F3',
+                                            '#8BABF3',
+                                            '#66BDF7',
+                                            '#4084F0'
+                                        ]
+                                    }
+                                },
+                                popup: {
+                                    enable: true,
+                                    Html: props => {
+                                        return `
+                                        <div>公安报案：${props.policeCount}件</div>
+                                        <div>检察公诉：${props.procuratorateCount}件</div>
+                                        <div>法院判决：${props.courtCriminalCount}件刑事 ${props.courtCivilCount}件民事</div>
+                                        <div>总量：<span style="color:#4084F0;">${props.totalCount}</span>件</div>
+                                        <div class="case-area-pop-progress">
+                                            <div><div></div></div>
+                                            <div>25%</div>
+                                        </div>
+                                        `;
+                                    }
+                                }
+                            });
+                        })
                 }}
                 map={{
                     center: [116.2825, 39.9],
@@ -140,35 +165,42 @@ export const CaseAreaChart = () =>
                 }}
             ></MapboxScene>
         </div>
-    </>
+    </>)
 
-export const CaseCategoryChart = () => {
-    const data = [
-        {
-            type: '分类一',
-            value: 27,
-        },
-        {
-            type: '分类二',
-            value: 25,
-        },
-        {
-            type: '分类三',
-            value: 18,
-        },
-        {
-            type: '分类四',
-            value: 15,
-        },
-        {
-            type: '分类五',
-            value: 10,
-        },
-        {
-            type: '其它',
-            value: 5,
-        },
-    ];
+export const CaseCategoryChart = inject("data")((props: {
+    data?: DataStore
+}) => {
+    const [data1, setData1] = React.useState([] as any[])
+    const [data2, setData2] = React.useState([] as any[])
+    const [data3, setData3] = React.useState([] as any[])
+
+    useEffect(() => {
+        props.data!.getStatisticsCityCaseCategoryCount()
+            .then(res => {
+                setData1([{
+                    type: '羁押案件',
+                    value: res.data.criminalDetainCaseCount
+                }, {
+                    type: '非羁押案件',
+                    value: (res.data.criminalCaseCount - res.data.criminalDetainCaseCount)
+                }])
+                setData2([{
+                    type: '民事案件',
+                    value: res.data.civilCaseCount
+                }, {
+                    type: '其他',
+                    value: res.data.criminalCaseCount + res.data.adminCaseCount
+                }])
+                setData3([{
+                    type: '行政案件',
+                    value: res.data.adminCaseCount
+                }, {
+                    type: '其他',
+                    value: res.data.civilCaseCount + res.data.criminalCaseCount
+                }])
+            })
+    }, [true])
+
     const config = {
         forceFit: true,
         title: {
@@ -184,7 +216,7 @@ export const CaseCategoryChart = () => {
         },
         radius: 0.8,
         padding: 'auto',
-        data,
+        data: data1,
         label: {
             visible: true,
             type: 'spider',
@@ -207,7 +239,7 @@ export const CaseCategoryChart = () => {
         },
         radius: 0.8,
         padding: 'auto',
-        data,
+        data: data2,
         label: { visible: false },
         angleField: 'value',
         colorField: 'type',
@@ -228,7 +260,7 @@ export const CaseCategoryChart = () => {
         },
         radius: 0.8,
         padding: 'auto',
-        data,
+        data: data3,
         angleField: 'value',
         colorField: 'type',
     };
@@ -237,111 +269,118 @@ export const CaseCategoryChart = () => {
         <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'space-around' }}>
             <div>
                 <div style={{ width: "260px" }}>
-                    <Donut {...config} />
+                    <div style={{ height: '300px' }}>
+                        <Donut {...config} />
+                    </div>
+                    <div style={{ color: '#101010', fontSize: '16px', textAlign: 'center' }}>刑事案件</div>
                 </div>
             </div>
             <div>
                 <div style={{ width: '260px' }}>
-                    <Donut {...config1} />
+                    <div style={{ height: '300px' }}>
+                        <Donut {...config1} />
+                    </div>
+                    <div style={{ color: '#101010', fontSize: '16px', textAlign: 'center' }}>民事案件</div>
                 </div>
             </div>
             <div>
                 <div style={{ width: '260px' }}>
-                    <Donut {...config2} />
+                    <div style={{ height: '300px' }}>
+                        <Donut {...config2} />
+                    </div>
+                    <div style={{ color: '#101010', fontSize: '16px', textAlign: 'center' }}>行政案件</div>
                 </div>
             </div>
         </div>
     </>
-}
+})
 
-export const CaseReasonChart = () => {
-
+export const CaseReasonChart = inject("data")((props: {
+    data?: DataStore
+}) => {
     const divRef = React.useRef<HTMLDivElement>(null)
     useEffect(() => {
-        var myChart = echarts.init(divRef.current as HTMLDivElement);
-        var option = {
-            tooltip: {
-                trigger: 'item' as ("none" | "axis" | "item" | undefined),
-                formatter: '{a} <br/>{b}: {c} ({d}%)'
-            },
-            series: [
-                {
-                    name: '访问来源',
-                    type: 'pie',
-                    selectedMode: 'single',
-                    radius: [0, '30%'],
-                    label: {
-                        position: 'inner'
+        props.data!.getStatisticsCityCaseReasonCount()
+            .then(res => {
+                var myChart = echarts.init(divRef.current as HTMLDivElement);
+                var option = {
+                    tooltip: {
+                        trigger: 'item' as ("none" | "axis" | "item" | undefined),
+                        formatter: '{a} <br/>{b}: {c} ({d}%)'
                     },
-                    labelLine: {
-                        show: false
-                    },
-                    data: [
-                        { value: 335, name: '直达', selected: true },
-                        { value: 679, name: '营销广告' },
-                        { value: 1548, name: '搜索引擎' }
-                    ]
-                },
-                {
-                    name: '访问来源',
-                    type: 'pie',
-                    radius: ['40%', '55%'],
-                    label: {
-                        formatter: '{a|{a}}{abg|}\n{hr|}\n  {b|{b}：}{c}  {per|{d}%}  ',
-                        backgroundColor: '#eee',
-                        borderColor: '#aaa',
-                        borderWidth: 1,
-                        borderRadius: 4,
-                        // shadowBlur:3,
-                        // shadowOffsetX: 2,
-                        // shadowOffsetY: 2,
-                        // shadowColor: '#999',
-                        // padding: [0, 7],
-                        rich: {
-                            a: {
-                                color: '#999',
-                                lineHeight: 22,
-                                align: 'center'
+                    series: [
+                        {
+                            name: '访问来源',
+                            type: 'pie',
+                            selectedMode: 'single',
+                            radius: [0, '30%'],
+                            label: {
+                                position: 'inner'
                             },
-                            // abg: {
-                            //     backgroundColor: '#333',
-                            //     width: '100%',
-                            //     align: 'right',
-                            //     height: 22,
-                            //     borderRadius: [4, 4, 0, 0]
-                            // },
-                            hr: {
+                            labelLine: {
+                                show: false
+                            },
+                            data: [
+                                { value: 335, name: '直达', selected: true },
+                                { value: 679, name: '营销广告' },
+                                { value: 1548, name: '搜索引擎' }
+                            ]
+                        },
+                        {
+                            name: '刑事案件',
+                            type: 'pie',
+                            radius: ['40%', '55%'],
+                            label: {
+                                formatter: '{a|{a}}{abg|}\n{hr|}\n  {b|{b}：}{c}  {per|{d}%}  ',
+                                backgroundColor: '#eee',
                                 borderColor: '#aaa',
-                                width: '100%',
-                                borderWidth: 0.5,
-                                height: 0
+                                borderWidth: 1,
+                                borderRadius: 4,
+                                // shadowBlur:3,
+                                // shadowOffsetX: 2,
+                                // shadowOffsetY: 2,
+                                // shadowColor: '#999',
+                                // padding: [0, 7],
+                                rich: {
+                                    a: {
+                                        color: '#999',
+                                        lineHeight: 22,
+                                        align: 'center'
+                                    },
+                                    // abg: {
+                                    //     backgroundColor: '#333',
+                                    //     width: '100%',
+                                    //     align: 'right',
+                                    //     height: 22,
+                                    //     borderRadius: [4, 4, 0, 0]
+                                    // },
+                                    hr: {
+                                        borderColor: '#aaa',
+                                        width: '100%',
+                                        borderWidth: 0.5,
+                                        height: 0
+                                    },
+                                    b: {
+                                        fontSize: 16,
+                                        lineHeight: 33
+                                    },
+                                    per: {
+                                        color: '#eee',
+                                        backgroundColor: '#334455',
+                                        padding: [2, 4],
+                                        borderRadius: 2
+                                    }
+                                }
                             },
-                            b: {
-                                fontSize: 16,
-                                lineHeight: 33
-                            },
-                            per: {
-                                color: '#eee',
-                                backgroundColor: '#334455',
-                                padding: [2, 4],
-                                borderRadius: 2
-                            }
+                            data: res.data.map((item: any) => ({
+                                name: item.reason,
+                                value: item.count
+                            }))
                         }
-                    },
-                    data: [
-                        { value: 335, name: '直达' },
-                        { value: 310, name: '邮件营销' },
-                        { value: 234, name: '联盟广告' },
-                        { value: 135, name: '视频广告' },
-                        { value: 1048, name: '百度' },
-                        { value: 251, name: '谷歌' },
-                        { value: 147, name: '必应' },
-                        { value: 102, name: '其他' }
                     ]
-                }
-            ]
-        };
-        myChart.setOption(option);
+                };
+                myChart.setOption(option);
+            })
     }, [divRef]);
     return <>
         <div style={{ fontSize: '16px', color: "#101010", position: "absolute", top: "23px", left: "32px" }}>案由罪名统计</div>
@@ -353,7 +392,7 @@ export const CaseReasonChart = () => {
             <div ref={divRef} style={{ width: '90%', height: "100%" }}></div>
         </div>
     </>
-}
+})
 
 export const ProcuratorateJobChart = () => {
 
