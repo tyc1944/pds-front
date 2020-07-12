@@ -367,7 +367,7 @@ const ColorLine = (props: {
 }) =>
     <div style={{
         width: "100%",
-        height: "45px",
+        height: "35px",
         display: "flex",
         alignItems: 'center',
         justifyContent: "space-between",
