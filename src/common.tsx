@@ -48,6 +48,18 @@ export const CLUE_SOURCE: { [key: string]: string } = {
   "HOTLINE": "政风热线",
   "P_12315": "12315"
 }
+
+export const CLUE_SOURCE_NAME_MAP: { [key: string]: string } = {
+  "网上报案": "INTERNET_REPORT",
+  "舆情线索": "SOCIAL_CLUE",
+  "公安线索": "POLICE_CLUE",
+  "法院线索": "COURT_CLUE",
+  "网格化数据": "MESH_CLUE",
+  "自行发现": "SELF_FIND",
+  "12345": "P_12345",
+  "政风热线": "HOTLINE",
+  "12315": "P_12315"
+}
 export const CLUE_STATUS: { [key: string]: string } = {
   "pendingExamine": '待审批',
   "pendingAppoint": '待指派',

@@ -27,3 +27,29 @@
         }
     }
 }
+
+.case-rank-items-underline {
+    position       : absolute;
+    right          : 0;
+    top            : 0;
+    display        : flex;
+    width          : 65%;
+    justify-content: space-around;
+
+    &>div {
+        color          : #101010;
+        width          : 106px;
+        font-size      : 14px;
+        height         : 32px;
+        display        : flex;
+        justify-content: center;
+        align-items    : center;
+        cursor         : pointer;
+
+        &:hover,
+        &.active {
+            color        : #4084F0;
+            border-bottom: 3px solid #4084F0;
+        }
+    }
+}

@@ -149,9 +149,9 @@ export const CaseAreaChart = inject("data")((props: {
                     center: [116.2825, 39.9],
                     pitch: 0,
                     style: 'blank',
-                    zoom: 3,
-                    minZoom: 0,
-                    maxZoom: 10,
+                    zoom: 8,
+                    minZoom: 8,
+                    maxZoom: 8,
                 }}
                 option={{
                     logoVisible: false
