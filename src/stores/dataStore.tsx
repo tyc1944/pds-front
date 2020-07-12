@@ -281,8 +281,12 @@ export default class DataStore {
         return axios.get("/api/statistics/city/prosecutorCaseCount")
     }
 
-    getStatisticsCityCaseTrialDuration() {
-        return axios.get("/api/statistics/city/cityCaseTrialDuration")
+    getStatisticsCityCaseTrialDuration(category: string = "刑事") {
+        return axios.get("/api/statistics/city/cityCaseTrialDuration", {
+            params: {
+                category
+            }
+        })
     }
 
     getStatisticsDistrictClueCount() {

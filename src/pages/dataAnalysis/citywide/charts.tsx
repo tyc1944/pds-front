@@ -394,37 +394,58 @@ export const CaseReasonChart = inject("data")((props: {
     </>
 })
 
-export const ProcuratorateJobChart = () => {
+export const ProcuratorateJobChart = inject("data")((props: {
+    data?: DataStore
+}) => {
 
     const divRef = React.useRef<HTMLDivElement>(null)
     useEffect(() => {
-        var myChart = echarts.init(divRef.current as HTMLDivElement);
-        var option = {
-            color: ['#63A5FF', '#FFB9B9', '#75EAD3'],
-            legend: {
-                right: 80,
-                icon: 'roundRect'
-            },
-            tooltip: {},
-            dataset: {
-                source: [
-                    ['地区', '审查逮捕', '审查起诉', '提起诉讼'],
-                    ['无锡市', 43.3, 85.8, 93.7],
-                    ['江阴市', 83.1, 73.4, 55.1],
-                    ['宜兴市', 86.4, 65.2, 82.5],
-                    ['梁溪区', 72.4, 53.9, 39.1],
-                    ['锡山区', 72.4, 53.9, 39.1]
-                ]
-            },
-            xAxis: { type: 'category' as "time" | "value" | "category" | "log" | undefined },
-            yAxis: {},
-            series: [
-                { type: 'bar' },
-                { type: 'bar' },
-                { type: 'bar' }
-            ]
-        };
-        myChart.setOption(option);
+        props.data!.getStatisticsCityCaseProcuratorateCount()
+            .then(res => {
+                let tmp: { [key: string]: number[] } = {
+                    "江阴市": [0, 0, 0],
+                    "宜兴市": [0, 0, 0],
+                    "梁溪区": [0, 0, 0],
+                    "锡山区": [0, 0, 0],
+                    "新吴区": [0, 0, 0],
+                    "滨湖区": [0, 0, 0]
+                }
+                for (let i in res.data) {
+                    let item = res.data[i];
+                    let tmpArray = tmp[item.areaName]
+                    if (tmpArray) {
+                        tmp[item.areaName] = [item.count1, item.count2, item.count3]
+                    }
+                }
+                var myChart = echarts.init(divRef.current as HTMLDivElement);
+                var option = {
+                    color: ['#63A5FF', '#FFB9B9', '#75EAD3'],
+                    legend: {
+                        right: 80,
+                        icon: 'roundRect'
+                    },
+                    tooltip: {},
+                    dataset: {
+                        source: [
+                            ['地区', '审查逮捕', '审查起诉', '提起诉讼'],
+                            ['江阴市', ...tmp['江阴市']],
+                            ['宜兴市', ...tmp['宜兴市']],
+                            ['梁溪区', ...tmp['梁溪区']],
+                            ['锡山区', ...tmp['锡山区']],
+                            ['新吴区', ...tmp['新吴区']],
+                            ['滨湖区', ...tmp['滨湖区']],
+                        ]
+                    },
+                    xAxis: { type: 'category' as "time" | "value" | "category" | "log" | undefined },
+                    yAxis: {},
+                    series: [
+                        { type: 'bar' },
+                        { type: 'bar' },
+                        { type: 'bar' }
+                    ]
+                };
+                myChart.setOption(option);
+            })
     }, [divRef]);
     return <>
         <div style={{ fontSize: '16px', color: "#101010", position: "absolute", top: "23px", left: "32px" }}>检察机关办案统计</div>
@@ -436,7 +457,7 @@ export const ProcuratorateJobChart = () => {
             <div ref={divRef} style={{ width: '90%', height: "100%" }}></div>
         </div>
     </>
-}
+})
 
 const ColorLine = (props: {
     percent: number,
@@ -451,7 +472,7 @@ const ColorLine = (props: {
         justifyContent: "space-between",
         justifyItems: 'flex-start'
     }}>
-        <div style={{ color: "#555555", fontSize: "14px", cursor: 'pointer', paddingRight: "10px" }}>
+        <div style={{ color: "#555555", fontSize: "14px", cursor: 'pointer', paddingRight: "10px", width: '60px' }}>
             <span>{props.name}</span>
         </div>
         <div style={{ flex: 1 }}>
@@ -462,19 +483,35 @@ const ColorLine = (props: {
                 position: "relative",
                 boxShadow: `1px 2px 4px #255CB5`
             }}>
+                <div style={{
+                    color: '#255CB5',
+                    fontSize: "16px",
+                    position: "absolute",
+                    right: "-32px",
+                    top: "-6px"
+                }}>{props.number}</div>
             </div>
         </div>
-        <div style={{
-            color: '#255CB5',
-            fontSize: "16px"
-        }}>{props.number}</div>
     </div >
 
 
 
 
-export const ProcuratorJobChart = () =>
-    <>
+export const ProcuratorJobChart = inject("data")((props: {
+    data?: DataStore
+}) => {
+
+    const [list, setList] = React.useState([] as any[])
+
+    useEffect(() => {
+        props.data!.getStatisticsCityProsecutorCaseCount()
+            .then(res => {
+                setList(res.data)
+            })
+
+    }, [true])
+
+    return <>
         <div style={{ fontSize: '16px', color: "#101010", position: "absolute", top: "23px", left: "32px" }}>检察官办案统计</div>
         <div style={{
             display: "flex",
@@ -485,14 +522,15 @@ export const ProcuratorJobChart = () =>
             width: '100%',
             padding: '50px 20px 20px 20px'
         }}>
-            <ColorLine percent={80} name="新吴—张三" number={83}></ColorLine>
-            <ColorLine percent={60} name="新吴—张三" number={83}></ColorLine>
-            <ColorLine percent={50} name="新吴—张三" number={83}></ColorLine>
-            <ColorLine percent={40} name="新吴—张三" number={83}></ColorLine>
-            <ColorLine percent={30} name="新吴—张三" number={83}></ColorLine>
-            <ColorLine percent={20} name="新吴—张三" number={83}></ColorLine>
+            {
+                list.slice(0, 7).map((item, index) =>
+                    <ColorLine key={index} percent={(100 - (index + 1) * 10)} name={item.prosecutorName} number={item.prosecutorCount}></ColorLine>
+                )
+            }
         </div>
     </>
+}
+)
 
 const TrialProcedure = (props: {
     color: string,
@@ -623,88 +661,98 @@ export const TrialProcedureChart = () => {
     </>
 }
 
-export const TrialDurationChart = () => {
-
-    const [data, setData] = React.useState([]);
+export const TrialDurationChart = inject("data")((props: {
+    data?: DataStore
+}) => {
+    const [category, setCategory] = React.useState("刑事")
     const divRef = React.useRef<HTMLDivElement>(null)
     useEffect(() => {
-        var myChart = echarts.init(divRef.current as HTMLDivElement);
+        props.data!.getStatisticsCityCaseTrialDuration(category)
+            .then(res => {
+                let tmp = res.data;
+                var myChart = echarts.init(divRef.current as HTMLDivElement);
+                var option = {
+                    xAxis: {
+                        data: ['30天以内', '31-60天', '61-90天', '91-180天', '181-365天', '365天'],
+                        axisTick: { show: false },
+                        axisLine: { show: false },
+                        axisLabel: {
+                            color: '#101010'
+                        }
+                    },
+                    yAxis: {
+                        splitLine: { show: false },
+                        axisTick: { show: false },
+                        axisLine: { show: false },
+                        axisLabel: { show: false }
+                    },
+                    color: ['#45F2FF'],
+                    series: [{
+                        name: 'hill',
+                        type: 'pictorialBar',
+                        barCategoryGap: '-130%',
+                        // symbol: 'path://M0,10 L10,10 L5,0 L0,10 z',
+                        symbol: 'path://M0,10 L10,10 C5.5,10 5.5,5 5,0 C4.5,5 4.5,10 0,10 z',
+                        itemStyle: {
+                            opacity: 0.8
+                        },
+                        emphasis: {
+                            itemStyle: {
+                                opacity: 1
+                            }
+                        },
+                        data: [tmp.count1, tmp.count2, tmp.count3, tmp.count4, tmp.count5, tmp.count6],
+                        z: 10
+                    }, {
+                        name: 'glyph',
+                        type: 'pictorialBar',
+                        barGap: '-100%',
+                        symbol: 'none',
+                        label: {
+                            show: true,
+                            position: 'top',
+                            formatter: '{c}件',
+                            fontSize: 16,
+                            color: '#101010'
+                        },
+                        symbolOffset: [0, '50%'],
+                        data: [{
+                            value: tmp.count1,
+                            symbolSize: [60, 60]
+                        }, {
+                            value: tmp.count2,
+                            symbolSize: [50, 60]
+                        }, {
+                            value: tmp.count3,
+                            symbolSize: [65, 35]
+                        }, {
+                            value: tmp.count4,
+                            symbolSize: [50, 30]
+                        }, {
+                            value: tmp.count5,
+                            symbolSize: [50, 35]
+                        }, {
+                            value: tmp.count6,
+                            symbolSize: [40, 30]
+                        }]
+                    }]
+                };
 
-        var option = {
-            xAxis: {
-                data: ['30天以内', '31-60天', '61-90天', '91-180天', '181-365天', '365天'],
-                axisTick: { show: false },
-                axisLine: { show: false },
-                axisLabel: {
-                    color: '#101010'
-                }
-            },
-            yAxis: {
-                splitLine: { show: false },
-                axisTick: { show: false },
-                axisLine: { show: false },
-                axisLabel: { show: false }
-            },
-            color: ['#45F2FF'],
-            series: [{
-                name: 'hill',
-                type: 'pictorialBar',
-                barCategoryGap: '-130%',
-                // symbol: 'path://M0,10 L10,10 L5,0 L0,10 z',
-                symbol: 'path://M0,10 L10,10 C5.5,10 5.5,5 5,0 C4.5,5 4.5,10 0,10 z',
-                itemStyle: {
-                    opacity: 0.8
-                },
-                emphasis: {
-                    itemStyle: {
-                        opacity: 1
-                    }
-                },
-                data: [987, 2343, 3423, 1407, 2187, 102],
-                z: 10
-            }, {
-                name: 'glyph',
-                type: 'pictorialBar',
-                barGap: '-100%',
-                symbol: 'none',
-                label: {
-                    show: true,
-                    position: 'top',
-                    formatter: '{c}件',
-                    fontSize: 16,
-                    color: '#101010'
-                },
-                symbolOffset: [0, '50%'],
-                data: [{
-                    value: 987,
-                    symbolSize: [60, 60]
-                }, {
-                    value: 2343,
-                    symbolSize: [50, 60]
-                }, {
-                    value: 3423,
-                    symbolSize: [65, 35]
-                }, {
-                    value: 1407,
-                    symbolSize: [50, 30]
-                }, {
-                    value: 2187,
-                    symbolSize: [50, 35]
-                }, {
-                    value: 102,
-                    symbolSize: [40, 30]
-                }]
-            }]
-        };
-
-        myChart.setOption(option);
-    }, [divRef]);
+                myChart.setOption(option);
+            })
+    }, [category]);
     return <>
-        <div style={{ fontSize: '16px', color: "#101010", position: "absolute", top: "23px", left: "32px" }}>审理期限</div>
+        <div id="caseRankChart" style={{ fontSize: '16px', color: "#101010", position: "absolute", top: "23px", left: "32px", display: "relative", width: "calc(100% - 50px)" }}>
+            审理期限
+            <div className="case-rank-items">
+                <div onClick={() => setCategory('刑事')} className={category === '刑事' ? 'active' : ''}>刑事</div>
+                <div onClick={() => setCategory('民事')} className={category === '民事' ? 'active' : ''}>民事</div>
+            </div>
+        </div>
         <div style={{ width: "100%", height: "80%" }}>
             <div ref={divRef} style={{ width: "80%", height: "100%", margin: '0 auto' }}>
 
             </div>
         </div>
     </>
-}
+})
