@@ -439,10 +439,72 @@ export const CaseExceptionRankChart = inject("data")((props: {
 }
 )
 
-export const ClueCategoryChart = () =>
-    <>
+const getCategoryCount = (tmpData: any[], category: string) =>
+    tmpData.filter((item: any) => item.category === category).length === 1 ? tmpData.filter((item: any) => item.category === category)[0].categoryCount : 0
+
+export const ClueCategoryChart = inject("data")((props: {
+    data?: DataStore
+}) => {
+
+    const divRef = React.useRef<HTMLDivElement>(null)
+    useEffect(() => {
+        props.data!.getStatisticsDistrictClueCategoryCount()
+            .then(res => {
+                var myChart = echarts.init(divRef.current as HTMLDivElement);
+                var option = {
+                    color: ["#0194FA", "#56BD59", "#F3B322", "#E44A4B"],
+                    tooltip: {
+                        trigger: 'item' as "none" | "item" | "axis" | undefined,
+                        formatter: '{a} <br/>{b}: {c} ({d}%)'
+                    },
+                    series: [
+                        {
+                            name: '线索类别',
+                            type: 'pie',
+                            radius: ['50%', '70%'],
+                            avoidLabelOverlap: false,
+                            emphasis: {
+                                label: {
+                                    show: true,
+                                    fontSize: '30',
+                                    fontWeight: 'bold'
+                                }
+                            },
+                            data: [
+                                {
+                                    value: getCategoryCount(res.data, "BRAND"),
+                                    name: '商标'
+                                },
+                                {
+                                    value: getCategoryCount(res.data, "PATENT"),
+                                    name: '专利'
+                                },
+                                {
+                                    value: getCategoryCount(res.data, "COPYRIGHT"),
+                                    name: '版权'
+                                },
+                                {
+                                    value: getCategoryCount(res.data, "OTHERS"),
+                                    name: '其他'
+                                }
+                            ]
+                        }
+                    ]
+                };
+                myChart.setOption(option);
+            })
+    }, [divRef]);
+    return <>
         <div style={{ fontSize: '16px', color: "#101010", position: "absolute", top: "23px", left: "32px" }}>线索类别统计</div>
+        <div style={{
+            display: "flex",
+            height: "90%",
+            width: '100%'
+        }}>
+            <div ref={divRef} style={{ width: '90%', height: "100%" }}></div>
+        </div>
     </>
+})
 
 export const ClueSuperviseChart = inject('data')((props: {
     data?: DataStore
