@@ -98,3 +98,126 @@
     }
   }
 }
+
+.todo-supervise-notification {
+  background-color: rgba(198, 49, 36, 0.8);
+  padding         : 8px 5px;
+
+  .ant-notification-notice-message {
+    font-size: 16px;
+    color    : #FFFFFF;
+  }
+
+  .ant-notification-notice-description {
+    font-size: 14px;
+    color    : rgba(255, 255, 255, 0.5);
+  }
+
+  .ant-notification-close-icon {
+    color: #1C0300;
+  }
+
+}
+
+.supervise-alert-modal {
+
+  .ant-modal-body {
+    padding       : 0px;
+    display       : flex;
+    flex-direction: column;
+    align-items   : center;
+  }
+
+  .supervise-alert-modal-footer {
+    height         : 50px;
+    display        : flex;
+    align-items    : flex-start;
+    width          : 701px;
+    justify-content: flex-end;
+  }
+
+  .supervise-alert-modal-title {
+    display         : flex;
+    color           : #FFFFFF;
+    background-color: #C63124;
+    width           : 100%;
+    height          : 47px;
+    align-items     : center;
+    margin-bottom   : 43px;
+
+    &>div:first-child {
+      width          : 114px;
+      display        : flex;
+      justify-content: center;
+      align-items    : center;
+    }
+  }
+
+  .supervise-alert-modal-title-icon {
+    width           : 84px;
+    height          : 84px;
+    border          : 9px solid rgb(193, 61, 49);
+    color           : rgb(193, 61, 49);
+    display         : flex;
+    justify-content : center;
+    align-items     : center;
+    border-radius   : 60px;
+    font-size       : 51px;
+    font-weight     : bold;
+    padding-left    : 26px;
+    background-color: #ffffff;
+    box-shadow      : 2px 2px 6px rgba(0, 0, 0, 0.45);
+  }
+
+  .supervise-alert-modal-content {
+    width        : 701px;
+    margin-bottom: 26px;
+
+    &>div:first-child {
+      margin   : 14px 0 10px 0;
+      color    : #1E1E1E;
+      font-size: 16px;
+    }
+
+    &>div:last-child {
+      background-color: #FFF2F0;
+      padding-left    : 17px;
+      padding-right   : 17px;
+
+      &>div {
+        padding: 14px 0 7px 0;
+
+        &>span>em {
+          color: rgb(193, 61, 49)
+        }
+      }
+    }
+  }
+
+  .supervise-alert-modal-exception {
+    width           : 701px;
+    height          : 74px;
+    background-color: #FFEBE9;
+    border          : #C63124 solid 1px;
+    display         : flex;
+    align-items     : center;
+
+    &>div:first-child {
+      width     : 100px;
+      text-align: center;
+      font-size : 40px;
+      color     : #DD5549;
+    }
+
+    &>div:last-child {
+      flex       : 1;
+      color      : #FF3A14;
+      font-size  : 20px;
+      font-weight: bold;
+    }
+  }
+
+  .ant-modal-content {
+    border: 3px solid #DD5549;
+  }
+}

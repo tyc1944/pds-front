@@ -11,6 +11,9 @@ import "./index.less"
 import { formatTimeYMDHMS } from "utils/TimeUtil";
 import _ from "lodash";
 import { RouteComponentProps } from "react-router-dom";
+import { notification } from 'antd';
+import { BellFilled } from "@ant-design/icons";
+import { SuperviseAlertModal } from "./modals";
 
 export interface Props extends RouteComponentProps {
   main: MainStore
@@ -20,11 +23,16 @@ export interface Props extends RouteComponentProps {
 @observer
 class Main extends React.Component<Props> {
 
+  divRef = React.createRef<HTMLDivElement>()
+
+  todoData: Todo = {} as Todo
+
   state = {
     applicationList: [],
     applicationTotal: 0,
     caseWholeCount: {} as CaseWholeCount,
-    todoList: [] as Todo[]
+    todoList: [] as Todo[],
+    showSuperviseAlertModal: false
   };
 
   componentDidMount() {
@@ -38,6 +46,17 @@ class Main extends React.Component<Props> {
     main.getStatisticsTodoList().then(res => this.setState({
       todoList: res.data
     }))
+    main.getStatisticsTodoNotificationList().then(res => {
+      for (let i in res.data) {
+        let tmp = JSON.parse(res.data[i].todoContent);
+        this.openNotification(`${res.data[i].exceptionResult}！`, `${tmp['案件类型'].split("-")[0]}：`, () => {
+          this.todoData = res.data[i];
+          this.setState({
+            showSuperviseAlertModal: true
+          })
+        })
+      }
+    })
   }
 
   initChart = (data: []) => {
@@ -131,25 +150,54 @@ class Main extends React.Component<Props> {
     }
   }
 
+  openNotification = (message: string, description: string, onClick: () => void) => {
+    notification.info({
+      className: "todo-supervise-notification",
+      message,
+      description,
+      duration: 0,
+      icon:
+        <div style={{ borderRadius: '25px', width: '44px', height: "44px", backgroundColor: "#860C00", display: "flex", justifyContent: 'center', alignItems: "center" }}>
+          <BellFilled translate="true" style={{ color: "#FFFFFF", fontSize: "20px" }} />
+        </div>,
+      placement: 'bottomRight',
+      onClick
+    });
+  }
+
   render() {
 
     const { main } = this.props;
     const { caseWholeCount } = this.state;
 
     return (
-      <div style={{
-        display: "flex",
-        height: "100%",
-        flexDirection: 'column'
-      }}>
+      <div
+        ref={this.divRef}
+        style={{
+          display: "flex",
+          height: "100%",
+          flexDirection: 'column'
+        }}>
+        {
+          this.state.showSuperviseAlertModal && <SuperviseAlertModal
+            onDetailClick={todo => {
+              notification.destroy()
+              this.onTodoItemClick(todo)
+            }}
+            todoData={this.todoData}
+            onOk={() => this.setState({ showSuperviseAlertModal: false })}
+            onCancel={() => this.setState({ showSuperviseAlertModal: false })}
+            visible={this.state.showSuperviseAlertModal}></SuperviseAlertModal>
+        }
         <Breadscrum data={["首页"]}></Breadscrum>
         <BoxContainer>
           <BoxContainerInner flex={0.7}>
-            <div style={{
-              height: '100%',
-              display: "flex",
-              width: '100%'
-            }}>
+            <div
+              style={{
+                height: '100%',
+                display: "flex",
+                width: '100%'
+              }}>
               <div style={{ width: "calc(100% - 492px - 19px)" }} id="barChartId">
               </div>
               <div style={{

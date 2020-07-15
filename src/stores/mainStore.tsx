@@ -54,6 +54,7 @@ export interface CaseWholeCount {
 }
 
 export interface Todo {
+    exceptionResult: string;
     todoCategory: string;
     todoStatus: string;
     todoContent: string;
@@ -134,6 +135,16 @@ export default class MainStore {
 
     getStatisticsTodoList() {
         return axios.get("/api/statistics/todoList")
+    }
+
+    getStatisticsTodoNotificationList() {
+        return axios.get("/api/statistics/todoList", {
+            params: {
+                page: 1,
+                pageSize: 4,
+                category: 'new_supervise'
+            }
+        })
     }
 
 }
