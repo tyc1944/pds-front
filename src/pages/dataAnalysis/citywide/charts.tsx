@@ -313,6 +313,7 @@ export const CaseReasonChart = inject("data")((props: {
                             name: '访问来源',
                             type: 'pie',
                             selectedMode: 'single',
+                            center: ["50%", "50%"],
                             radius: [0, '30%'],
                             label: {
                                 position: 'inner'
@@ -330,6 +331,7 @@ export const CaseReasonChart = inject("data")((props: {
                             name: '刑事案件',
                             type: 'pie',
                             radius: ['40%', '55%'],
+                            center: ["50%", "50%"],
                             label: {
                                 formatter: '{a|{a}}{abg|}\n{hr|}\n  {b|{b}：}{c}  {per|{d}%}  ',
                                 backgroundColor: '#eee',

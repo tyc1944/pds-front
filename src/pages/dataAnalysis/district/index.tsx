@@ -22,7 +22,7 @@ class DistrictDataAnalysis extends React.Component {
             <Breadscrum data={["决策辅助"]}></Breadscrum>
             <BoxContainer>
 
-                <BoxContainerInner>
+                {/* <BoxContainerInner>
                     <TableListOpsHelper
                         onChanged={changed =>
                             this.setState({
@@ -48,7 +48,7 @@ class DistrictDataAnalysis extends React.Component {
                             </div>
                         </div>
                     </TableListOpsHelper>
-                </BoxContainerInner>
+                </BoxContainerInner> */}
                 <BoxContainerInner flex={1} noPadding noBorder>
                     <ChartRow leftContent={<ClueRankChart></ClueRankChart>} rightContent={<CaseRankChart></CaseRankChart>}></ChartRow>
                     <ChartRow leftContent={<AreaRankChart></AreaRankChart>} rightContent={<SuperviseRankChart></SuperviseRankChart>}></ChartRow>

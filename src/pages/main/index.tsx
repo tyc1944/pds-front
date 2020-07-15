@@ -75,6 +75,62 @@ class Main extends React.Component<Props> {
     columnPlot.render();
   }
 
+  generateTodoDescription = (category: string, status: string, content: string) => {
+    let tmp = JSON.parse(content) as { [key: string]: string };
+
+    if (category === "new_clue") {
+      if (status === "pendingAppoint") {
+        return "有一条新的待指派线索，请及时处理！";
+      } else if (status === "pendingProcess") {
+        return "有一条新的待处理线索，请及时处理！";
+      } else if (status === "pendingExamine") {
+        return "有一条新的待审核线索，请及时处理！";
+      } else if (status === "pendingSupervise") {
+        return "有一条新的待监督线索，请及时处理！";
+      }
+    } else {
+      return `有一条${tmp['案件类型'].split("-")[0]}异常案件，请及时处理！`;
+    }
+    return "";
+  }
+
+  onTodoItemClick = (todo: Todo) => {
+    const { history, main } = this.props
+    let role = '';
+    switch (main.userProfile.role) {
+      case "NORMAL_USER":
+        role = 'executor';
+        break;
+      case "DEPARTMENT_LEADER":
+        role = 'departmentleader';
+        break;
+      case "LEADERSHIP":
+        role = 'leader';
+        break;
+    }
+    if (todo.todoCategory === "new_clue") {
+      history.push(`/index/clue/${role}/judge/${todo.todoStatus}/${todo.todoId}`)
+    } else {
+      let tabIndex = '1';
+      let caseCategory = JSON.parse(todo.todoContent)['案件类型']
+      switch (caseCategory) {
+        case '侦查监督':
+          tabIndex = '1';
+          break;
+        case '审判监督':
+          tabIndex = '2';
+          break;
+        case '执行监督':
+          tabIndex = '3';
+          break;
+        case '行政监督':
+          tabIndex = '4';
+          break;
+      }
+      history.push(`/index/supervise/${role}/${todo.todoStatus}/${tabIndex}/${todo.todoId}`)
+    }
+  }
+
   render() {
 
     const { main } = this.props;
@@ -161,7 +217,13 @@ class Main extends React.Component<Props> {
                     {
                       this.state.todoList.map((item, index) =>
                         <div key={index}>
-                          <div style={{ color: "#4084F0" }}>{item.todoContent}</div>
+                          <div
+                            onClick={() => this.onTodoItemClick(item)}
+                            style={{
+                              color: "#4084F0",
+                              textDecoration: "underline",
+                              cursor: "pointer"
+                            }}>{this.generateTodoDescription(item.todoCategory, item.todoStatus, item.todoContent)}</div>
                           <div style={{ color: "#A6A6A6" }}>{formatTimeYMDHMS(item.createdTime)}</div>
                         </div>
                       )

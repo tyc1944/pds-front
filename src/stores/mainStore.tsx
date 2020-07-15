@@ -54,8 +54,11 @@ export interface CaseWholeCount {
 }
 
 export interface Todo {
+    todoCategory: string;
+    todoStatus: string;
     todoContent: string;
     createdTime: number;
+    todoId: number;
 }
 
 export default class MainStore {

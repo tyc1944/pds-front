@@ -25,7 +25,7 @@ class CitywideDataAnalysis extends React.Component {
         }}>
             <Breadscrum data={["决策辅助"]}></Breadscrum>
             <BoxContainer>
-                <BoxContainerInner>
+                {/* <BoxContainerInner>
                     <TableListOpsHelper
                         onChanged={changed =>
                             this.setState({
@@ -51,7 +51,7 @@ class CitywideDataAnalysis extends React.Component {
                             </div>
                         </div>
                     </TableListOpsHelper>
-                </BoxContainerInner>
+                </BoxContainerInner> */}
                 <BoxContainerInner flex={1} noPadding noBorder>
                     <ChartRow leftContent={<CaseRankChart></CaseRankChart>} rightContent={<CaseAreaChart></CaseAreaChart>}></ChartRow>
                     <ChartRow leftContent={<CaseCategoryChart></CaseCategoryChart>} rightContent={<CaseReasonChart></CaseReasonChart>}></ChartRow>
