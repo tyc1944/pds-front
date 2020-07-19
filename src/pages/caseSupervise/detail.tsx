@@ -4,7 +4,7 @@ import { RouteComponentProps } from "react-router-dom";
 import Breadscrum from "components/breadscrum";
 import { BoxContainer, BoxContainerInner } from "components/layout";
 import { DataDetail, DataProcessStep, CloseableDataTable, CloseableDataFile, DataTable } from "components/dataDetail";
-import { VerticalAlignBottomOutlined, EyeFilled, ExclamationCircleOutlined, ExceptionOutlined } from "@ant-design/icons";
+import { VerticalAlignBottomOutlined, EyeFilled, ExclamationCircleOutlined, ExceptionOutlined, DownloadOutlined } from "@ant-design/icons";
 import { ColorButton } from "components/buttons";
 import MainStore from "stores/mainStore";
 import { message, Modal, Input, DatePicker } from "antd";
@@ -49,7 +49,12 @@ class CaseSuperviseDetail extends React.Component<ClueJudgeDetailProps> {
         processInfoLabel: "",
         caseData: [] as SuperviseCaseData[],
         partyData: [],
-        dataFiles: [] as string[][]
+        dataFiles: [] as {
+            category: string,
+            title: string,
+            content: string,
+            downloadPath: string
+        }[]
     }
 
     componentDidMount() {
@@ -395,7 +400,17 @@ class CaseSuperviseDetail extends React.Component<ClueJudgeDetailProps> {
                         <DataDetail header="案件文书">
                             {
                                 this.state.dataFiles.map((item, index) =>
-                                    <CloseableDataFile key={index} title="判决书：（2018）苏0214民初153号" files={item}></CloseableDataFile>
+                                    <CloseableDataFile
+                                        key={index}
+                                        headerInfo={<div onClick={e => {
+                                            e.stopPropagation()
+                                            let a = document.createElement("a");
+                                            a.href = `/file/${item.downloadPath}`
+                                            a.download = `${item.title}${item.downloadPath.substr(item.downloadPath.lastIndexOf("."))}`
+                                            a.click();
+                                        }}><DownloadOutlined translate="true" />下载文书</div>}
+                                        title={`${item.category}：${item.title}`}
+                                        content={item.content}></CloseableDataFile>
                                 )
                             }
                         </DataDetail>

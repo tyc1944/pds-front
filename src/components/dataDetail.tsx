@@ -135,7 +135,8 @@ export const DataTable = (props: {
                                                 color: "#4084F0",
                                                 cursor: "pointer"
                                             }}
-                                            onClick={() => props.onAddressClick && props.onAddressClick(item[k])}>{item[k]}</span> : item[k]}</div>
+                                            onClick={() => props.onAddressClick && props.onAddressClick(item[k])}>{item[k]}</span> :
+                                            (k === "异常情节" ? <span style={{ color: '#FF3F11' }}>{item[k]}</span> : item[k])}</div>
                                     </Fragment>)
                             }
                             return tmp
@@ -149,7 +150,7 @@ export const DataTable = (props: {
 }
 
 export const CloseableDataFile = (props: {
-    files: string[],
+    content: string,
     title: string,
     headerInfo?: React.ReactNode,
 }) => {
@@ -161,7 +162,7 @@ export const CloseableDataFile = (props: {
             <div style={{ marginRight: "19px" }}>{props.headerInfo}</div>
         </div>
         {
-            !closed && <div className="closeable-data-table-body">
+            !closed && <div className="closeable-data-table-body data-file" dangerouslySetInnerHTML={{ __html: props.content }}>
 
             </div>
         }

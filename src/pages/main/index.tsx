@@ -49,7 +49,8 @@ class Main extends React.Component<Props> {
     main.getStatisticsTodoNotificationList().then(res => {
       for (let i in res.data) {
         let tmp = JSON.parse(res.data[i].todoContent);
-        this.openNotification(`${res.data[i].exceptionResult}！`, `${tmp['案件类型'].split("-")[0]}：`, () => {
+        let category = tmp['案件类型'].split("-")[0]
+        this.openNotification(`${res.data[i].exceptionResult}！`, `${category}：${this.getCaseNo(category, tmp)}`, () => {
           this.todoData = res.data[i];
           this.setState({
             showSuperviseAlertModal: true
@@ -57,6 +58,10 @@ class Main extends React.Component<Props> {
         })
       }
     })
+  }
+
+  componentWillUnmount() {
+    notification.destroy()
   }
 
   initChart = (data: []) => {
@@ -165,6 +170,20 @@ class Main extends React.Component<Props> {
     });
   }
 
+  getCaseNo = (category: string, content: any) => {
+    switch (category) {
+      case "审判监督":
+        return content['案件编号'] ? content['案件编号'] : content['案件名称']
+      case "行政监督":
+        return content['处罚决定文书号']
+      case "侦察监督":
+        return content['案件编号']
+      case "执行监督":
+        return content['案号']
+    }
+    return "--"
+  }
+
   render() {
 
     const { main } = this.props;
@@ -181,7 +200,6 @@ class Main extends React.Component<Props> {
         {
           this.state.showSuperviseAlertModal && <SuperviseAlertModal
             onDetailClick={todo => {
-              notification.destroy()
               this.onTodoItemClick(todo)
             }}
             todoData={this.todoData}

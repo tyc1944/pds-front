@@ -106,7 +106,17 @@
     }
 
     .closeable-data-table-body {
-        margin-top: 9px;
+        white-space: pre-line;
+        margin-top : 9px;
+
+        &.data-file {
+            border : 1px solid #CFD4E1;
+            padding: 20px;
+
+            &>em {
+                color: #FF3F11;
+            }
+        }
 
         &>.closeable-data-table-row {
             border-bottom: 1px solid #D6DDE3;
