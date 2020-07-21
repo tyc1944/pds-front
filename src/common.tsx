@@ -46,7 +46,8 @@ export const CLUE_SOURCE: { [key: string]: string } = {
   "SELF_FIND": "自行发现",
   "P_12345": "12345",
   "HOTLINE": "政风热线",
-  "P_12315": "12315"
+  "P_12315": "12315",
+  "ADMIN": "行政数据",
 }
 
 export const CLUE_SOURCE_NAME_MAP: { [key: string]: string } = {
@@ -58,7 +59,8 @@ export const CLUE_SOURCE_NAME_MAP: { [key: string]: string } = {
   "自行发现": "SELF_FIND",
   "12345": "P_12345",
   "政风热线": "HOTLINE",
-  "12315": "P_12315"
+  "12315": "P_12315",
+  "行政数据": "ADMIN",
 }
 export const CLUE_STATUS: { [key: string]: string } = {
   "pendingExamine": '待审批',

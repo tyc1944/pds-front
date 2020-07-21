@@ -202,7 +202,7 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
                                     <div style={{ maxWidth: "1373px", backgroundColor: '#99B1DD', color: '#FFFFFF', height: '34px', display: "flex", alignItems: 'center', paddingLeft: "16px" }}>
                                         {CLUE_SOURCE[item.sourceType as string]}
                                     </div>
-                                    <CloseableDataTable onAddressClick={this.onAddressClick} title="案件编号：123213" dataInfo={tmpDataInfo} headerInfo={<span style={{ color: '#8C929F' }}>报案时间：{formatTimeYMDHMS(item.foundDate)}</span>} />
+                                    <CloseableDataTable onAddressClick={this.onAddressClick} title={`案件编号：${item.caseCode}`} dataInfo={tmpDataInfo} headerInfo={<span style={{ color: '#8C929F' }}>报案时间：{formatTimeYMDHMS(item.foundDate)}</span>} />
                                 </Fragment>
                             }
                             )

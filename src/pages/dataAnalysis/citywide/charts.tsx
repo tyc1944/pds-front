@@ -322,9 +322,9 @@ export const CaseReasonChart = inject("data")((props: {
                                 show: false
                             },
                             data: [
-                                { value: 335, name: '直达', selected: true },
-                                { value: 679, name: '营销广告' },
-                                { value: 1548, name: '搜索引擎' }
+                                { value: res.data.cityCaseReasonCategoryCount.copyrightCount, name: '版权' },
+                                { value: res.data.cityCaseReasonCategoryCount.brandCount, name: '商标' },
+                                { value: res.data.cityCaseReasonCategoryCount.othersCount, name: '其他' }
                             ]
                         },
                         {
@@ -374,7 +374,7 @@ export const CaseReasonChart = inject("data")((props: {
                                     }
                                 }
                             },
-                            data: res.data.map((item: any) => ({
+                            data: res.data.cityCaseReasonCountList.map((item: any) => ({
                                 name: item.reason,
                                 value: item.count
                             }))

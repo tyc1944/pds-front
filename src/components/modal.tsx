@@ -47,7 +47,9 @@ export class AnalysisReport extends React.Component<AnalysisReportProps> {
   state = {
     totalCount: 0,
     currentCount: 1,
-    uploadFileName: ""
+    uploadFileName: "",
+    downloadBtnDisabled: false,
+    uploadBtnDisabled: false
   }
 
   rerender = () => {
@@ -79,7 +81,8 @@ export class AnalysisReport extends React.Component<AnalysisReportProps> {
     var loadingTask = pdfjsLib.getDocument(this.props.url);
     loadingTask.promise.then((pdf: any) => {
       this.setState({
-        totalCount: pdf.numPages
+        totalCount: pdf.numPages,
+        downloadBtnDisabled: false
       })
       this.pdf = pdf;
       // Fetch the first page
@@ -104,8 +107,15 @@ export class AnalysisReport extends React.Component<AnalysisReportProps> {
       });
     }, (reason: any) => {
       // PDF loading error
-      console.error(reason);
-      message.error("加载PDF文件失败！")
+      // console.error(reason);
+      if (reason.name === "MissingPDFException") {
+        this.setState({
+          downloadBtnDisabled: true
+        })
+      }
+      if (reason.name !== "MissingPDFException") {
+        message.error(`加载PDF文件失败！原因：${reason.name}`)
+      }
     });
   }
 
@@ -134,7 +144,8 @@ export class AnalysisReport extends React.Component<AnalysisReportProps> {
         if (file.status === "uploading") {
           this.setState({
             uploadFileName: file.name,
-            uploadStatus: "uploading"
+            uploadStatus: "uploading",
+            uploadBtnDisabled: true
           });
         }
         if (event && event.percent === 100) {
@@ -145,13 +156,15 @@ export class AnalysisReport extends React.Component<AnalysisReportProps> {
         }
         if (file.status === "done") {
           this.setState({
-            uploadStatus: ""
+            uploadStatus: "",
+            uploadBtnDisabled: false
           });
           message.success(`报告生成成功！`);
           this.loadPdfFile()
         } else if (file.status === "error") {
           this.setState({
-            uploadStatus: ""
+            uploadStatus: "",
+            uploadBtnDisabled: false
           });
           const args = {
             message: "上传失败",
@@ -175,7 +188,7 @@ export class AnalysisReport extends React.Component<AnalysisReportProps> {
             </Col>
             <Col span="6">
               <Upload {...props}>
-                <ColorButton width={"150px"}>上传并生成报告</ColorButton>
+                <ColorButton disabled={this.state.uploadBtnDisabled} width={"150px"}>上传并生成报告</ColorButton>
               </Upload>
             </Col>
           </Row>
@@ -232,7 +245,7 @@ export class AnalysisReport extends React.Component<AnalysisReportProps> {
           backgroundColor: "#ECF1FA",
           padding: "17px 38px"
         }}>
-          <ColorButton bgColor="#4084F0" fontColor="#FFFFFF" onClick={this.props.onDownloadClick}>下载报告</ColorButton>
+          <ColorButton bgColor="#4084F0" fontColor="#FFFFFF" onClick={this.props.onDownloadClick} disabled={this.state.downloadBtnDisabled}>下载报告</ColorButton>
           <ColorButton bgColor="#FFFFFF" fontColor="#1E1E1E" onClick={this.props.onCancel} >取消</ColorButton>
         </div>
       }
