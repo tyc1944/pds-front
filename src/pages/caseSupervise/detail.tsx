@@ -290,13 +290,16 @@ class CaseSuperviseDetail extends React.Component<ClueJudgeDetailProps> {
                         <div>
                             {
                                 status === "pendingProcess" && <>
-                                    <ColorButton bgColor="#FF9800" fontColor="#FFFFFF" onClick={() => { }}>分析报告</ColorButton>
+                                    {
+                                        this.state.superviseData.caseType === "civil_case" &&
+                                        <ColorButton bgColor="#FF9800" fontColor="#FFFFFF" onClick={() => { }}>分析报告</ColorButton>
+                                    }
                                     <ColorButton bgColor="#4084F0" fontColor="#FFFFFF" onClick={() => {
                                         if (_.isEmpty(this.state.comment)) {
                                             message.warning("请填写承办人意见")
                                             return
                                         }
-                                        if (_.isNil(this.state.processedDate)) {
+                                        if (!this.state.processedDate) {
                                             message.warning("请选择处理时间")
                                             return
                                         }

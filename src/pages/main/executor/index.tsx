@@ -40,7 +40,7 @@ class ExecutorMainDataList extends React.Component<MainDataListProps> {
         if (this.state.activeIndex === "1") {
             history.push(`/index/clue/executor/judge/pendingProcess/${id}`)
         } else {
-            history.push(`/index/supervise/executor/pendingProcess/${id}`)
+            history.push(`/index/supervise/executor/pendingProcess/${parseInt(this.state.activeIndex) - 1}/${id}`)
         }
     }
 

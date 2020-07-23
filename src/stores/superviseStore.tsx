@@ -17,6 +17,7 @@ export interface SuperviseData {
     departmentComment: string;
     leaderComment: string;
     processFeedback: string;
+    caseType: string;
 }
 
 export interface SuperviseProcessInfo {
