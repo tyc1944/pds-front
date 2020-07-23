@@ -136,7 +136,9 @@ export const DataTable = (props: {
                                                 cursor: "pointer"
                                             }}
                                             onClick={() => props.onAddressClick && props.onAddressClick(item[k])}>{item[k]}</span> :
-                                            (k === "异常情节" ? <span style={{ color: '#FF3F11' }}>{item[k]}</span> : item[k])}</div>
+                                            (k === "异常情节" ? <span style={{ color: '#FF3F11' }}>{item[k]}</span> : <span dangerouslySetInnerHTML={{
+                                                __html: item[k]
+                                            }}></span>)}</div>
                                     </Fragment>)
                             }
                             return tmp

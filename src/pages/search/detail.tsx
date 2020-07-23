@@ -32,7 +32,7 @@ class SearchResultDetail extends React.Component<SearchResultProps> {
     componentDidMount() {
         const { location, match } = this.props;
         const state = location.state as RequestStates
-        this.props.data.getSearchDetail(match.params.dataId, state.dataType)
+        this.props.data.getSearchDetail(match.params.dataId, state.dataType, this.props.data.searchParam)
             .then(res => {
                 this.setState({
                     detail: res.data
@@ -77,9 +77,20 @@ class SearchResultDetail extends React.Component<SearchResultProps> {
             <Breadscrum data={['搜索', state.dataDescription.replace("<em>", "").replace("</em>", "")]}></Breadscrum>
             <BoxContainer>
                 <BoxContainerInner flex={1}>
-                    <DataDetail header="案件信息">
-                        <DataTable dataInfo={this.generateDataTableFormatDataFromString(this.state.detail)} />
-                    </DataDetail>
+                    {
+                        state.dataType.indexOf("document") !== -1 &&
+                        <div className="search-result-detail" style={{
+                            whiteSpace: 'pre-line'
+                        }} dangerouslySetInnerHTML={{
+                            __html: this.state.detail
+                        }}></div>
+                    }
+                    {
+                        state.dataType.indexOf("document") === -1 &&
+                        <DataDetail header="案件信息">
+                            <DataTable dataInfo={this.generateDataTableFormatDataFromString(this.state.detail)} />
+                        </DataDetail>
+                    }
                 </BoxContainerInner>
             </BoxContainer>
         </div>

@@ -130,6 +130,7 @@ export default class DataStore {
     };
 
     getGlobalSearch(keyword: string, page: number = 1, pageSize: number = 20) {
+        this.searchResult = []
         axios.get(`/api/statistics/search`, {
             params: {
                 keyword,
@@ -141,11 +142,12 @@ export default class DataStore {
         })
     }
 
-    getSearchDetail(dataId: string, dataType: string) {
+    getSearchDetail(dataId: string, dataType: string, keyword: string) {
         return axios.get(`/api/statistics/search/detail`, {
             params: {
                 dataId,
-                dataType
+                dataType,
+                keyword
             }
         })
     }

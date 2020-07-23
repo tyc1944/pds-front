@@ -1,7 +1,7 @@
 import React from "react";
 import Breadscrum from "components/breadscrum";
 import { inject, observer } from "mobx-react";
-import DataStore, { GlobalSearchResult } from "stores/dataStore";
+import DataStore from "stores/dataStore";
 import { BoxContainer, BoxContainerInner, HTMLContent } from "components/layout";
 import "./index.less";
 import { RouteComponentProps } from "react-router-dom";
@@ -15,6 +15,10 @@ interface SearchResultProps extends RouteComponentProps {
 class SearchResult extends React.Component<SearchResultProps> {
 
     componentDidMount() {
+        const { history } = this.props;
+        if (this.props.data.searchParam === "") {
+            history.replace("/index/main")
+        }
     }
 
     render() {
