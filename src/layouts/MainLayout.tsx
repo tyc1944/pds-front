@@ -77,6 +77,7 @@ class MainLayout extends Component<MainLayoutProps, object> {
 
         if (!_.isEmpty(this.state.searchParam)) {
             data.searchParam = this.state.searchParam;
+            data.getGlobalSearch(data.searchParam)
             history.push("/index/search/result")
         } else {
             if (history.location.pathname === "/index/search/result") {

@@ -5,9 +5,6 @@ import DataStore, { GlobalSearchResult } from "stores/dataStore";
 import { BoxContainer, BoxContainerInner, HTMLContent } from "components/layout";
 import "./index.less";
 import { RouteComponentProps } from "react-router-dom";
-import { Layout } from "antd";
-
-const Content = Layout.Content;
 
 interface SearchResultProps extends RouteComponentProps {
     data: DataStore
@@ -17,18 +14,7 @@ interface SearchResultProps extends RouteComponentProps {
 @observer
 class SearchResult extends React.Component<SearchResultProps> {
 
-    state = {
-        searchResult: [] as GlobalSearchResult[]
-    }
-
     componentDidMount() {
-        const { data } = this.props;
-        data.getGlobalSearch(data.searchParam)
-            .then(res => {
-                this.setState({
-                    searchResult: res.data.records
-                })
-            })
     }
 
     render() {
@@ -46,7 +32,7 @@ class SearchResult extends React.Component<SearchResultProps> {
                     <div style={{ fontSize: "18px", color: '#2D405E' }}>搜索结果：</div>
                     <div className="search-result-list">
                         {
-                            this.state.searchResult.map((item, index) =>
+                            data.searchResult.map((item, index) =>
                                 <div className="search-result-item" key={index} onClick={() => {
                                     const { history } = this.props;
                                     history.push(`/index/search/result/detail/${item.dataId}`, {

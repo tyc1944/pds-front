@@ -116,6 +116,9 @@ export default class DataStore {
     @observable
     searchParam = "";
 
+    @observable
+    searchResult = [] as GlobalSearchResult[];
+
     static DISTRICT_CODE: { [key: string]: string } = {
         "宜兴市": "320282",
         "江阴市": "320281",
@@ -127,12 +130,14 @@ export default class DataStore {
     };
 
     getGlobalSearch(keyword: string, page: number = 1, pageSize: number = 20) {
-        return axios.get(`/api/statistics/search`, {
+        axios.get(`/api/statistics/search`, {
             params: {
                 keyword,
                 page,
                 pageSize
             }
+        }).then(res => {
+            this.searchResult = res.data;
         })
     }
 

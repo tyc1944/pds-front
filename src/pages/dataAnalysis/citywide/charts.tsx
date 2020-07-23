@@ -391,7 +391,7 @@ export const CaseReasonChart = inject("data")((props: {
             height: "90%",
             width: '100%'
         }}>
-            <div ref={divRef} style={{ width: '90%', height: "100%" }}></div>
+            <div ref={divRef} style={{ width: '100%', height: "100%" }}></div>
         </div>
     </>
 })
