@@ -559,32 +559,45 @@ const TrialProcedure = (props: {
         <div style={{ color: "#101010 100%", fontSize: "20px", flex: 1 }}>{props.count}件</div>
     </div>
 
+const getTrialProcedureCount = (list: any, trialProcedure: string) => {
+    let tmp = list.filter((item: any) => item.trialProcedure === trialProcedure)
+    if (tmp.length > 0) {
+        return tmp[0].trialProcedureCount;
+    }
+    return 0;
+}
+
 export const TrialProcedureChart = () => {
+    const [category, setCategory] = React.useState("刑事")
     const [data, setData] = React.useState([] as any[])
 
     useEffect(() => {
-        axios.get("/api/statistics/national/procedure")
+        axios.get("/api/statistics/city/trialProcedure", {
+            params: {
+                category
+            }
+        })
             .then(res => {
                 let tmp = res.data;
                 let data = [{
                     type: '一审',
-                    value: tmp.yishen
+                    value: getTrialProcedureCount(tmp, "一审")
                 }, {
                     type: '二审',
-                    value: tmp.ershen
+                    value: getTrialProcedureCount(tmp, "二审")
                 }, {
                     type: '再审',
-                    value: tmp.zaishen
+                    value: getTrialProcedureCount(tmp, "再审")
                 }, {
                     type: '执行',
-                    value: tmp.zhixing
+                    value: getTrialProcedureCount(tmp, "执行")
                 }, {
                     type: '其他',
-                    value: tmp.other
+                    value: getTrialProcedureCount(tmp, "其他")
                 }]
                 setData(data)
             })
-    }, [true])
+    }, [category])
 
     const config = {
         forceFit: true,
@@ -610,8 +623,8 @@ export const TrialProcedureChart = () => {
         <div style={{ fontSize: '16px', color: "#101010", position: "absolute", top: "23px", left: "32px", display: "relative", width: "calc(100% - 50px)" }}>
             审理程序
             <div className="case-rank-items">
-                <div>刑事</div>
-                <div>民事</div>
+                <div onClick={() => setCategory('刑事')} className={category === '刑事' ? 'active' : ''}>刑事</div>
+                <div onClick={() => setCategory('民事')} className={category === '民事' ? 'active' : ''}>民事</div>
             </div>
         </div>
         <div style={{
