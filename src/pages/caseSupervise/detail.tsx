@@ -13,6 +13,7 @@ import SuperviseStore, { SuperviseData, SuperviseCaseData } from "stores/supervi
 import "./detail.less";
 import { ExceptionResultTitle, ExamineComment } from "./components";
 import { formatTimeYMD } from "utils/TimeUtil";
+import { AnalysisReport } from "components/modal";
 
 const { confirm } = Modal;
 const { TextArea } = Input;
@@ -54,7 +55,8 @@ class CaseSuperviseDetail extends React.Component<ClueJudgeDetailProps> {
             title: string,
             content: string,
             downloadPath: string
-        }[]
+        }[],
+        showAnalysisReportModal: false
     }
 
     componentDidMount() {
@@ -154,6 +156,25 @@ class CaseSuperviseDetail extends React.Component<ClueJudgeDetailProps> {
             height: "100%",
             flexDirection: 'column'
         }}>
+            {
+                this.state.showAnalysisReportModal &&
+                <AnalysisReport
+                    id={this.props.match.params.superviseId}
+                    onDownloadClick={() => {
+                        let a = document.createElement("a")
+                        a.download = `分析报告.docx`
+                        a.href = `/file/superviseReport/${superviseId}/superviseReport_${superviseId}.docx`
+                        a.click()
+                    }}
+                    onAnalysisBtnClick={uploadFile => { }}
+                    uploadUrl={`/api/supervise/${superviseId}/report`}
+                    url={`/file/superviseReport/${superviseId}/superviseReport_${superviseId}.pdf`}
+                    visiable={this.state.showAnalysisReportModal}
+                    onCancel={() => this.setState({
+                        showAnalysisReportModal: false
+                    })}
+                ></AnalysisReport>
+            }
             <Breadscrum data={this.state.breadscrumData}></Breadscrum>
             <BoxContainer>
                 <BoxContainerInner flex={1} noPadding>
@@ -292,7 +313,9 @@ class CaseSuperviseDetail extends React.Component<ClueJudgeDetailProps> {
                                 status === "pendingProcess" && <>
                                     {
                                         this.state.superviseData.caseType === "civil_case" &&
-                                        <ColorButton bgColor="#FF9800" fontColor="#FFFFFF" onClick={() => { }}>分析报告</ColorButton>
+                                        <ColorButton bgColor="#FF9800" fontColor="#FFFFFF" onClick={() => this.setState({
+                                            showAnalysisReportModal: true
+                                        })}>分析报告</ColorButton>
                                     }
                                     <ColorButton bgColor="#4084F0" fontColor="#FFFFFF" onClick={() => {
                                         if (_.isEmpty(this.state.comment)) {

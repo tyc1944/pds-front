@@ -31,6 +31,7 @@ export interface AnalysisReportProps {
   visiable: boolean;
   id: string;
   url: string;
+  uploadUrl: string;
   onCancel: () => void;
   onDownloadClick?: () => void;
   onAnalysisBtnClick?: (uploadFileName: string) => void;
@@ -131,7 +132,7 @@ export class AnalysisReport extends React.Component<AnalysisReportProps> {
       accept: ".docx",
       name: "file",
       showUploadList: false,
-      action: `/api/clue/${this.props.id}/report`,
+      action: this.props.uploadUrl,
       data: {},
       headers: {
         authorization: `Bearer ${token}`
