@@ -103,6 +103,7 @@ export class AnalysisReport extends React.Component<AnalysisReportProps> {
         };
         var renderTask = page.render(renderContext);
         renderTask.promise.then(() => {
+        }).catch((e: any) => {
           message.error("渲染PDF失败！")
         });
       });
