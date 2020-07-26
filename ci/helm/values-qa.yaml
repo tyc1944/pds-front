@@ -17,7 +17,10 @@ service:
 ingress:
   enabled: true
   annotations: {
-    nginx.ingress.kubernetes.io/proxy-body-size: 100m
+    nginx.ingress.kubernetes.io/proxy-body-size: 100m,
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: 600s,
+    nginx.ingress.kubernetes.io/proxy-send-timeout: 600s,
+    nginx.ingress.kubernetes.io/proxy-read-timeout: 600s
   }
   hosts:
     - host: pds.yunmotec.net
