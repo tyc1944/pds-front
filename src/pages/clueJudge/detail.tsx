@@ -487,48 +487,52 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
                     </>
                   )}
                 {(clueData.status === "examined" ||
-                  clueData.status === "pendingSupervise") && (
-                  <>
-                    <ColorButton
-                      bgColor="#4084F0"
-                      fontColor="#FFFFFF"
-                      onClick={() =>
-                        this.setState({
-                          showFinishJudgeModal: true
-                        })
-                      }
-                    >
-                      研判完成
-                    </ColorButton>
-                  </>
-                )}
-                {clueData.status === "examined" && (
-                  <>
-                    <ColorButton
-                      bgColor="#FF9800"
-                      fontColor="#FFFFFF"
-                      onClick={() => {
-                        confirm({
-                          title: "转案件监督",
-                          icon: <ExclamationCircleOutlined translate="true" />,
-                          content: "是否确认转案件监督继续观察？",
-                          onOk: async () => {
-                            await clue.addClueDataSuperviseInfo(
-                              parseInt(this.props.match.params.clueId)
-                            );
-                            message.success("转案件监督成功！");
-                            history.goBack();
-                          },
-                          onCancel() {
-                            console.log("Cancel");
-                          }
-                        });
-                      }}
-                    >
-                      转案件监督
-                    </ColorButton>
-                  </>
-                )}
+                  clueData.status === "pendingSupervise") &&
+                  main.userProfile.role === "NORMAL_USER" && (
+                    <>
+                      <ColorButton
+                        bgColor="#4084F0"
+                        fontColor="#FFFFFF"
+                        onClick={() =>
+                          this.setState({
+                            showFinishJudgeModal: true
+                          })
+                        }
+                      >
+                        研判完成
+                      </ColorButton>
+                    </>
+                  )}
+                {clueData.status === "examined" &&
+                  main.userProfile.role === "NORMAL_USER" && (
+                    <>
+                      <ColorButton
+                        bgColor="#FF9800"
+                        fontColor="#FFFFFF"
+                        onClick={() => {
+                          confirm({
+                            title: "转案件监督",
+                            icon: (
+                              <ExclamationCircleOutlined translate="true" />
+                            ),
+                            content: "是否确认转案件监督继续观察？",
+                            onOk: async () => {
+                              await clue.addClueDataSuperviseInfo(
+                                parseInt(this.props.match.params.clueId)
+                              );
+                              message.success("转案件监督成功！");
+                              history.goBack();
+                            },
+                            onCancel() {
+                              console.log("Cancel");
+                            }
+                          });
+                        }}
+                      >
+                        转案件监督
+                      </ColorButton>
+                    </>
+                  )}
                 <ColorButton
                   bgColor="#FFFFFF"
                   fontColor="#1E1E1E"
