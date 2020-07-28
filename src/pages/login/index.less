@@ -1,47 +1,72 @@
+.bg-video {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+  z-index: -1;
+}
+
 .login-container {
-  display        : flex;
-  flex-direction : column;
-  height         : 100%;
-  background     : url(/img/login_bg.png) no-repeat;
-  background-size: 100% 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 
-  &>div {
-    width: 100%;
-  }
+  // background     : url(/img/login_bg.png) no-repeat;
+  // background-size: 100% 100%;
+  .ant-input-affix-wrapper {
+    background-color: #fafafa45 !important;
 
-  &>div:first-child {
-    flex           : 0.8;
-    display        : flex;
-    justify-content: flex-end;
-    align-items    : center;
-    flex-direction : column;
+    .ant-input-affix-wrapper {
+      color: #fafafa;
+    }
 
-    &>div {
-      margin-top: 36px;
-      font-size : 36px;
-      color     : #FFFFFF;
+    input {
+      background: none;
+      color: #fafafa;
+
+      &::placeholder {
+        color: #fafafa;
+      }
     }
   }
 
-  &>div:last-child {
-    flex  : 1;
+  & > div {
+    width: 100%;
+  }
+
+  & > div:first-child {
+    flex: 0.8;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-direction: column;
+
+    & > div {
+      margin-top: 36px;
+      font-size: 36px;
+      color: #ffffff;
+    }
+  }
+
+  & > div:last-child {
+    flex: 1;
     height: 300px;
 
-    &>div {
-      padding        : 50px 0 0 0;
-      width          : 500px;
-      margin         : 0 auto;
-      display        : flex;
-      flex-direction : column;
-      align-items    : center;
+    & > div {
+      padding: 50px 0 0 0;
+      width: 500px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       justify-content: center;
 
       button {
         margin-left: 0px !important;
       }
 
-
-      &>div {
+      & > div {
         margin-bottom: 28px;
       }
     }
