@@ -3,7 +3,7 @@ WORKDIR /
 COPY . .  
 RUN  npm config set registry http://nexus.yunmotec.com:32055/repository/npm/
 RUN  npm config set _auth eXVubW90ZWNucG06eXVubW90ZWNucG0=
-RUN  export NODE_OPTIONS="--max-old-space-size=4096"
+RUN  export NODE_OPTIONS="--max-old-space-size=8192"
 RUN  npm install
 ARG BUILD_ENV
 RUN  npm run $BUILD_ENV
