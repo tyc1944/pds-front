@@ -6,7 +6,7 @@ RUN  npm config set _auth eXVubW90ZWNucG06eXVubW90ZWNucG0=
 RUN  export NODE_OPTIONS="--max-old-space-size=8192"
 RUN  npm install
 ARG BUILD_ENV
-RUN  npm run $BUILD_ENV
+RUN  node --max-old-space-size=4096 `which npm` run $BUILD_ENV
 
 FROM registry.yunmotec.com:1443/nginx:latest
 ARG ENV
