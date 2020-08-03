@@ -1,6 +1,9 @@
 import { observable, action } from "mobx";
 import { axios, TOKEN_KEY } from "../utils/RequestUtil";
-import { TableListOpsValueType } from "components/table/tableListOpsComponents";
+import {
+  TableListOpsValueType,
+  fillObjectFromOpsValue
+} from "components/table/tableListOpsComponents";
 import { History } from "history/index";
 
 export interface UserProfile {
@@ -101,13 +104,19 @@ export default class MainStore {
   }
 
   getAccountList(page = 1) {
+    let tmpParams = fillObjectFromOpsValue({ page }, this.searchAccountParams);
+    for (let k in tmpParams) {
+      if (tmpParams[k] === "不限") {
+        delete tmpParams[k];
+      }
+    }
     return axios.get("/api/account", {
       params:
         this.searchAccountParams.length === 0
           ? {
               page
             }
-          : {}
+          : tmpParams
     });
   }
 

@@ -10,6 +10,7 @@ import MainStore from "stores/mainStore";
 import { CreateAccountModal, UpdateAccountModal } from "./modals";
 import { UserAccount } from "stores/mainStore";
 import { message } from "antd";
+import { fillObjectFromOpsValue } from "components/table/tableListOpsComponents";
 
 interface SettingProps {
   main: MainStore;
@@ -123,7 +124,10 @@ class Setting extends React.Component<SettingProps> {
             flex={main.userProfile.role === "ADMIN" ? 0.4 : 0.2}
           >
             <TableSearch
-              onSearch={changed => {}}
+              onSearch={changed => {
+                this.props.main.searchAccountParams = changed;
+                this.getAccountList();
+              }}
               userProfile={main.userProfile}
             ></TableSearch>
           </BoxContainerInner>
