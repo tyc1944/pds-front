@@ -98,8 +98,8 @@ class ClueAnalysis extends React.Component<ClueAnalysisProps> {
       forceFit: true,
       padding: [100, 100, 100, 100],
       data: [this.state.categoryData, this.state.lineData],
-      xField: "category",
-      yField: ["count", "count"],
+      xField: "线索来源",
+      yField: ["数量", "数量"],
       legend: {
         visible: true,
         position: "right-center"
@@ -136,132 +136,132 @@ class ClueAnalysis extends React.Component<ClueAnalysisProps> {
                   this.setState({
                     categoryData: [
                       {
-                        category: "网上报案",
-                        count: tmp.lastPeriodClueSourceAnalysis.internetReport,
+                        线索来源: "网上报案",
+                        数量: tmp.lastPeriodClueSourceAnalysis.internetReport,
                         type: "上阶段线索"
                       },
                       {
-                        category: "网上报案",
-                        count: tmp.clueSourceAnalysis.internetReport,
+                        线索来源: "网上报案",
+                        数量: tmp.clueSourceAnalysis.internetReport,
                         type: "本阶段线索"
                       },
                       {
-                        category: "舆情线索",
-                        count: tmp.lastPeriodClueSourceAnalysis.socialClue,
+                        线索来源: "舆情线索",
+                        数量: tmp.lastPeriodClueSourceAnalysis.socialClue,
                         type: "上阶段线索"
                       },
                       {
-                        category: "舆情线索",
-                        count: tmp.clueSourceAnalysis.socialClue,
+                        线索来源: "舆情线索",
+                        数量: tmp.clueSourceAnalysis.socialClue,
                         type: "本阶段线索"
                       },
                       {
-                        category: "公安线索",
-                        count: tmp.lastPeriodClueSourceAnalysis.policeClue,
+                        线索来源: "公安线索",
+                        数量: tmp.lastPeriodClueSourceAnalysis.policeClue,
                         type: "上阶段线索"
                       },
                       {
-                        category: "公安线索",
-                        count: tmp.clueSourceAnalysis.policeClue,
+                        线索来源: "公安线索",
+                        数量: tmp.clueSourceAnalysis.policeClue,
                         type: "本阶段线索"
                       },
                       {
-                        category: "法院线索",
-                        count: tmp.lastPeriodClueSourceAnalysis.courtClue,
+                        线索来源: "法院线索",
+                        数量: tmp.lastPeriodClueSourceAnalysis.courtClue,
                         type: "上阶段线索"
                       },
                       {
-                        category: "法院线索",
-                        count: tmp.clueSourceAnalysis.courtClue,
+                        线索来源: "法院线索",
+                        数量: tmp.clueSourceAnalysis.courtClue,
                         type: "本阶段线索"
                       },
                       {
-                        category: "网格化线索",
-                        count: tmp.lastPeriodClueSourceAnalysis.meshClue,
+                        线索来源: "网格化线索",
+                        数量: tmp.lastPeriodClueSourceAnalysis.meshClue,
                         type: "上阶段线索"
                       },
                       {
-                        category: "网格化线索",
-                        count: tmp.clueSourceAnalysis.meshClue,
+                        线索来源: "网格化线索",
+                        数量: tmp.clueSourceAnalysis.meshClue,
                         type: "本阶段线索"
                       },
                       {
-                        category: "自行发现",
-                        count: tmp.lastPeriodClueSourceAnalysis.selfFind,
+                        线索来源: "自行发现",
+                        数量: tmp.lastPeriodClueSourceAnalysis.selfFind,
                         type: "上阶段线索"
                       },
                       {
-                        category: "自行发现",
-                        count: tmp.clueSourceAnalysis.selfFind,
+                        线索来源: "自行发现",
+                        数量: tmp.clueSourceAnalysis.selfFind,
                         type: "本阶段线索"
                       },
                       {
-                        category: "12345",
-                        count: tmp.lastPeriodClueSourceAnalysis.p12345,
+                        线索来源: "12345",
+                        数量: tmp.lastPeriodClueSourceAnalysis.p12345,
                         type: "上阶段线索"
                       },
                       {
-                        category: "12345",
-                        count: tmp.clueSourceAnalysis.p12345,
+                        线索来源: "12345",
+                        数量: tmp.clueSourceAnalysis.p12345,
                         type: "本阶段线索"
                       },
                       {
-                        category: "政风热线",
-                        count: tmp.lastPeriodClueSourceAnalysis.hotline,
+                        线索来源: "政风热线",
+                        数量: tmp.lastPeriodClueSourceAnalysis.hotline,
                         type: "上阶段线索"
                       },
                       {
-                        category: "政风热线",
-                        count: tmp.clueSourceAnalysis.hotline,
+                        线索来源: "政风热线",
+                        数量: tmp.clueSourceAnalysis.hotline,
                         type: "本阶段线索"
                       },
                       {
-                        category: "12315",
-                        count: tmp.lastPeriodClueSourceAnalysis.p12315,
+                        线索来源: "12315",
+                        数量: tmp.lastPeriodClueSourceAnalysis.p12315,
                         type: "上阶段线索"
                       },
                       {
-                        category: "12315",
-                        count: tmp.clueSourceAnalysis.p12315,
+                        线索来源: "12315",
+                        数量: tmp.clueSourceAnalysis.p12315,
                         type: "本阶段线索"
                       }
                     ],
                     lineData: [
                       {
-                        category: "网上报案",
-                        count: tmp.clueProcessDuration.internetReport
+                        线索来源: "网上报案",
+                        数量: tmp.clueProcessDuration.internetReport
                       },
                       {
-                        category: "舆情线索",
-                        count: tmp.clueProcessDuration.socialClue
+                        线索来源: "舆情线索",
+                        数量: tmp.clueProcessDuration.socialClue
                       },
                       {
-                        category: "公安线索",
-                        count: tmp.clueProcessDuration.policeClue
+                        线索来源: "公安线索",
+                        数量: tmp.clueProcessDuration.policeClue
                       },
                       {
-                        category: "法院线索",
-                        count: tmp.clueProcessDuration.courtClue
+                        线索来源: "法院线索",
+                        数量: tmp.clueProcessDuration.courtClue
                       },
                       {
-                        category: "网格化线索",
-                        count: tmp.clueProcessDuration.meshClue
+                        线索来源: "网格化线索",
+                        数量: tmp.clueProcessDuration.meshClue
                       },
                       {
-                        category: "自行发现",
-                        count: tmp.clueProcessDuration.selfFind
+                        线索来源: "自行发现",
+                        数量: tmp.clueProcessDuration.selfFind
                       },
                       {
-                        category: "12345",
-                        count: tmp.clueProcessDuration.p12345
+                        线索来源: "12345",
+                        数量: tmp.clueProcessDuration.p12345
                       },
                       {
-                        category: "政风热线",
-                        count: tmp.clueProcessDuration.hotline
+                        线索来源: "政风热线",
+                        数量: tmp.clueProcessDuration.hotline
                       },
                       {
-                        category: "12315",
-                        count: tmp.clueProcessDuration.p12315
+                        线索来源: "12315",
+                        数量: tmp.clueProcessDuration.p12315
                       }
                     ]
                   });
