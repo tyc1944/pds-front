@@ -555,7 +555,7 @@ class MainLayout extends Component<MainLayoutProps, object> {
                 component={LeaderPendingExamineClueJudge}
               />
               <Route
-                path="/index/clue/leader/judge/pendingExamine/:clueId"
+                path="/index/clue/leader/judge/:status/:clueId"
                 exact
                 component={ClueJudgeDetail}
               />
