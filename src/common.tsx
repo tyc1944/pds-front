@@ -21,7 +21,8 @@ export const ALL_DEPARTMENT = [
 export const ALL_ROLE: { [key: string]: string } = {
   LEADERSHIP: "院领导",
   DEPARTMENT_LEADER: "部门领导",
-  NORMAL_USER: "承办人"
+  NORMAL_USER: "承办人",
+  MANAGER: "管理员"
 };
 export const ALL_CASE_CATEGORY = [
   {
