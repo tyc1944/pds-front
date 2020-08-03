@@ -103,8 +103,11 @@ export default class MainStore {
       .finally(() => (this.logining = false));
   }
 
-  getAccountList(page = 1) {
-    let tmpParams = fillObjectFromOpsValue({ page }, this.searchAccountParams);
+  getAccountList(page = 1, pageSize = 20) {
+    let tmpParams = fillObjectFromOpsValue(
+      { page, pageSize },
+      this.searchAccountParams
+    );
     for (let k in tmpParams) {
       if (tmpParams[k] === "不限") {
         delete tmpParams[k];
@@ -114,7 +117,8 @@ export default class MainStore {
       params:
         this.searchAccountParams.length === 0
           ? {
-              page
+              page,
+              pageSize
             }
           : tmpParams
     });

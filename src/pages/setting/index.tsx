@@ -31,8 +31,8 @@ class Setting extends React.Component<SettingProps> {
     this.getAccountList();
   }
 
-  getAccountList() {
-    this.props.main.getAccountList().then(res => {
+  getAccountList(page = 1, pageSize = 20) {
+    this.props.main.getAccountList(page, pageSize).then(res => {
       this.setState({
         records: res.data.records,
         totalRecordsCount: res.data.total
@@ -152,7 +152,7 @@ class Setting extends React.Component<SettingProps> {
               )}
               total={this.state.totalRecordsCount}
               onChange={(page, pageSize) => {
-                console.log(page);
+                this.getAccountList(page, pageSize);
               }}
             />
           </BoxContainerInner>
