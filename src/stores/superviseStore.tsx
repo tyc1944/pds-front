@@ -123,7 +123,9 @@ export default class SuperviseStore {
       delete params.judgementYear;
     }
     if (params.status && params.status !== "all") {
-      params.status = CLUE_STATUS_MAP[params.status];
+      if (CLUE_STATUS_MAP[params.status]) {
+        params.status = CLUE_STATUS_MAP[params.status];
+      }
     }
     return axios.get(`/api/supervise/${dataType}/list`, {
       params
