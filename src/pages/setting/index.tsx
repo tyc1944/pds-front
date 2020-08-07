@@ -10,7 +10,6 @@ import MainStore from "stores/mainStore";
 import { CreateAccountModal, UpdateAccountModal } from "./modals";
 import { UserAccount } from "stores/mainStore";
 import { message } from "antd";
-import { fillObjectFromOpsValue } from "components/table/tableListOpsComponents";
 
 interface SettingProps {
   main: MainStore;
@@ -21,6 +20,7 @@ interface SettingProps {
 class Setting extends React.Component<SettingProps> {
   state = {
     totalRecordsCount: 0,
+    totalPages: 0,
     records: [],
     showCreateAccountModal: false,
     showUpdateAccountModal: false,
@@ -35,7 +35,8 @@ class Setting extends React.Component<SettingProps> {
     this.props.main.getAccountList(page, pageSize).then(res => {
       this.setState({
         records: res.data.records,
-        totalRecordsCount: res.data.total
+        totalRecordsCount: res.data.total,
+        totalPages: res.data.pages
       });
     });
   }
@@ -150,6 +151,7 @@ class Setting extends React.Component<SettingProps> {
                 this.onResetPasswordClick,
                 this.onEditClick
               )}
+              pages={this.state.totalPages}
               total={this.state.totalRecordsCount}
               onChange={(page, pageSize) => {
                 this.getAccountList(page, pageSize);
