@@ -54,6 +54,7 @@ export interface ClueData {
   earliestReportedDate?: number;
   assignTo?: number;
   currentStep?: string;
+  clueFilesList?: any[];
 }
 
 export interface ClueDataExamineInfo {
@@ -265,6 +266,14 @@ export default class ClueStore {
   async returnClueData(clueId: number, comment: string) {
     await axios.put(`/api/clue/${clueId}/return`, {
       comment
+    });
+  }
+
+  getClueFiles(clueDataId: number) {
+    return axios.get(`/api/clue/upload/files`, {
+      params: {
+        clueDataId
+      }
     });
   }
 }

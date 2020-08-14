@@ -224,6 +224,11 @@ class ClueAnalysis extends React.Component<ClueAnalysisProps> {
                         线索来源: "12315",
                         数量: tmp.clueSourceAnalysis.p12315,
                         type: "本阶段线索"
+                      },
+                      {
+                        线索来源: "行政数据",
+                        数量: tmp.clueSourceAnalysis.admin,
+                        type: "本阶段线索"
                       }
                     ],
                     lineData: [
@@ -262,6 +267,10 @@ class ClueAnalysis extends React.Component<ClueAnalysisProps> {
                       {
                         线索来源: "12315",
                         数量: tmp.clueProcessDuration.p12315
+                      },
+                      {
+                        线索来源: "行政数据",
+                        数量: tmp.clueProcessDuration.admin
                       }
                     ]
                   });

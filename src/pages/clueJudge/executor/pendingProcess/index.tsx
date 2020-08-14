@@ -10,11 +10,8 @@ import ClueStore, { ClueDataSearchModel } from "stores/clueStore";
 import { fillObjectFromOpsValue } from "components/table/tableListOpsComponents";
 import { CreateSelfFoundClue, ReturnClueModal } from "./modals";
 import { Moment } from "moment";
-import { message, Modal } from "antd";
+import { message } from "antd";
 import { RouteComponentProps } from "react-router-dom";
-import { ExclamationCircleOutlined } from "@ant-design/icons";
-
-const { confirm } = Modal;
 
 interface ClueJudgeProps extends RouteComponentProps {
   clue: ClueStore;
@@ -35,6 +32,10 @@ class ExecutorClueJudge extends React.Component<ClueJudgeProps> {
 
   componentDidMount() {
     this.getClueDataList();
+  }
+
+  componentWillUnmount() {
+    this.props.clue.resetSearchModal();
   }
 
   getClueDataList = () => {

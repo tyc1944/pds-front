@@ -55,6 +55,7 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
   componentDidMount() {
     const { clue } = this.props;
     let clueId = parseInt(this.props.match.params.clueId);
+    clue.clueProcessData.id = clueId;
     clue.getClueData(clueId).then(res => {
       let tmp = res.data;
       this.setState({
@@ -299,7 +300,10 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
             {clue.clueProcessData.status !== "pendingProcess" &&
               clue.clueProcessData.status !== "pendingAppoint" && (
                 <DataDetail header="线索处理信息" headerOps={<ClueRateInfo />}>
-                  <ClueProcessInfo readonly></ClueProcessInfo>
+                  <ClueProcessInfo
+                    readonly
+                    clueDataId={parseInt(this.props.match.params.clueId)}
+                  ></ClueProcessInfo>
                 </DataDetail>
               )}
             {main.userProfile.role === "DEPARTMENT_LEADER" &&

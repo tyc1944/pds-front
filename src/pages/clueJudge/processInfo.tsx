@@ -1,28 +1,93 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./processInfo.less";
 import ClueStore from "stores/clueStore";
 import TextArea from "antd/lib/input/TextArea";
-import { DatePicker, Select } from "antd";
+import {
+  DatePicker,
+  Select,
+  Button,
+  Upload,
+  notification,
+  message
+} from "antd";
 import { ALL_CASE_CATEGORY, DATA_STATUS_ACTION, CASE_CATEGORY } from "common";
 import { inject, useObserver } from "mobx-react";
 import { formatTimeYMDHMS } from "utils/TimeUtil";
 import { ColorButton } from "components/buttons";
-import { EyeFilled, VerticalAlignBottomOutlined } from "@ant-design/icons";
+import {
+  EyeFilled,
+  VerticalAlignBottomOutlined,
+  UploadOutlined,
+  DownloadOutlined,
+  DeleteOutlined
+} from "@ant-design/icons";
 import { AnalysisReport } from "components/modal";
+import moment from "moment";
+import { TOKEN_KEY } from "utils/RequestUtil";
+import { UploadChangeParam } from "antd/lib/upload";
+import { UploadFile } from "antd/lib/upload/interface";
+import _ from "lodash";
 
 const RedMark = () => <span style={{ color: "#FF2828" }}>*</span>;
 const { Option } = Select;
 
 export const ClueProcessInfo = inject("clue")(
   (props: {
+    clueDataId?: number;
     clue?: ClueStore;
     readonly?: boolean;
     onAddressClick?: (address: string) => void;
   }) => {
     const { clueProcessData } = props.clue!;
     const [showReport, setShowReport] = React.useState(false);
+    const [clueFiles, setClueFiles] = React.useState([] as any[]);
+
+    useEffect(() => {
+      if (props.readonly && props.clueDataId) {
+        props.clue!.getClueFiles(props.clueDataId as number).then(res => {
+          setClueFiles(res.data);
+        });
+      }
+    }, [props.readonly, props.clueDataId, props.clue]);
 
     return useObserver(() => {
+      clueProcessData.processedDate = moment(new Date()).valueOf();
+      const token = localStorage.getItem(TOKEN_KEY);
+      const uploadProps = {
+        name: "file",
+        showUploadList: false,
+        action: "/api/clue/upload/files",
+        data: {
+          clueDataId: props.clue!.clueProcessData.id
+        },
+        headers: {
+          authorization: `Bearer ${token}`
+        },
+        onChange: async ({
+          file,
+          fileList,
+          event
+        }: UploadChangeParam<UploadFile<any>>) => {
+          if (file.status === "uploading") {
+          }
+          if (file.status === "done") {
+            message.success(`上传成功！`);
+            let tmpClueFiles = _.clone(clueFiles);
+            tmpClueFiles = tmpClueFiles.concat(file.response);
+            setClueFiles(tmpClueFiles);
+            props.clue!.clueProcessData.clueFilesList = tmpClueFiles;
+          } else if (file.status === "error") {
+            const args = {
+              message: "上传失败",
+              description: `${file.name} 上传失败，原因\n：${
+                file.response ? file.response.detail : "请联系管理员"
+              }`,
+              duration: 0
+            };
+            notification.open(args);
+          }
+        }
+      };
       return (
         <>
           {showReport && (
@@ -45,6 +110,7 @@ export const ClueProcessInfo = inject("clue")(
                   formatTimeYMDHMS(clueProcessData.processedDate)
                 ) : (
                   <DatePicker
+                    defaultValue={moment(new Date())}
                     onChange={val =>
                       (clueProcessData.processedDate = val
                         ? val.valueOf()
@@ -118,7 +184,58 @@ export const ClueProcessInfo = inject("clue")(
             </div>
             <div className="clue-process-info-row higher">
               <div>证据材料</div>
-              <div></div>
+              <div className="clue-evidence-files">
+                {!props.readonly && (
+                  <Upload {...uploadProps}>
+                    <Button>
+                      <UploadOutlined translate="true" /> 上传
+                    </Button>
+                  </Upload>
+                )}
+                {!props.readonly && (
+                  <>
+                    {clueFiles.map((item, index) => {
+                      let fileName = JSON.parse(item.dataInfo).fileName;
+                      return (
+                        <Button
+                          key={index}
+                          onClick={() => {
+                            let tmpClueFiles = _.clone(clueFiles);
+                            tmpClueFiles.splice(index, 1);
+                            setClueFiles(tmpClueFiles);
+                            props.clue!.clueProcessData.clueFilesList = tmpClueFiles;
+                          }}
+                        >
+                          <UploadOutlined translate="true" />
+                          {fileName}
+                          <DeleteOutlined translate="true" />
+                        </Button>
+                      );
+                    })}
+                  </>
+                )}
+                {props.readonly && (
+                  <>
+                    {clueFiles.map((item, index) => {
+                      let fileName = JSON.parse(item.dataInfo).fileName;
+                      return (
+                        <Button
+                          key={index}
+                          onClick={() => {
+                            let a = document.createElement("a");
+                            a.download = fileName;
+                            a.href = `/file/${item.filePath}`;
+                            a.click();
+                          }}
+                        >
+                          <DownloadOutlined translate="true" />
+                          {fileName}
+                        </Button>
+                      );
+                    })}
+                  </>
+                )}
+              </div>
             </div>
             <div className="clue-process-info-row higher">
               <div>承办人意见{!props.readonly && <RedMark />}</div>

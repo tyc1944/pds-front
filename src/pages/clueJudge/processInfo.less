@@ -1,61 +1,64 @@
 .clue-process-info {
-    display       : flex;
-    flex-direction: column;
-    max-width     : 1373px;
+  display: flex;
+  flex-direction: column;
+  max-width: 1373px;
 
-    .clue-process-info-row {
-        display: flex;
-        border : 1px solid #D6DDE3;
-        height : 36px;
+  .clue-process-info-row {
+    display: flex;
+    border: 1px solid #d6dde3;
+    height: 36px;
 
-        &.higher {
-            height: 100px;
-        }
-
-        &>div {
-            display     : flex;
-            align-items : center;
-            height      : 100%;
-            border-right: 1px solid #D6DDE3;
-
-            &>textarea {
-                height: 100%;
-                border: none;
-            }
-        }
-
-        &>div:nth-child(odd) {
-            justify-content: flex-end;
-            padding-right  : 13px;
-            width          : 143px;
-        }
-
-        &>div:nth-child(even) {
-            padding-left: 13px;
-            flex        : 1;
-        }
+    &.higher {
+      height: 100px;
     }
 
-    .clue-process-analysis-report {
-        border: 1px solid #D6DDE3;
-
-        &>div:first-child {
-            background-color: #F5F7FB;
-            border-bottom   : 1px solid #D6DDE3;
-            font-size       : 18px;
-            color           : #1E1E1E;
-            display         : flex;
-            justify-content : center;
-            align-items     : center;
-            height          : 52px;
-        }
-
-        &>div:last-child {
-            display        : flex;
-            justify-content: center;
-            align-items    : center;
-            height         : 64px;
-        }
+    & > .clue-evidence-files > * {
+      margin-right: 10px;
     }
 
+    & > div {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      border-right: 1px solid #d6dde3;
+
+      & > textarea {
+        height: 100%;
+        border: none;
+      }
+    }
+
+    & > div:nth-child(odd) {
+      justify-content: flex-end;
+      padding-right: 13px;
+      width: 143px;
+    }
+
+    & > div:nth-child(even) {
+      padding-left: 13px;
+      flex: 1;
+    }
+  }
+
+  .clue-process-analysis-report {
+    border: 1px solid #d6dde3;
+
+    & > div:first-child {
+      background-color: #f5f7fb;
+      border-bottom: 1px solid #d6dde3;
+      font-size: 18px;
+      color: #1e1e1e;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 52px;
+    }
+
+    & > div:last-child {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 64px;
+    }
+  }
 }
