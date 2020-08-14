@@ -15,6 +15,7 @@ import "./index.less";
 import MainStore, { CaseWholeCount } from "stores/mainStore";
 import { History } from "history/index";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { ReturnClueModal } from "pages/clueJudge/executor/pendingProcess/modals";
 
 const { TabPane } = Tabs;
 const { confirm } = Modal;
@@ -28,9 +29,12 @@ interface MainDataListProps {
 
 @inject("clue", "supervise", "main")
 class ExecutorMainDataList extends React.Component<MainDataListProps> {
+  returnId: number = 0;
+  resolveCb: (val: boolean) => void = () => {};
   state = {
     activeIndex: "1",
-    caseWholeCount: {} as CaseWholeCount
+    caseWholeCount: {} as CaseWholeCount,
+    showReturnModal: false
   };
 
   componentDidMount() {
@@ -56,24 +60,12 @@ class ExecutorMainDataList extends React.Component<MainDataListProps> {
   };
 
   onRejectClick = (id: number) => {
+    this.returnId = id;
+    this.setState({
+      showReturnModal: true
+    });
     return new Promise<boolean>(resolve => {
-      confirm({
-        title: "操作确认",
-        icon: <ExclamationCircleOutlined translate="true" />,
-        content: "确认要退回吗？",
-        onOk: async () => {
-          if (this.state.activeIndex === "1") {
-            await this.props.clue!.returnClueData(id, "");
-          } else {
-            await this.props.supervise!.returnSuperviseData(id);
-          }
-          message.success("退回成功！");
-          resolve(true);
-        },
-        onCancel: () => {
-          resolve(false);
-        }
-      });
+      this.resolveCb = resolve;
     });
   };
 
@@ -87,83 +79,119 @@ class ExecutorMainDataList extends React.Component<MainDataListProps> {
     const { caseWholeCount } = this.state;
 
     return (
-      <Tabs defaultActiveKey="1" onChange={this.onTabChange}>
-        <TabPane
-          tab={
-            <TableNameWithNumber
-              name="待处理线索"
-              count={caseWholeCount.pendingProcessClueCount}
-            />
-          }
-          key="1"
-        >
-          <PendingProcessTable
-            activeIndex={this.state.activeIndex}
-            onDetailClick={this.onDetailClick}
-            onReturnClick={this.onRejectClick}
+      <>
+        {this.state.showReturnModal && (
+          <ReturnClueModal
+            title="退回线索"
+            visiable={this.state.showReturnModal}
+            onCancel={() =>
+              this.setState({
+                showReturnModal: false
+              })
+            }
+            onFinish={async vals => {
+              try {
+                if (this.state.activeIndex === "1") {
+                  await this.props.clue!.returnClueData(
+                    this.returnId,
+                    vals["comment"]
+                  );
+                } else {
+                  await this.props.supervise!.returnSuperviseData(
+                    this.returnId
+                  );
+                }
+                message.success("退回成功！");
+                this.setState(
+                  {
+                    showReturnModal: false
+                  },
+                  () => this.resolveCb(true)
+                );
+              } catch (e) {
+                this.resolveCb(false);
+              }
+            }}
           />
-        </TabPane>
-        <TabPane
-          tab={
-            <TableNameWithNumber
-              name="侦查监督"
-              count={caseWholeCount.pendingProcessInvestigationCount}
+        )}
+        <Tabs defaultActiveKey="1" onChange={this.onTabChange}>
+          <TabPane
+            tab={
+              <TableNameWithNumber
+                name="待处理线索"
+                count={caseWholeCount.pendingProcessClueCount}
+              />
+            }
+            key="1"
+          >
+            <PendingProcessTable
+              activeIndex={this.state.activeIndex}
+              onDetailClick={this.onDetailClick}
+              onReturnClick={this.onRejectClick}
             />
-          }
-          key="2"
-        >
-          <InvestigationTable
-            activeIndex={this.state.activeIndex}
-            onDetailClick={this.onDetailClick}
-            onReturnClick={this.onRejectClick}
-          />
-        </TabPane>
-        <TabPane
-          tab={
-            <TableNameWithNumber
-              name="审判监督"
-              count={caseWholeCount.pendingProcessTrialCount}
+          </TabPane>
+          <TabPane
+            tab={
+              <TableNameWithNumber
+                name="侦查监督"
+                count={caseWholeCount.pendingProcessInvestigationCount}
+              />
+            }
+            key="2"
+          >
+            <InvestigationTable
+              activeIndex={this.state.activeIndex}
+              onDetailClick={this.onDetailClick}
+              onReturnClick={this.onRejectClick}
             />
-          }
-          key="3"
-        >
-          <TrialTable
-            activeIndex={this.state.activeIndex}
-            onDetailClick={this.onDetailClick}
-            onReturnClick={this.onRejectClick}
-          />
-        </TabPane>
-        <TabPane
-          tab={
-            <TableNameWithNumber
-              name="执行监督"
-              count={caseWholeCount.pendingProcessExecutionCount}
+          </TabPane>
+          <TabPane
+            tab={
+              <TableNameWithNumber
+                name="审判监督"
+                count={caseWholeCount.pendingProcessTrialCount}
+              />
+            }
+            key="3"
+          >
+            <TrialTable
+              activeIndex={this.state.activeIndex}
+              onDetailClick={this.onDetailClick}
+              onReturnClick={this.onRejectClick}
             />
-          }
-          key="4"
-        >
-          <ExecutionTable
-            activeIndex={this.state.activeIndex}
-            onDetailClick={this.onDetailClick}
-            onReturnClick={this.onRejectClick}
-          />
-        </TabPane>
-        <TabPane
-          tab={
-            <TableNameWithNumber
-              name="行政监督"
-              count={caseWholeCount.pendingProcessAdministrationCount}
+          </TabPane>
+          <TabPane
+            tab={
+              <TableNameWithNumber
+                name="执行监督"
+                count={caseWholeCount.pendingProcessExecutionCount}
+              />
+            }
+            key="4"
+          >
+            <ExecutionTable
+              activeIndex={this.state.activeIndex}
+              onDetailClick={this.onDetailClick}
+              onReturnClick={this.onRejectClick}
             />
-          }
-          key="5"
-        >
-          <AdministrationTable
-            activeIndex={this.state.activeIndex}
-            onDetailClick={this.onDetailClick}
-            onReturnClick={this.onRejectClick}
-          />
-        </TabPane>
-      </Tabs>
+          </TabPane>
+          <TabPane
+            tab={
+              <TableNameWithNumber
+                name="行政监督"
+                count={caseWholeCount.pendingProcessAdministrationCount}
+              />
+            }
+            key="5"
+          >
+            <AdministrationTable
+              activeIndex={this.state.activeIndex}
+              onDetailClick={this.onDetailClick}
+              onReturnClick={this.onRejectClick}
+            />
+          </TabPane>
+        </Tabs>
+      </>
     );
   }
 }

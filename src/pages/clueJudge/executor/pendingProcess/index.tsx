@@ -23,6 +23,7 @@ interface ClueJudgeProps extends RouteComponentProps {
 @inject("clue")
 @observer
 class ExecutorClueJudge extends React.Component<ClueJudgeProps> {
+  clueId: number = 0;
   state = {
     breadscrumData: [],
     clueDataList: [],
@@ -53,18 +54,9 @@ class ExecutorClueJudge extends React.Component<ClueJudgeProps> {
   };
 
   onReturnClick = (clueId: number) => {
-    confirm({
-      title: "操作确认",
-      icon: <ExclamationCircleOutlined translate="true" />,
-      content: "确认要退回吗？",
-      onOk: async () => {
-        await this.props.clue.returnClueData(clueId, "");
-        message.success("退回成功！");
-        this.getClueDataList();
-      },
-      onCancel() {
-        console.log("Cancel");
-      }
+    this.clueId = clueId;
+    this.setState({
+      showReturnClueModal: true
     });
   };
 
@@ -127,7 +119,13 @@ class ExecutorClueJudge extends React.Component<ClueJudgeProps> {
                 showReturnClueModal: false
               })
             }
-            onFinish={vals => {
+            onFinish={async vals => {
+              await this.props.clue.returnClueData(
+                this.clueId,
+                vals["comment"]
+              );
+              message.success("退回成功！");
+              this.getClueDataList();
               this.setState({
                 showReturnClueModal: false
               });
