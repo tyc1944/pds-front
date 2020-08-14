@@ -52,6 +52,8 @@ export interface ClueData {
   departmentComment?: string;
   leaderComment?: string;
   earliestReportedDate?: number;
+  assignTo?: number;
+  currentStep?: string;
 }
 
 export interface ClueDataExamineInfo {
@@ -71,10 +73,8 @@ export interface TransferClueData {
 }
 
 export default class ClueStore {
-
-
   @observable
-  searchModel = { page: 1, pageSize: 20 } as ClueDataSearchModel
+  searchModel = { page: 1, pageSize: 20 } as ClueDataSearchModel;
 
   @observable
   baseStepData = [] as ProcessStep[];
@@ -82,43 +82,53 @@ export default class ClueStore {
   @observable
   clueProcessData = {} as ClueData;
 
-
   @action
   resetSearchModal() {
-    this.searchModel = { page: 1, pageSize: 20 } as ClueDataSearchModel
+    this.searchModel = { page: 1, pageSize: 20 } as ClueDataSearchModel;
   }
 
   @action
   setBaseStepData(unitName: string) {
-    this.baseStepData = [{
-      index: "STEP_1",
-      baseInfo: ["归并分流", unitName]
-    }, {
-      index: "STEP_2",
-      baseInfo: ["线索指派", "承办人"]
-    }, {
-      index: "STEP_3",
-      baseInfo: ["承办人", "处理反馈"]
-    }, {
-      index: "STEP_4",
-      baseInfo: ["部门领导", "审批"]
-    }, {
-      index: "STEP_5",
-      baseInfo: ["院领导", "审批通过"]
-    }, {
-      index: "STEP_6",
-      baseInfo: ["承办人", "转案件监督"],
-      optional: true
-    }, {
-      index: "STEP_7",
-      baseInfo: ["承办人", "反馈结果"]
-    }]
+    this.baseStepData = [
+      {
+        index: "STEP_1",
+        baseInfo: ["归并分流", unitName]
+      },
+      {
+        index: "STEP_2",
+        baseInfo: ["线索指派", "承办人"]
+      },
+      {
+        index: "STEP_3",
+        baseInfo: ["承办人", "处理反馈"]
+      },
+      {
+        index: "STEP_4",
+        baseInfo: ["部门领导", "审批"]
+      },
+      {
+        index: "STEP_5",
+        baseInfo: ["院领导", "审批通过"]
+      },
+      {
+        index: "STEP_6",
+        baseInfo: ["承办人", "转案件监督"],
+        optional: true
+      },
+      {
+        index: "STEP_7",
+        baseInfo: ["承办人", "反馈结果"]
+      }
+    ];
   }
 
   private preprocessSearchModal(searchModel: ClueDataSearchModel) {
-    let tmpSearchModel = _.clone(searchModel)
+    let tmpSearchModel = _.clone(searchModel);
     if (tmpSearchModel.caseCategory) {
-      if (tmpSearchModel.caseCategory === "不限" || tmpSearchModel.caseCategory === "") {
+      if (
+        tmpSearchModel.caseCategory === "不限" ||
+        tmpSearchModel.caseCategory === ""
+      ) {
         delete tmpSearchModel.caseCategory;
       } else {
         for (let key in CASE_CATEGORY) {
@@ -130,24 +140,30 @@ export default class ClueStore {
       }
     }
     if (tmpSearchModel.clueSource) {
-      if (tmpSearchModel.clueSource === "不限" || tmpSearchModel.clueSource === "") {
+      if (
+        tmpSearchModel.clueSource === "不限" ||
+        tmpSearchModel.clueSource === ""
+      ) {
         delete tmpSearchModel.clueSource;
       } else {
-        let tmp = tmpSearchModel.clueSource.split(",")
-        let res = []
+        let tmp = tmpSearchModel.clueSource.split(",");
+        let res = [];
         for (let i in tmp) {
           for (let key in CLUE_SOURCE) {
             if (CLUE_SOURCE[key] === tmp[i]) {
-              res.push(key)
+              res.push(key);
               break;
             }
           }
         }
-        tmpSearchModel.clueSource = res.join(",")
+        tmpSearchModel.clueSource = res.join(",");
       }
     }
     if (tmpSearchModel.caseSource) {
-      if (tmpSearchModel.caseSource === "不限" || tmpSearchModel.caseSource === "") {
+      if (
+        tmpSearchModel.caseSource === "不限" ||
+        tmpSearchModel.caseSource === ""
+      ) {
         delete tmpSearchModel.caseSource;
       } else {
         for (let key in DATA_STATUS_ACTION) {
@@ -162,7 +178,9 @@ export default class ClueStore {
       if (tmpSearchModel.rate === "不限") {
         delete tmpSearchModel.rate;
       } else {
-        tmpSearchModel.rate = parseInt((tmpSearchModel.rate as string).replace("级", ""))
+        tmpSearchModel.rate = parseInt(
+          (tmpSearchModel.rate as string).replace("级", "")
+        );
       }
     }
     if (tmpSearchModel.flowType) {
@@ -170,9 +188,9 @@ export default class ClueStore {
         delete tmpSearchModel.flowType;
       } else {
         if (tmpSearchModel.flowType === "部门领导") {
-          tmpSearchModel.flowType = "STEP_3"
+          tmpSearchModel.flowType = "STEP_3";
         } else if (tmpSearchModel.flowType === "院领导") {
-          tmpSearchModel.flowType = "STEP_4"
+          tmpSearchModel.flowType = "STEP_4";
         }
       }
     }
@@ -181,66 +199,72 @@ export default class ClueStore {
         delete tmpSearchModel.clueStatus;
       }
     }
-    return tmpSearchModel
+    return tmpSearchModel;
   }
 
   async getClueStatusCount() {
-    return await axios.get('/api/clue/count')
+    return await axios.get("/api/clue/count");
   }
 
   getClueDataList(status?: string) {
-    let params = this.preprocessSearchModal(this.searchModel)
+    let params = this.preprocessSearchModal(this.searchModel);
     if (status && status !== "all") {
       params.status = status;
     }
     return axios.get("/api/clue", {
       params
-    })
+    });
   }
 
   getClueData(clueId: number) {
-    return axios.get(`/api/clue/${clueId}/detail`)
+    return axios.get(`/api/clue/${clueId}/detail`);
   }
 
   getClueRelatedCases(clueId: number) {
-    return axios.get(`/api/clue/${clueId}/cases`)
+    return axios.get(`/api/clue/${clueId}/cases`);
   }
 
   getClueDataFlow(clueId: number) {
-    return axios.get(`/api/clue/${clueId}/flow`)
+    return axios.get(`/api/clue/${clueId}/flow`);
   }
 
   async createSelfFoundClue(caseData: CaseData) {
-    await axios.post("/api/clue", caseData)
+    await axios.post("/api/clue", caseData);
   }
 
   @action
   getClueProcessData(clueId: number) {
-    axios.get(`/api/clue/${clueId}/process`)
-      .then(res => this.clueProcessData = res.data)
+    axios
+      .get(`/api/clue/${clueId}/process`)
+      .then(res => (this.clueProcessData = res.data));
   }
 
   async addClueDataProcessInfo(clueId: number, clueProcessData: ClueData) {
-    await axios.post(`/api/clue/${clueId}/process`, clueProcessData)
+    await axios.post(`/api/clue/${clueId}/process`, clueProcessData);
   }
 
-  async addClueDataExamineInfo(clueId: number, examineInfo: ClueDataExamineInfo) {
-    await axios.post(`/api/clue/${clueId}/examine`, examineInfo)
+  async addClueDataExamineInfo(
+    clueId: number,
+    examineInfo: ClueDataExamineInfo
+  ) {
+    await axios.post(`/api/clue/${clueId}/examine`, examineInfo);
   }
 
   async addClueDataSuperviseInfo(clueId: number) {
-    await axios.post(`/api/clue/${clueId}/supervise`)
+    await axios.post(`/api/clue/${clueId}/supervise`);
   }
 
   async assignClueData(clueId: number, assignClueData: AssignClueData) {
-    await axios.post(`/api/clue/${clueId}/assign`, assignClueData)
+    await axios.post(`/api/clue/${clueId}/assign`, assignClueData);
   }
 
   async transferClueData(clueId: number, transferClueData: TransferClueData) {
-    await axios.post(`/api/clue/${clueId}/transfer`, transferClueData)
+    await axios.post(`/api/clue/${clueId}/transfer`, transferClueData);
   }
 
-  async returnClueData(clueId: number) {
-    await axios.put(`/api/clue/${clueId}/return`)
+  async returnClueData(clueId: number, comment: string) {
+    await axios.put(`/api/clue/${clueId}/return`, {
+      comment
+    });
   }
 }

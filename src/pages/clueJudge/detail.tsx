@@ -16,7 +16,7 @@ import {
 import { ColorButton } from "components/buttons";
 import { formatTimeYMDHMS } from "utils/TimeUtil";
 import { CASE_CATEGORY, CLUE_SOURCE } from "common";
-import { AddressMapModal, FinishJudgeModal } from "./modals";
+import { AddressMapModal, FinishJudgeModal, ReturnClueModal } from "./modals";
 import { ClueProcessInfo } from "./processInfo";
 import MainStore from "stores/mainStore";
 import { ExamineComment } from "./components";
@@ -48,7 +48,8 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
     clueData: {} as ClueData,
     comment: "",
     showFinishJudgeModal: false,
-    showAnalysisReportModal: false
+    showAnalysisReportModal: false,
+    showReturnClueModal: false
   };
 
   componentDidMount() {
@@ -203,6 +204,31 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
               );
             }}
           ></FinishJudgeModal>
+        )}
+        {this.state.showReturnClueModal && (
+          <ReturnClueModal
+            visiable={this.state.showReturnClueModal}
+            onConfirm={async comment => {
+              await this.props.clue.returnClueData(
+                clueData.id as number,
+                comment
+              );
+              this.setState(
+                {
+                  showReturnClueModal: false
+                },
+                () => {
+                  message.success("退回成功！");
+                  history.goBack();
+                }
+              );
+            }}
+            onCancel={() =>
+              this.setState({
+                showReturnClueModal: false
+              })
+            }
+          ></ReturnClueModal>
         )}
         <Breadscrum data={["线索研判", "待处理数据", "线索详情"]}></Breadscrum>
         <BoxContainer>
@@ -359,33 +385,21 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
                         </ColorButton>
                       </>
                     )}
-                    {clueData.statusAction !== "SELF" && (
-                      <ColorButton
-                        bgColor="#FF3F11"
-                        fontColor="#FFFFFF"
-                        onClick={() => {
-                          confirm({
-                            title: "操作确认",
-                            icon: (
-                              <ExclamationCircleOutlined translate="true" />
-                            ),
-                            content: "确认要退回吗？",
-                            onOk: async () => {
-                              await this.props.clue.returnClueData(
-                                clueData.id as number
-                              );
-                              message.success("退回成功！");
-                              history.goBack();
-                            },
-                            onCancel() {
-                              console.log("Cancel");
-                            }
-                          });
-                        }}
-                      >
-                        退回
-                      </ColorButton>
-                    )}
+                    {clueData.statusAction !== "SELF" &&
+                      clueData.status === "pendingProcess" &&
+                        clueData.assignTo === main.userProfile.id && (
+                        <ColorButton
+                          bgColor="#FF3F11"
+                          fontColor="#FFFFFF"
+                          onClick={() => {
+                            this.setState({
+                              showReturnClueModal: true
+                            });
+                          }}
+                        >
+                          退回
+                        </ColorButton>
+                      )}
                   </>
                 )}
                 {(main.userProfile.role === "DEPARTMENT_LEADER" ||

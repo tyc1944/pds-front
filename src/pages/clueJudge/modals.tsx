@@ -273,3 +273,61 @@ export const AssignClueModal = (props: {
     </MyModal>
   );
 };
+
+export const ReturnClueModal = (props: {
+  visiable: boolean;
+  onCancel: () => void;
+  onConfirm: (comment: string) => void;
+}) => {
+  const [comment, setComment] = React.useState("");
+
+  return (
+    <MyModal
+      visiable={props.visiable}
+      onCancel={props.onCancel}
+      title={"退回"}
+      width={433}
+    >
+      <div
+        style={{
+          margin: "0 28px",
+          padding: "15px 15px 15px 15px"
+        }}
+      >
+        <div>退回原因：</div>
+        <br />
+        <TextArea onChange={e => setComment(e.currentTarget.value)}></TextArea>
+      </div>
+
+      <div
+        style={{
+          textAlign: "right",
+          marginBottom: "15px",
+          backgroundColor: "#ECF1FA",
+          padding: "17px 38px"
+        }}
+      >
+        <ColorButton
+          bgColor="#4084F0"
+          fontColor="#FFFFFF"
+          onClick={() => {
+            if (_.isEmpty(comment)) {
+              message.warning("请填写退回原因！");
+              return;
+            }
+            props.onConfirm(comment);
+          }}
+        >
+          确定完成
+        </ColorButton>
+        <ColorButton
+          bgColor="#FFFFFF"
+          fontColor="#1E1E1E"
+          onClick={props.onCancel}
+        >
+          取消
+        </ColorButton>
+      </div>
+    </MyModal>
+  );
+};
