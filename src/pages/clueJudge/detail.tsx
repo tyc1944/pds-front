@@ -387,7 +387,8 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
                     )}
                     {clueData.statusAction !== "SELF" &&
                       clueData.status === "pendingProcess" &&
-                        clueData.assignTo === main.userProfile.id && (
+                      clueData.assignTo === main.userProfile.id &&
+                      clueData.statusAction !== "REJECT" && (
                         <ColorButton
                           bgColor="#FF3F11"
                           fontColor="#FFFFFF"
