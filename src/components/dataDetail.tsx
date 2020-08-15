@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import "./dataDetail.less";
 import { formatTimeYMDHMS } from "utils/TimeUtil";
 import { DownOutlined, UpOutlined } from "@ant-design/icons";
+import { Popover } from "antd";
 
 export interface ProcessStep {
   index: string;
@@ -91,6 +92,13 @@ export const DataProcessStep = (props: {
   );
 };
 
+const getShortText = (longText: string) => {
+  if (longText) {
+    return longText.substring(0, 30) + "...";
+  }
+  return "";
+};
+
 export const CloseableDataTable = (props: {
   dataInfo: { [key: string]: string }[];
   title: string;
@@ -123,7 +131,7 @@ export const CloseableDataTable = (props: {
                 let tmp = [];
                 for (let k in item) {
                   let tmpContent = item[k];
-                  let isLongContent = tmpContent && item[k].length > 21;
+                  let isLongContent = tmpContent && item[k].length > 30;
                   tmp.push(
                     <Fragment key={k}>
                       <div
@@ -139,7 +147,7 @@ export const CloseableDataTable = (props: {
                         style={{
                           flex: 1,
                           paddingLeft: "14px",
-                          display: isLongContent ? "block" : "flex",
+                          display: "flex",
                           overflowY: "auto"
                         }}
                       >
@@ -157,6 +165,22 @@ export const CloseableDataTable = (props: {
                           >
                             {item[k]}
                           </span>
+                        ) : isLongContent ? (
+                          <Popover
+                            content={
+                              <span
+                                dangerouslySetInnerHTML={{
+                                  __html: item[k]
+                                }}
+                              ></span>
+                            }
+                          >
+                            <span
+                              dangerouslySetInnerHTML={{
+                                __html: getShortText(item[k])
+                              }}
+                            ></span>
+                          </Popover>
                         ) : (
                           <span
                             dangerouslySetInnerHTML={{
