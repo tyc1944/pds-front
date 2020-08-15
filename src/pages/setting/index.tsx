@@ -66,13 +66,7 @@ class Setting extends React.Component<SettingProps> {
   render() {
     const { main } = this.props;
     return (
-      <div
-        style={{
-          display: "flex",
-          height: "100%",
-          flexDirection: "column"
-        }}
-      >
+      <div className="table-search-container">
         {this.state.showCreateAccountModal && (
           <CreateAccountModal
             userProfile={main.userProfile}
