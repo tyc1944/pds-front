@@ -121,7 +121,11 @@ class CaseSuperviseDetail extends React.Component<ClueJudgeDetailProps> {
       for (let i in totalKeys) {
         tmpObject[totalKeys[i]] = tmpJsonObject[totalKeys[i]];
         count++;
-        if (count === 2 || totalKeys[i] === "简要案情") {
+        if (
+          count === 2 ||
+          totalKeys[i] === "简要案情" ||
+          !totalKeys[parseInt(i) + 1]
+        ) {
           tmpRes.push(tmpObject);
           count = 0;
           tmpObject = {};
