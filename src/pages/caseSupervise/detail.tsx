@@ -276,12 +276,18 @@ class CaseSuperviseDetail extends React.Component<ClueJudgeDetailProps> {
             )}
             {this.state.partyData.length > 0 && (
               <DataDetail header="当事人信息">
-                {this.state.partyData.map(item => (
-                  <CloseableDataTable
-                    dataInfo={this.generateDataTableFormatDataFromString(item)}
-                    title="申请执行人：福建恒安集团有限公司"
-                  />
-                ))}
+                {this.state.partyData.map(item => {
+                  let tmpItem = JSON.parse(item);
+                  let tmpTitle = `${tmpItem["法律地位"]}：${tmpItem["姓名"]}`;
+                  return (
+                    <CloseableDataTable
+                      dataInfo={this.generateDataTableFormatDataFromString(
+                        item
+                      )}
+                      title={tmpTitle}
+                    />
+                  );
+                })}
               </DataDetail>
             )}
             {status !== "pendingAppoint" &&

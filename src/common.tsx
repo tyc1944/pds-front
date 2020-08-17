@@ -54,7 +54,7 @@ export const DATA_STATUS_ACTION: { [key: string]: string } = {
   APPOINT: "指派",
   RETURN: "退回",
   TRANSFER: "移交",
-  AUTO: "系统自动分配",
+  AUTO: "自动分流",
   SELF: "自行发现"
 };
 export const CLUE_SOURCE: { [key: string]: string } = {
