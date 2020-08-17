@@ -155,7 +155,7 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
               a.click();
             }}
             onAnalysisBtnClick={uploadFile => {}}
-            url={`/file/clueReport/${clueData.id}/clueReport_${clueData.id}.pdf`}
+            url={`/file/clueReport/${clueData.id}/clueReport_${clueData.id}.docx`}
             visiable={this.state.showAnalysisReportModal}
             onCancel={() =>
               this.setState({

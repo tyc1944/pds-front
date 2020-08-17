@@ -67,7 +67,7 @@ axios.interceptors.response.use(
       message.error(error.response.data.detail);
     }
     if (error.response.status === 404) {
-      message.error("接口不存在！");
+      message.error("接口/文件不存在！");
     }
     if (error.response.status === 500) {
       errMessage(error.response.data);
