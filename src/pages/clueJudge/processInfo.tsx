@@ -95,7 +95,7 @@ export const ClueProcessInfo = inject("clue")(
               uploadUrl=""
               id={clueProcessData.id + ""}
               readonly={true}
-              url={`/file/clueReport/${clueProcessData.id}/clueReport_${clueProcessData.id}.pdf`}
+              url={`/file/clueReport/${clueProcessData.id}/clueReport_${clueProcessData.id}.docx`}
               visiable={showReport}
               onCancel={() => setShowReport(false)}
             ></AnalysisReport>

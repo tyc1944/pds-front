@@ -202,7 +202,7 @@ class CaseSuperviseDetail extends React.Component<ClueJudgeDetailProps> {
             }}
             onAnalysisBtnClick={uploadFile => {}}
             uploadUrl={`/api/supervise/${superviseId}/report`}
-            url={`/file/superviseReport/${superviseId}/superviseReport_${superviseId}.pdf`}
+            url={`/file/superviseReport/${superviseId}/superviseReport_${superviseId}.docx`}
             visiable={this.state.showAnalysisReportModal}
             onCancel={() =>
               this.setState({
