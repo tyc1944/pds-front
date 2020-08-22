@@ -219,6 +219,8 @@ export const DataTable = (props: {
             {(() => {
               let tmp = [];
               for (let k in item) {
+                let tmpContent = item[k];
+                let isLongContent = tmpContent && item[k].length > 30;
                 tmp.push(
                   <Fragment key={k}>
                     <div
