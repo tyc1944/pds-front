@@ -785,8 +785,7 @@ export const ClueRateRankChart = inject("data")(
               { name: "二星" },
               { name: "三星" },
               { name: "四星" },
-              { name: "五星" },
-              { name: "六星" }
+              { name: "五星" }
             ]
           },
           series: [
@@ -799,7 +798,7 @@ export const ClueRateRankChart = inject("data")(
               areaStyle: { color: "#8594ED" },
               data: [
                 {
-                  value: [1, 2, 3, 4, 5, 6].map(item => {
+                  value: [1, 2, 3, 4, 5].map(item => {
                     for (let i in res.data) {
                       if (res.data[i].rate === item) {
                         return res.data[i].rateCount;

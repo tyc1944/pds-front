@@ -519,7 +519,7 @@ export const ProcuratorateJobChart = inject("data")(
           tooltip: {},
           dataset: {
             source: [
-              ["地区", "审查逮捕", "审查起诉", "提起诉讼"],
+              ["地区", "审查逮捕", "审查起诉", "提起公诉"],
               ["江阴市", ...tmp["江阴市"]],
               ["宜兴市", ...tmp["宜兴市"]],
               ["梁溪区", ...tmp["梁溪区"]],

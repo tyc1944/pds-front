@@ -167,6 +167,7 @@ export const CloseableDataTable = (props: {
                           </span>
                         ) : isLongContent ? (
                           <Popover
+                            overlayStyle={{ maxWidth: "400px" }}
                             content={
                               <span
                                 dangerouslySetInnerHTML={{
@@ -175,11 +176,15 @@ export const CloseableDataTable = (props: {
                               ></span>
                             }
                           >
-                            <span
+                            <a
+                              style={{
+                                textDecoration: "underline"
+                              }}
+                              href="javascript:void(0);"
                               dangerouslySetInnerHTML={{
                                 __html: getShortText(item[k])
                               }}
-                            ></span>
+                            ></a>
                           </Popover>
                         ) : (
                           <span

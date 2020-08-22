@@ -132,14 +132,6 @@ export const TableSearch = (props: {
                     value: "12345"
                   },
                   {
-                    label: "政风热线",
-                    value: "政风热线"
-                  },
-                  {
-                    label: "12315",
-                    value: "12315"
-                  },
-                  {
                     label: "行政数据",
                     value: "行政数据"
                   }

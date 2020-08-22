@@ -211,21 +211,6 @@ class ClueAnalysis extends React.Component<ClueAnalysisProps> {
                         type: "上阶段线索"
                       },
                       {
-                        线索来源: "政风热线",
-                        数量: tmp.clueSourceAnalysis.hotline,
-                        type: "本阶段线索"
-                      },
-                      {
-                        线索来源: "12315",
-                        数量: tmp.lastPeriodClueSourceAnalysis.p12315,
-                        type: "上阶段线索"
-                      },
-                      {
-                        线索来源: "12315",
-                        数量: tmp.clueSourceAnalysis.p12315,
-                        type: "本阶段线索"
-                      },
-                      {
                         线索来源: "行政数据",
                         数量: tmp.clueSourceAnalysis.admin,
                         type: "本阶段线索"
@@ -259,14 +244,6 @@ class ClueAnalysis extends React.Component<ClueAnalysisProps> {
                       {
                         线索来源: "12345",
                         数量: tmp.clueProcessDuration.p12345
-                      },
-                      {
-                        线索来源: "政风热线",
-                        数量: tmp.clueProcessDuration.hotline
-                      },
-                      {
-                        线索来源: "12315",
-                        数量: tmp.clueProcessDuration.p12315
                       },
                       {
                         线索来源: "行政数据",

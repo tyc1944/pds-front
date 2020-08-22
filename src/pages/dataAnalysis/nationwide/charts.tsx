@@ -25,6 +25,9 @@ export const CaseRankChart = () => {
     data,
     xField: "year",
     yField: "value",
+    yAxis: {
+      max: 4
+    },
     meta: {
       year: {
         alias: "年份",
@@ -524,7 +527,7 @@ export const IndustryStatisticsChart = () => (
         >
           批发和零售业
         </div>
-        <div
+        {/* <div
           style={{
             backgroundColor: "#C29FFD",
             color: "#FFFFFF",
@@ -541,7 +544,7 @@ export const IndustryStatisticsChart = () => (
           }}
         >
           制造业
-        </div>
+        </div> */}
         <div
           style={{
             backgroundColor: "#57C88C",
@@ -785,7 +788,7 @@ export const ProvinceCaseRankChart = () => {
           left: "32px"
         }}
       >
-        地市案例统计
+        省市案例统计
       </div>
       <div
         style={{
@@ -1357,6 +1360,7 @@ export const ColorLine = (props: {
   title: string;
   number: number;
   numberColor: string;
+  content?: string;
   direction: "left" | "right";
 }) => (
   <div
@@ -1370,7 +1374,11 @@ export const ColorLine = (props: {
     }}
   >
     <div style={{ color: "#555555", fontSize: "14px", cursor: "pointer" }}>
-      <Tooltip placement="bottom" title={props.title} color="green">
+      <Tooltip
+        placement="bottom"
+        title={props.content ? props.content : props.title}
+        color="green"
+      >
         <span>{props.title}</span>
       </Tooltip>
     </div>
@@ -1431,6 +1439,8 @@ export const SubstantiveLawChart = () => (
       numberColor="#1200AA"
       color="#ADA3FF"
       percent={80}
+      content={`侵犯著作权或者与著作权有关的权利的，侵权人应当按照权利人的实际损失给予赔偿；实际损失难以计算的，可以按照侵权人的违法所得给予赔偿。赔偿数额还应当包括权利人为制止侵权行为所支付的合理开支。\n
+      权利人的实际损失或者侵权人的违法所得不能确定的，由人民法院根据侵权行为的情节，判决给予五十万元以下的赔偿。`}
       title="著作权法（2010修正）第四十九条"
       direction="right"
     ></ColorLine>
@@ -1439,6 +1449,7 @@ export const SubstantiveLawChart = () => (
       numberColor="#1200AA"
       color="#ADA3FF"
       percent={70}
+      content={`未经著作权人许可，复制、发行、表演、放映、广播、汇编、通过信息网络向公众传播其作品的，本法另有规定的除外`}
       title="著作权法（2010修正）第四十八条第一项"
       direction="right"
     ></ColorLine>
@@ -1447,6 +1458,8 @@ export const SubstantiveLawChart = () => (
       numberColor="#1200AA"
       color="#ADA3FF"
       percent={50}
+      content={`著作权法第四十八条第一款规定的制止侵权行为所支付的合理开支，包括权利人或者委托代理人对侵权行为进行调查、取证的合理费用。\n
+      人民法院根据当事人的诉讼请求和具体案情，可以将符合国家有关部门规定的律师费用计算在赔偿范围内。`}
       title="关于审理著作权民事纠纷案件适用法律上若干问题的解释第二十六条"
       direction="right"
     ></ColorLine>
@@ -1455,6 +1468,8 @@ export const SubstantiveLawChart = () => (
       numberColor="#1200AA"
       color="#ADA3FF"
       percent={40}
+      content={`当事人提供的涉及著作权的底稿、原件、合法出版物、著作权登记证书、认证机构出具的证明、取得权利的合同等，可以作为证据。\n
+      在作品或者制品上署名的自然人、法人或者其他组织视为著作权、与著作权有关权益的权利人，但有相反证明的除外。`}
       title="关于审理著作权民事纠纷案件适用法律若干问题的解释第七条"
       direction="right"
     ></ColorLine>
@@ -1463,6 +1478,9 @@ export const SubstantiveLawChart = () => (
       numberColor="#1200AA"
       color="#ADA3FF"
       percent={30}
+      content={`权利人的实际损失或者侵权人的违法所得无法确定的，人民法院根据当事人的请求或者依职权适用著作权法第四十八条第二款的规定确定赔偿数额。\n
+      人民法院在确定赔偿数额时，应当考虑作品类型、合理使用费、侵权行为性质、后果等情节综合确定。\n
+      当事人按照本条第一款的规定就赔偿数额达成协议的，应当准许。`}
       title="关于审理著作权民事纠纷案件适用法律若干问题的解释第二十五条第七项"
       direction="right"
     ></ColorLine>
@@ -1487,6 +1505,7 @@ export const ProceduralLawChart = () => (
       numberColor="#276C68"
       color="#4FDAD2"
       percent={80}
+      content={`被执行人未按判决、裁定和其他法律文书指定的期间履行给付金钱义务的，应当加倍支付迟延履行期间的债务利息。\n 被执行人未按判决、裁定和其他法律文书指定的期间履行其他义务的，应当支付迟延履行金`}
       title="民事诉讼法（2017修正）第二百五十三条"
       direction="left"
     ></ColorLine>
@@ -1495,6 +1514,9 @@ export const ProceduralLawChart = () => (
       numberColor="#276C68"
       color="#4FDAD2"
       percent={70}
+      content={
+        "被执行人未按判决、裁定和其他法律文书指定的期间履行给付金钱义务的，应当加倍支付迟延履行期间的债务利息。被执行人未按判决、裁定和其他法律文书指定的期间履行其他义务的，应当支付迟延履行金"
+      }
       title="民事诉讼法（2012修正）第二百五十三条"
       direction="left"
     ></ColorLine>
@@ -1503,6 +1525,9 @@ export const ProceduralLawChart = () => (
       numberColor="#276C68"
       color="#4FDAD2"
       percent={50}
+      content={
+        "原判决、裁定认定事实清楚，适用法律正确的，以判决、裁定方式驳回上诉，维持原判决、裁定"
+      }
       title="民事诉讼法（2017修正）第一百七十条第一款第一项"
       direction="left"
     ></ColorLine>
@@ -1511,6 +1536,9 @@ export const ProceduralLawChart = () => (
       numberColor="#276C68"
       color="#4FDAD2"
       percent={40}
+      content={
+        "原判决、裁定认定事实清楚，适用法律正确的，以判决、裁定方式驳回上诉，维持原判决、裁定"
+      }
       title="民事诉讼法（2012修正）第一百七十条第一款第一项"
       direction="left"
     ></ColorLine>
@@ -1519,6 +1547,7 @@ export const ProceduralLawChart = () => (
       numberColor="#276C68"
       color="#4FDAD2"
       percent={30}
+      content="行政行为证据确凿，适用法律、法规正确，符合法定程序的，或者原告申请被告履行法定职责或者给付义务理由不成立的，人民法院判决驳回原告的诉讼请求"
       title="行政诉讼法（2017修正）第六十九条"
       direction="left"
     ></ColorLine>
