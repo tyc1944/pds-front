@@ -77,7 +77,7 @@ class Main extends React.Component<Props> {
       {
         title: {
           visible: true,
-          text: "本院近一年线索案件量统计"
+          text: "本院线索案件量统计"
         },
         forceFit: true,
         data,

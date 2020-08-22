@@ -660,7 +660,7 @@ export const ClueCategoryChart = inject("data")(
                   value: getCategoryCount(res.data, "OTHERS"),
                   name: "其他"
                 }
-              ]
+              ].filter(item => item.value !== 0)
             }
           ]
         };

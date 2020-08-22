@@ -7,6 +7,7 @@ import { Donut } from "@ant-design/charts";
 import { axios } from "utils/RequestUtil";
 import { inject } from "mobx-react";
 import DataStore from "stores/dataStore";
+import _ from "lodash";
 
 export const CaseRankChart = inject("data")((props: { data?: DataStore }) => {
   const divRef = React.useRef<HTMLDivElement>(null);
@@ -728,6 +729,7 @@ const getTrialProcedureCount = (list: any, trialProcedure: string) => {
 export const TrialProcedureChart = () => {
   const [category, setCategory] = React.useState("刑事");
   const [data, setData] = React.useState([] as any[]);
+  const [data1, setData1] = React.useState([] as any[]);
 
   useEffect(() => {
     axios
@@ -761,6 +763,7 @@ export const TrialProcedureChart = () => {
           }
         ];
         setData(data);
+        setData1(data.filter(item => item.value !== 0));
       });
   }, [category]);
 
@@ -776,7 +779,7 @@ export const TrialProcedureChart = () => {
     },
     radius: 0.8,
     padding: "auto",
-    data,
+    data: data1,
     angleField: "value",
     colorField: "type",
     legend: {
