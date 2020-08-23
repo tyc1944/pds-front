@@ -413,7 +413,7 @@ export const CaseReasonChart = inject("data")((props: { data?: DataStore }) => {
             radius: ["40%", "55%"],
             center: ["50%", "50%"],
             label: {
-              formatter: "{a|{a}}{abg|}\n{hr|}\n  {b|{b}：}{c}  {per|{d}%}  ",
+              formatter: "{b|{b}}",
               backgroundColor: "#eee",
               borderColor: "#aaa",
               borderWidth: 1,
