@@ -317,12 +317,11 @@ export class CaseAreaChart extends React.Component {
                     color: {
                       field: "value",
                       values: [
-                        "#feedde",
-                        "#fdd0a2",
-                        "#fdae6b",
-                        "#fd8d3c",
-                        "#e6550d",
-                        "#a63603"
+                        "#b9e5ea",
+                        "#78dbe6",
+                        "#57dfef",
+                        "#3cdcef",
+                        "#33bbcc"
                       ]
                     }
                   },
