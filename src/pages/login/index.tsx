@@ -71,8 +71,8 @@ class Login extends React.Component<MainLayoutProps> {
               </div>
               <ColorButton
                 width="398px"
-                onClick={() =>
-                  main.doLogin(
+                onClick={async () =>
+                  await main.doLogin(
                     this.state.username,
                     this.state.password,
                     history

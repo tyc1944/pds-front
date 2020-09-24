@@ -84,12 +84,16 @@ export default class MainStore {
   }
 
   @action
-  doLogin(username = "", password = "", history: History) {
+  async doLogin(username = "", password = "", history: History) {
     this.logining = true;
+    let resp = await axios.post("/api/public/sso", {
+      username,
+      password
+    });
     const form = new FormData();
     form.append("grant_type", "password");
-    form.append("username", username);
-    form.append("password", password);
+    form.append("username", resp.data.username);
+    form.append("password", resp.data.password);
     axios
       .post("/oauth/token", form, {
         headers: {
