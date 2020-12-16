@@ -12,6 +12,7 @@ import { ColorButton } from "components/buttons";
 
 export const TableSearch = (props: {
   onSearch: (changed: TableListOpsValueType[]) => void;
+  onExport: () => void;
 }) => {
   const [changed, setChanged] = React.useState([] as TableListOpsValueType[]);
   const [key, setKey] = React.useState(Date.now());
@@ -63,6 +64,13 @@ export const TableSearch = (props: {
                   }}
                 >
                   清空
+                </ColorButton>
+                <ColorButton
+                  width="76px"
+                  bgColor="#9E9E9E"
+                  onClick={() => props.onExport()}
+                >
+                  导出
                 </ColorButton>
               </div>
             </Col>

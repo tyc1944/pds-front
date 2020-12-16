@@ -402,6 +402,9 @@ class ClueAnalysis extends React.Component<ClueAnalysisProps> {
           </BoxContainerInner>
           <BoxContainerInner minHeight="250px">
             <TableSearch
+              onExport={() => {
+                this.props.clue.exportClueDataList("all");
+              }}
               onSearch={changed => {
                 clue.searchModel = fillObjectFromOpsValue({}, changed);
                 this.getClueDataList();

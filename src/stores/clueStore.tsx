@@ -3,6 +3,7 @@ import { axios } from "../utils/RequestUtil";
 import { ProcessStep } from "components/dataDetail";
 import _ from "lodash";
 import { CASE_CATEGORY, CLUE_SOURCE, DATA_STATUS_ACTION } from "common";
+const FileDownload = require("js-file-download");
 
 export interface ClueDataSearchModel {
   page?: number;
@@ -215,6 +216,21 @@ export default class ClueStore {
     return axios.get("/api/clue", {
       params
     });
+  }
+
+  exportClueDataList(status?: string) {
+    let params = this.preprocessSearchModal(this.searchModel) as any;
+    if (status && status !== "all") {
+      params.status = status;
+    }
+    axios
+      .get("/api/clue/export", {
+        params,
+        responseType: "blob"
+      })
+      .then(res => {
+        FileDownload(res.data, "线索列表数据导出.xlsx");
+      });
   }
 
   getClueData(clueId: number) {
