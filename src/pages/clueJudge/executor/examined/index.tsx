@@ -65,6 +65,7 @@ class ExecutorExaminedClueJudge extends React.Component<ClueJudgeProps> {
         <BoxContainer>
           <BoxContainerInner flex={0.4}>
             <TableSearch
+              onExport={() => this.props.clue.exportClueDataList("examined")}
               onSearch={changed => {
                 clue.searchModel = fillObjectFromOpsValue(
                   {},

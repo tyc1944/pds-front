@@ -137,6 +137,9 @@ class ExecutorClueJudge extends React.Component<ClueJudgeProps> {
         <BoxContainer>
           <BoxContainerInner flex={0.5}>
             <TableSearch
+              onExport={() =>
+                this.props.clue.exportClueDataList("pendingProcess")
+              }
               onSearch={changed => {
                 clue.searchModel = fillObjectFromOpsValue(
                   {},

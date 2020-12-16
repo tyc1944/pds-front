@@ -61,6 +61,9 @@ class ExecutorPendingSuperviseClueJudge extends React.Component<
         <BoxContainer>
           <BoxContainerInner flex={0.5}>
             <TableSearch
+              onExport={() =>
+                this.props.clue.exportClueDataList("pendingSupervise")
+              }
               onSearch={changed => {
                 clue.searchModel = fillObjectFromOpsValue(
                   {},

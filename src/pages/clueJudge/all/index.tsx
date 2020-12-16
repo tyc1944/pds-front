@@ -57,6 +57,7 @@ class AllClueJudge extends React.Component<ClueJudgeProps> {
         <BoxContainer>
           <BoxContainerInner flex={0.6}>
             <TableSearch
+              onExport={() => this.props.clue.exportClueDataList("all")}
               onSearch={changed => {
                 clue.searchModel = fillObjectFromOpsValue(
                   {},
