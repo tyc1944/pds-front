@@ -3,6 +3,7 @@ import { axios } from "../utils/RequestUtil";
 import { ProcessStep } from "components/dataDetail";
 import _ from "lodash";
 import { CLUE_STATUS_MAP } from "common";
+const FileDownload = require("js-file-download");
 
 export interface SuperviseData {
   id: number;
@@ -130,6 +131,45 @@ export default class SuperviseStore {
     return axios.get(`/api/supervise/${dataType}/list`, {
       params
     });
+  }
+
+  exportSuperviseDataList(
+    dataType: string,
+    status?: string,
+    caseCategory?: string
+  ) {
+    let params = _.clone(this.searchModel);
+    if (status && status !== "all") {
+      params.status = status;
+    }
+    if (caseCategory) {
+      params.caseType = caseCategory;
+    }
+    if (params.exceptionResult === "不限") {
+      delete params.exceptionResult;
+    }
+    if (params.executionYear === "不限") {
+      delete params.executionYear;
+    }
+    if (params.examineStep === "不限") {
+      delete params.examineStep;
+    }
+    if (params.judgementYear === "不限") {
+      delete params.judgementYear;
+    }
+    if (params.status && params.status !== "all") {
+      if (CLUE_STATUS_MAP[params.status]) {
+        params.status = CLUE_STATUS_MAP[params.status];
+      }
+    }
+    axios
+      .get(`/api/supervise/${dataType}/export`, {
+        params,
+        responseType: "blob"
+      })
+      .then(res => {
+        FileDownload(res.data, "案件列表数据导出.xlsx");
+      });
   }
 
   getSuperviseStatusCount() {

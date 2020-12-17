@@ -15,6 +15,7 @@ import MainStore from "stores/mainStore";
 export const TableSearch = inject("main")(
   (props: {
     onSearch: (changed: TableListOpsValueType[]) => void;
+    onExport: () => void;
     status: string;
     main?: MainStore;
   }) => {
@@ -60,6 +61,13 @@ export const TableSearch = inject("main")(
                     }}
                   >
                     清空
+                  </ColorButton>
+                  <ColorButton
+                    width="76px"
+                    bgColor="#9E9E9E"
+                    onClick={() => props.onExport()}
+                  >
+                    导出
                   </ColorButton>
                 </div>
               </Col>
