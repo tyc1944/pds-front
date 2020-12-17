@@ -58,6 +58,7 @@ export const InvestigationTabContent = inject(
               onExport={() =>
                 props.supervise!.exportSuperviseDataList(
                   "investigation",
+                  "侦查监督案件数据导出",
                   props.status
                 )
               }

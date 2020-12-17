@@ -103,6 +103,7 @@ export const TrialTabContent = inject(
               onExport={() =>
                 props.supervise!.exportSuperviseDataList(
                   "trial",
+                  "审判监督案件数据导出",
                   props.status,
                   caseCategory
                 )
@@ -122,6 +123,7 @@ export const TrialTabContent = inject(
               onExport={() =>
                 props.supervise!.exportSuperviseDataList(
                   "trial",
+                  "审判监督案件数据导出",
                   props.status,
                   caseCategory
                 )

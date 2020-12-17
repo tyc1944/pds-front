@@ -56,6 +56,7 @@ export const AdministrationTabContent = inject(
             onExport={() =>
               props.supervise!.exportSuperviseDataList(
                 "administration",
+                "行政监督案件数据导出",
                 props.status
               )
             }

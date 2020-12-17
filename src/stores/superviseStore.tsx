@@ -135,6 +135,7 @@ export default class SuperviseStore {
 
   exportSuperviseDataList(
     dataType: string,
+    fileName: string,
     status?: string,
     caseCategory?: string
   ) {
@@ -168,7 +169,7 @@ export default class SuperviseStore {
         responseType: "blob"
       })
       .then(res => {
-        FileDownload(res.data, "案件列表数据导出.xlsx");
+        FileDownload(res.data, fileName + ".xlsx");
       });
   }
 
