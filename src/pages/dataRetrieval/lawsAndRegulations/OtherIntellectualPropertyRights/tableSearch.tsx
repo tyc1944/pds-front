@@ -76,7 +76,18 @@ export const TableSearch = (props: {
               <SingleSelectionGroup
                 name="revisionYear"
                 defaultValue="不限"
-                selectItems={["不限", "2017年", "2013年", "2010年"]}
+                selectItems={[
+                  "不限",
+                  "2017年",
+                  "2015年",
+                  "2014年",
+                  "2013年",
+                  "2011年",
+                  "2010年",
+                  "2009年",
+                  "2007年",
+                  "2004年"
+                ]}
               ></SingleSelectionGroup>
             </Col>
           </Row>
@@ -90,7 +101,7 @@ export const TableSearch = (props: {
               <SingleSelectionGroup
                 name="subcategory"
                 defaultValue="不限"
-                selectItems={["不限", "法律", "行政法规"]}
+                selectItems={["不限", "法律", "行政法规", "司法解释"]}
               ></SingleSelectionGroup>
             </Col>
           </Row>
