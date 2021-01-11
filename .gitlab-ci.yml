@@ -36,7 +36,7 @@ deploy qa:
     - front
     - nodejs
   stage: deploy
-  image: registry.yunmotec.com:1443/helm
+  image: registry.yunmotec.com:1443/helm:3.4.2
   only:
     - /^Staging-.*$/
   except:
