@@ -29,7 +29,7 @@ deploy dev:
     - develop
   script:
     - mkdir .kube  && echo $kuber_config | base64 -d > .kube/config && export KUBECONFIG=$(pwd)/.kube/config
-    - cd ci/helm && helm upgrade -f values-dev.yaml --set image.tag=$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA --install --namespace procuratorrate pds-front-dev .
+    - cd ci/helm && helm upgrade -f values-dev.yaml --set image.tag=$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA --install --create-namespace --namespace procuratorrate pds-front-dev .
 
 deploy qa:
   tags:
@@ -43,4 +43,4 @@ deploy qa:
     - branches
   script:
     - mkdir .kube  && echo $kuber_config | base64 -d > .kube/config && export KUBECONFIG=$(pwd)/.kube/config
-    - cd ci/helm && helm upgrade -f values-qa.yaml --set image.tag=$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA --install --namespace procuratorrate  pds-front-qa .
+    - cd ci/helm && helm upgrade -f values-qa.yaml --set image.tag=$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA --install --create-namespace --namespace procuratorrate  pds-front-qa .
