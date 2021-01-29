@@ -78,6 +78,7 @@ export interface TransferClueData {
 export default class ClueStore {
   @observable
   searchModel = { page: 1, pageSize: 20 } as ClueDataSearchModel;
+
   searchValue: TableListOpsValueType[] = [];
 
   @observable

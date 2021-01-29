@@ -14,7 +14,11 @@ import {
 import SuperviseStore from "stores/superviseStore";
 import { inject, useObserver } from "mobx-react";
 import MainStore from "stores/mainStore";
-import { fillObjectFromOpsValue } from "components/table/tableListOpsComponents";
+import {
+  fillObjectFromOpsValue,
+  TableListOpsValueType
+} from "components/table/tableListOpsComponents";
+import { useHistory } from "react-router-dom";
 
 export const InvestigationTabContent = inject(
   "supervise",
@@ -34,6 +38,11 @@ export const InvestigationTabContent = inject(
     const [total, setTotal] = React.useState(0);
     const [pages, setPages] = React.useState(0);
     const { supervise } = props;
+    const [searchValue, setSearchValue] = React.useState(
+      supervise!.searchValue
+    );
+    const history = useHistory();
+    const currentPath = history.location.pathname;
     const getSuperviseDataList = () => {
       props
         .supervise!.getSuperviseDataList("investigation", props.status)
@@ -48,6 +57,15 @@ export const InvestigationTabContent = inject(
       if (props.activeTabIndex === "1") {
         getSuperviseDataList();
       }
+
+      return () => {
+        let nextPath = history.location.pathname;
+        if (currentPath === nextPath || !nextPath.startsWith(currentPath)) {
+          supervise!.searchValue = [];
+          setSearchValue([]);
+          supervise!.resetSearchModal();
+        }
+      };
     }, [props.supervise, props.status, props.activeTabIndex]);
 
     return useObserver(() => {
@@ -55,6 +73,7 @@ export const InvestigationTabContent = inject(
         <BoxContainer noPadding>
           <BoxContainerInner>
             <TableSearch
+              initValue={searchValue}
               onExport={() =>
                 props.supervise!.exportSuperviseDataList(
                   "investigation",
@@ -64,6 +83,7 @@ export const InvestigationTabContent = inject(
               }
               status={props.status}
               onSearch={changed => {
+                supervise!.searchValue = changed;
                 supervise!.searchModel = fillObjectFromOpsValue({}, changed);
                 getSuperviseDataList();
               }}

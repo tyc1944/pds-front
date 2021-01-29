@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { TableListOpsHelper } from "components/table/tableListOpsContext";
 import {
   TableListOpsValueType,
@@ -18,9 +18,17 @@ export const CivilCaseTableSearch = inject("main")(
     onExport: () => void;
     status: string;
     main?: MainStore;
+    initValue?: TableListOpsValueType[];
   }) => {
-    const [changed, setChanged] = React.useState([] as TableListOpsValueType[]);
+    const [changed, setChanged] = React.useState(
+      props.initValue ? props.initValue : ([] as TableListOpsValueType[])
+    );
     const [key, setKey] = React.useState(Date.now());
+
+    useEffect(() => {
+      setChanged(props.initValue ? props.initValue : []);
+      setKey(Date.now());
+    }, [props.initValue]);
 
     return (
       <TableListOpsHelper

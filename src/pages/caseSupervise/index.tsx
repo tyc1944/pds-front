@@ -40,7 +40,6 @@ class CaseSupervise extends React.Component<CaseSuperviseProps> {
   appointResolve = (val: boolean) => {};
 
   componentDidMount() {
-    this.props.supervise.resetSearchModal();
     this.getBreadscrumData(this.props.match.params.status);
     this.setState({
       activeTabIndex: this.props.match.params.tabIndex

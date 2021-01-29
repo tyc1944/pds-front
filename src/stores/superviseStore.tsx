@@ -3,6 +3,7 @@ import { axios } from "../utils/RequestUtil";
 import { ProcessStep } from "components/dataDetail";
 import _ from "lodash";
 import { CLUE_STATUS_MAP } from "common";
+import { TableListOpsValueType } from "components/table/tableListOpsComponents";
 const FileDownload = require("js-file-download");
 
 export interface SuperviseData {
@@ -60,6 +61,7 @@ export default class SuperviseStore {
 
   @observable
   searchModel = { page: 1, pageSize: 20 } as SuperviseDataSearchModel;
+  searchValue: TableListOpsValueType[] = [];
 
   @observable
   baseStepData = [] as ProcessStep[];
