@@ -13,8 +13,11 @@ import { ColorButton } from "components/buttons";
 export const TableSearch = (props: {
   onSearch: (changed: TableListOpsValueType[]) => void;
   onExport: () => void;
+  initValue?: TableListOpsValueType[];
 }) => {
-  const [changed, setChanged] = React.useState([] as TableListOpsValueType[]);
+  const [changed, setChanged] = React.useState(
+    props.initValue ? props.initValue : ([] as TableListOpsValueType[])
+  );
   const [key, setKey] = React.useState(Date.now());
 
   return (

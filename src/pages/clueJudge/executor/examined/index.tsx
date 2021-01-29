@@ -16,6 +16,8 @@ interface ClueJudgeProps extends RouteComponentProps {
 @inject("clue")
 @observer
 class ExecutorExaminedClueJudge extends React.Component<ClueJudgeProps> {
+  currentPath = "";
+
   state = {
     breadscrumData: [],
     clueDataList: [],
@@ -24,6 +26,15 @@ class ExecutorExaminedClueJudge extends React.Component<ClueJudgeProps> {
 
   componentDidMount() {
     this.getClueDataList();
+    this.currentPath = this.props.history.location.pathname;
+  }
+
+  componentWillUnmount() {
+    let nextPath = this.props.history.location.pathname;
+    if (!nextPath || !nextPath.startsWith(this.currentPath)) {
+      this.props.clue.searchValue = [];
+      this.props.clue.resetSearchModal();
+    }
   }
 
   getClueDataList = () => {
@@ -47,10 +58,6 @@ class ExecutorExaminedClueJudge extends React.Component<ClueJudgeProps> {
     });
   };
 
-  componentWillUnmount() {
-    this.props.clue.resetSearchModal();
-  }
-
   render() {
     const { clue } = this.props;
     return (
@@ -67,6 +74,7 @@ class ExecutorExaminedClueJudge extends React.Component<ClueJudgeProps> {
             <TableSearch
               onExport={() => this.props.clue.exportClueDataList("examined")}
               onSearch={changed => {
+                clue.searchValue = changed;
                 clue.searchModel = fillObjectFromOpsValue(
                   {},
                   changed

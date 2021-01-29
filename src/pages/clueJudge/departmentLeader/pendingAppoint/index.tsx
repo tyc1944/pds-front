@@ -6,7 +6,10 @@ import { TableColumn } from "./tableConfig";
 import { TableList } from "components/table";
 import { inject, observer } from "mobx-react";
 import ClueStore, { ClueDataSearchModel, ClueData } from "stores/clueStore";
-import { fillObjectFromOpsValue } from "components/table/tableListOpsComponents";
+import {
+  fillObjectFromOpsValue,
+  TableListOpsValueType
+} from "components/table/tableListOpsComponents";
 import { AssignClueModal } from "pages/clueJudge/modals";
 import { message } from "antd";
 import { RouteComponentProps } from "react-router-dom";
@@ -20,6 +23,8 @@ interface ClueJudgeProps extends RouteComponentProps {
 class DepartmentLeaderPendingAppointClueJudge extends React.Component<
   ClueJudgeProps
 > {
+  currentPath = "";
+
   state = {
     breadscrumData: [],
     clueDataList: [],
@@ -31,6 +36,15 @@ class DepartmentLeaderPendingAppointClueJudge extends React.Component<
 
   componentDidMount() {
     this.getClueDataList();
+    this.currentPath = this.props.history.location.pathname;
+  }
+
+  componentWillUnmount() {
+    let nextPath = this.props.history.location.pathname;
+    if (!nextPath || !nextPath.startsWith(this.currentPath)) {
+      this.props.clue.searchValue = [];
+      this.props.clue.resetSearchModal();
+    }
   }
 
   getClueDataList = () => {
@@ -106,10 +120,12 @@ class DepartmentLeaderPendingAppointClueJudge extends React.Component<
         <BoxContainer>
           <BoxContainerInner minHeight={"250px"}>
             <TableSearch
+              initValue={clue.searchValue}
               onExport={() =>
                 this.props.clue.exportClueDataList("pendingAppoint")
               }
               onSearch={changed => {
+                clue.searchValue = changed;
                 clue.searchModel = fillObjectFromOpsValue(
                   {},
                   changed

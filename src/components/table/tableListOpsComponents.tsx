@@ -1,10 +1,28 @@
 import React, { useContext, useEffect } from "react";
-import { Input, DatePicker, Select, Cascader, InputNumber, Checkbox } from "antd";
+import {
+  Input,
+  DatePicker,
+  Select,
+  Cascader,
+  InputNumber,
+  Checkbox
+} from "antd";
 import { isArray, isUndefined } from "util";
 import Search from "antd/lib/input/Search";
 import { RangeValue } from "rc-picker/lib/interface";
 import { TableListOpsContext } from "./tableListOpsContext";
-import { getDayStartDate, getDayEndDate, getMonthStartDate, getMonthEndDate, getLastMonthStartDate, getLastMonthEndDate, getYearStartDate, getYearEndDate, formatTimeYMD, formatTimeYMDHMS } from "utils/TimeUtil";
+import {
+  getDayStartDate,
+  getDayEndDate,
+  getMonthStartDate,
+  getMonthEndDate,
+  getLastMonthStartDate,
+  getLastMonthEndDate,
+  getYearStartDate,
+  getYearEndDate,
+  formatTimeYMD,
+  formatTimeYMDHMS
+} from "utils/TimeUtil";
 import moment from "moment";
 import { SettingOutlined } from "@ant-design/icons";
 import { CascaderValueType } from "antd/lib/cascader";
@@ -537,7 +555,6 @@ export const InputSearch = ({
   );
 };
 
-
 /**
  *
  */
@@ -558,25 +575,30 @@ export const SingleSelectionGroup = ({
   }
   return (
     <div>
-      {
-        title && <span style={{ padding: "0 10px" }}>{title}</span>
-      }
+      {title && <span style={{ padding: "0 10px" }}>{title}</span>}
 
-      <div style={{
-        display: 'flex',
-        justifyContent: "flex-start"
-      }}>
-        {
-          selectItems.map((selectItem, index) =>
-            <div
-              key={index}
-              className={`selectOption ${selectItem === initValue ? 'selected' : ''}`}
-              onClick={() => updateChange({
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-start"
+        }}
+      >
+        {selectItems.map((selectItem, index) => (
+          <div
+            key={index}
+            className={`selectOption ${
+              selectItem === initValue ? "selected" : ""
+            }`}
+            onClick={() =>
+              updateChange({
                 name: name as string,
                 value: selectItem
-              })}>{selectItem}</div>
-          )
-        }
+              })
+            }
+          >
+            {selectItem}
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -596,31 +618,36 @@ export const MultiSelectionGroup = ({
   }
   return (
     <div>
-      {
-        title && <span style={{ padding: "0 10px" }}>{title}</span>
-      }
+      {title && <span style={{ padding: "0 10px" }}>{title}</span>}
 
-      <div style={{
-        display: 'flex',
-        justifyContent: "flex-start"
-      }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-start"
+        }}
+      >
         <div
-          onClick={() => updateChange({
-            name: name as string,
-            value: ""
-          })
+          onClick={() =>
+            updateChange({
+              name: name as string,
+              value: ""
+            })
           }
-          className={`selectOption ${initValue === "" ? 'selected' : ''}`} >
+          className={`selectOption ${initValue === "" ? "selected" : ""}`}
+        >
           不限
         </div>
         <Checkbox.Group
           options={selectItems}
           defaultValue={defaultValues}
           value={initValue.split(",")}
-          onChange={checkedValues => updateChange({
-            name: name as string,
-            value: checkedValues.join(",")
-          })} />
+          onChange={checkedValues =>
+            updateChange({
+              name: name as string,
+              value: checkedValues.join(",")
+            })
+          }
+        />
       </div>
     </div>
   );
@@ -632,88 +659,160 @@ export const OptionsDateRangePicker = ({
   style = {},
   supportUnlimited = true
 }: {
-  supportUnlimited?: boolean
+  supportUnlimited?: boolean;
 } & TableListOpsProps) => {
   const { updateChange, getChange } = useContext(TableListOpsContext);
-  const currentMounthDate = [formatTimeYMDHMS(getMonthStartDate()), formatTimeYMDHMS(getMonthEndDate())]
-  const lastMonthDate = [formatTimeYMDHMS(getLastMonthStartDate()), formatTimeYMDHMS(getLastMonthEndDate())]
-  const currentYearDate = [formatTimeYMDHMS(getYearStartDate()), formatTimeYMDHMS(getYearEndDate())]
+  const currentMounthDate = [
+    formatTimeYMDHMS(getMonthStartDate()),
+    formatTimeYMDHMS(getMonthEndDate())
+  ];
+  const lastMonthDate = [
+    formatTimeYMDHMS(getLastMonthStartDate()),
+    formatTimeYMDHMS(getLastMonthEndDate())
+  ];
+  const currentYearDate = [
+    formatTimeYMDHMS(getYearStartDate()),
+    formatTimeYMDHMS(getYearEndDate())
+  ];
 
-  let initValue =
-    getChange()
-      .filter(data => name.indexOf(data.name) !== -1)
-      .map(data => moment(data.value)) as RangeValue<moment.Moment>
+  let initValue = getChange()
+    .filter(data => name.indexOf(data.name) !== -1)
+    .map(data => moment(data.value)) as RangeValue<moment.Moment>;
 
   useEffect(() => {
     if (!supportUnlimited) {
-      updateChange([{
-        name: name[0],
-        value: currentMounthDate[0]
-      }, {
-        name: name[1],
-        value: currentMounthDate[1]
-      }], '本月')
+      updateChange(
+        [
+          {
+            name: name[0],
+            value: currentMounthDate[0]
+          },
+          {
+            name: name[1],
+            value: currentMounthDate[1]
+          }
+        ],
+        "本月"
+      );
     }
-  }, [supportUnlimited])
+  }, [supportUnlimited]);
 
   return (
     <div>
-      {
-        title && <span style={{ padding: "0 10px", color: style.color }}>{title}</span>
-      }
-      <div style={{
-        display: 'flex',
-        justifyContent: "flex-start",
-        alignItems: 'center'
-      }}>
-        {
-          supportUnlimited &&
+      {title && (
+        <span style={{ padding: "0 10px", color: style.color }}>{title}</span>
+      )}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-start",
+          alignItems: "center"
+        }}
+      >
+        {supportUnlimited && (
           <div
-            onClick={() => updateChange([{
-              name: name[0],
-              value: undefined
-            }, {
-              name: name[1],
-              value: undefined
-            }])}
-            className={`selectOption ${!initValue || initValue.length !== 2 || !initValue[0] ? 'selected' : ''}`} >
+            onClick={() =>
+              updateChange([
+                {
+                  name: name[0],
+                  value: undefined
+                },
+                {
+                  name: name[1],
+                  value: undefined
+                }
+              ])
+            }
+            className={`selectOption ${
+              !initValue || initValue.length !== 2 || !initValue[0]
+                ? "selected"
+                : ""
+            }`}
+          >
             不限
-        </div>
-        }
+          </div>
+        )}
 
         <div
-          onClick={() => updateChange([{
-            name: name[0],
-            value: currentMounthDate[0]
-          }, {
-            name: name[1],
-            value: currentMounthDate[1]
-          }], '本月')}
-          className={`selectOption ${initValue && initValue.length === 2 && formatTimeYMDHMS(initValue[0]) === currentMounthDate[0] ? 'selected' : ''}`} >
+          onClick={() =>
+            updateChange(
+              [
+                {
+                  name: name[0],
+                  value: currentMounthDate[0]
+                },
+                {
+                  name: name[1],
+                  value: currentMounthDate[1]
+                }
+              ],
+              "本月"
+            )
+          }
+          className={`selectOption ${
+            initValue &&
+            initValue.length === 2 &&
+            formatTimeYMDHMS(initValue[0]) === currentMounthDate[0] &&
+              formatTimeYMDHMS(initValue[1]) === currentMounthDate[1]
+              ? "selected"
+              : ""
+          }`}
+        >
           本月
         </div>
 
         <div
-          onClick={() => updateChange([{
-            name: name[0],
-            value: lastMonthDate[0]
-          }, {
-            name: name[1],
-            value: lastMonthDate[1]
-          }], '上个月')}
-          className={`selectOption ${initValue && initValue.length === 2 && formatTimeYMDHMS(initValue[0]) === lastMonthDate[0] ? 'selected' : ''}`} >
+          onClick={() =>
+            updateChange(
+              [
+                {
+                  name: name[0],
+                  value: lastMonthDate[0]
+                },
+                {
+                  name: name[1],
+                  value: lastMonthDate[1]
+                }
+              ],
+              "上个月"
+            )
+          }
+          className={`selectOption ${
+            initValue &&
+            initValue.length === 2 &&
+            formatTimeYMDHMS(initValue[0]) === lastMonthDate[0]
+              ? "selected"
+              : ""
+          }`}
+        >
           上个月
         </div>
 
         <div
-          onClick={() => updateChange([{
-            name: name[0],
-            value: currentYearDate[0]
-          }, {
-            name: name[1],
-            value: currentYearDate[1]
-          }], '近一年')}
-          className={`selectOption ${initValue && initValue.length === 2 && formatTimeYMDHMS(initValue[0]) === currentYearDate[0] ? 'selected' : ''}`} >
+          onClick={() =>
+            updateChange(
+              [
+                {
+                  name: name[0],
+                  value: currentYearDate[0]
+                },
+                {
+                  name: name[1],
+                  value: currentYearDate[1]
+                }
+              ],
+              "近一年"
+            )
+          }
+          className={`selectOption ${
+            initValue &&
+            initValue.length === 2 &&
+            formatTimeYMDHMS(initValue[0]) === currentYearDate[0] &&
+              formatTimeYMDHMS(initValue[1]) === currentYearDate[1]
+              ? "selected"
+              : ""
+          }`}
+        >
           近一年
         </div>
         <div>
@@ -746,16 +845,15 @@ export const OptionsDateRangePicker = ({
                   });
                 }
               } else {
-
                 if (!supportUnlimited) {
                   changedVal.push({
                     name: name[0],
                     value: currentMounthDate[0]
-                  })
+                  });
                   changedVal.push({
                     name: name[1],
                     value: currentMounthDate[1]
-                  })
+                  });
                 } else {
                   changedVal.push({
                     name: name[0],
@@ -772,7 +870,7 @@ export const OptionsDateRangePicker = ({
           />
         </div>
       </div>
-    </div >
+    </div>
   );
 };
 

@@ -3,6 +3,7 @@ import { axios } from "../utils/RequestUtil";
 import { ProcessStep } from "components/dataDetail";
 import _ from "lodash";
 import { CASE_CATEGORY, CLUE_SOURCE, DATA_STATUS_ACTION } from "common";
+import { TableListOpsValueType } from "components/table/tableListOpsComponents";
 const FileDownload = require("js-file-download");
 
 export interface ClueDataSearchModel {
@@ -77,6 +78,7 @@ export interface TransferClueData {
 export default class ClueStore {
   @observable
   searchModel = { page: 1, pageSize: 20 } as ClueDataSearchModel;
+  searchValue: TableListOpsValueType[] = [];
 
   @observable
   baseStepData = [] as ProcessStep[];
