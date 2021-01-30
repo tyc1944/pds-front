@@ -191,10 +191,17 @@ export const CriminalCaseTableSearch = inject("main")(
     onExport: () => void;
     status: string;
     main?: MainStore;
+    initValue?: TableListOpsValueType[];
   }) => {
-    const [changed, setChanged] = React.useState([] as TableListOpsValueType[]);
+    const [changed, setChanged] = React.useState(
+      props.initValue ? props.initValue : ([] as TableListOpsValueType[])
+    );
     const [key, setKey] = React.useState(Date.now());
 
+    useEffect(() => {
+      setChanged(props.initValue ? props.initValue : []);
+      setKey(Date.now());
+    }, [props.initValue]);
     return (
       <TableListOpsHelper
         key={key}

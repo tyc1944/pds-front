@@ -38,9 +38,6 @@ export const InvestigationTabContent = inject(
     const [total, setTotal] = React.useState(0);
     const [pages, setPages] = React.useState(0);
     const { supervise } = props;
-    const [searchValue, setSearchValue] = React.useState(
-      supervise!.searchValue
-    );
     const history = useHistory();
     const currentPath = history.location.pathname;
     const getSuperviseDataList = () => {
@@ -62,7 +59,6 @@ export const InvestigationTabContent = inject(
         let nextPath = history.location.pathname;
         if (currentPath === nextPath || !nextPath.startsWith(currentPath)) {
           supervise!.searchValue = [];
-          setSearchValue([]);
           supervise!.resetSearchModal();
         }
       };
@@ -73,7 +69,7 @@ export const InvestigationTabContent = inject(
         <BoxContainer noPadding>
           <BoxContainerInner>
             <TableSearch
-              initValue={searchValue}
+              initValue={supervise!.searchValue}
               onExport={() =>
                 props.supervise!.exportSuperviseDataList(
                   "investigation",

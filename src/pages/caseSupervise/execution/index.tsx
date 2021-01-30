@@ -24,6 +24,7 @@ import { Row, Col } from "antd";
 import { PendingAppointCriminalCaseTableColumn } from "../trial/tableConfig";
 import MainStore from "stores/mainStore";
 import { fillObjectFromOpsValue } from "components/table/tableListOpsComponents";
+import { useHistory } from "react-router-dom";
 
 export const ExecutionTabContent = inject(
   "supervise",
@@ -43,6 +44,8 @@ export const ExecutionTabContent = inject(
     const [dataList, setDataList] = React.useState([]);
     const [total, setTotal] = React.useState(0);
     const [pages, setPages] = React.useState(0);
+    const history = useHistory();
+    const currentPath = history.location.pathname;
 
     const getSuperviseDataList = () => {
       props
@@ -62,6 +65,13 @@ export const ExecutionTabContent = inject(
       if (props.activeTabIndex === "3") {
         getSuperviseDataList();
       }
+      return () => {
+        let nextPath = history.location.pathname;
+        if (currentPath === nextPath || !nextPath.startsWith(currentPath)) {
+          props.supervise!.searchValue = [];
+          props.supervise!.resetSearchModal();
+        }
+      };
     }, [props.supervise, props.status, props.activeTabIndex, caseCategory]);
 
     return useObserver(() => (
@@ -96,6 +106,7 @@ export const ExecutionTabContent = inject(
           </Row>
           {caseCategory === "civil_case" && (
             <CivilCaseTableSearch
+              initValue={props.supervise!.searchValue}
               onExport={() =>
                 props.supervise!.exportSuperviseDataList(
                   "execution",
@@ -106,6 +117,7 @@ export const ExecutionTabContent = inject(
               }
               status={props.status}
               onSearch={changed => {
+                props.supervise!.searchValue = changed;
                 props.supervise!.searchModel = fillObjectFromOpsValue(
                   {},
                   changed
@@ -116,6 +128,7 @@ export const ExecutionTabContent = inject(
           )}
           {caseCategory === "criminal_case" && (
             <CriminalCaseTableSearch
+              initValue={props.supervise!.searchValue}
               onExport={() =>
                 props.supervise!.exportSuperviseDataList(
                   "execution",
@@ -126,6 +139,7 @@ export const ExecutionTabContent = inject(
               }
               status={props.status}
               onSearch={changed => {
+                props.supervise!.searchValue = changed;
                 props.supervise!.searchModel = fillObjectFromOpsValue(
                   {},
                   changed

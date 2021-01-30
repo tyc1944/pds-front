@@ -15,6 +15,7 @@ import { inject } from "mobx-react";
 import SuperviseStore from "stores/superviseStore";
 import MainStore from "stores/mainStore";
 import { fillObjectFromOpsValue } from "components/table/tableListOpsComponents";
+import { useHistory } from "react-router-dom";
 
 export const AdministrationTabContent = inject(
   "supervise",
@@ -33,6 +34,8 @@ export const AdministrationTabContent = inject(
     const [dataList, setDataList] = React.useState([]);
     const [total, setTotal] = React.useState(0);
     const [pages, setPages] = React.useState(0);
+    const history = useHistory();
+    const currentPath = history.location.pathname;
     const getSuperviseDataList = () => {
       props
         .supervise!.getSuperviseDataList("administration", props.status)
@@ -47,12 +50,20 @@ export const AdministrationTabContent = inject(
       if (props.activeTabIndex === "4") {
         getSuperviseDataList();
       }
+      return () => {
+        let nextPath = history.location.pathname;
+        if (currentPath === nextPath || !nextPath.startsWith(currentPath)) {
+          props.supervise!.searchValue = [];
+          props.supervise!.resetSearchModal();
+        }
+      };
     }, [props.supervise, props.status, props.activeTabIndex]);
 
     return (
       <BoxContainer noPadding>
         <BoxContainerInner flex={0.3}>
           <TableSearch
+            initValue={props.supervise!.searchValue}
             onExport={() =>
               props.supervise!.exportSuperviseDataList(
                 "administration",
@@ -62,6 +73,7 @@ export const AdministrationTabContent = inject(
             }
             status={props.status}
             onSearch={changed => {
+              props.supervise!.searchValue = changed;
               props.supervise!.searchModel = fillObjectFromOpsValue(
                 {},
                 changed
