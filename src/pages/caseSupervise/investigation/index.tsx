@@ -57,7 +57,7 @@ export const InvestigationTabContent = inject(
 
       return () => {
         let nextPath = history.location.pathname;
-        if (currentPath === nextPath || !nextPath.startsWith(currentPath)) {
+        if (!nextPath.startsWith(currentPath)) {
           supervise!.searchValue = [];
           supervise!.resetSearchModal();
         }

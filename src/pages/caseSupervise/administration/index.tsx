@@ -52,7 +52,7 @@ export const AdministrationTabContent = inject(
       }
       return () => {
         let nextPath = history.location.pathname;
-        if (currentPath === nextPath || !nextPath.startsWith(currentPath)) {
+        if (!nextPath.startsWith(currentPath)) {
           props.supervise!.searchValue = [];
           props.supervise!.resetSearchModal();
         }

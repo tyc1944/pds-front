@@ -63,7 +63,7 @@ export const TrialTabContent = inject(
       }
       return () => {
         let nextPath = history.location.pathname;
-        if (currentPath === nextPath || !nextPath.startsWith(currentPath)) {
+        if (!nextPath.startsWith(currentPath)) {
           props.supervise!.searchValue = [];
           props.supervise!.resetSearchModal();
         }
@@ -84,8 +84,11 @@ export const TrialTabContent = inject(
                   caseCategory === "civil_case" ? "active" : ""
                 }`}
                 onClick={() => {
-                  props.supervise!.searchModel = {};
-                  setDataList([]);
+                  if (caseCategory !== "civil_case") {
+                    props.supervise!.searchValue = [];
+                    props.supervise!.resetSearchModal();
+                    setDataList([]);
+                  }
                   setCaseCategory("civil_case");
                 }}
               >
@@ -98,8 +101,11 @@ export const TrialTabContent = inject(
                   caseCategory === "criminal_case" ? "active" : ""
                 }`}
                 onClick={() => {
-                  props.supervise!.searchModel = {};
-                  setDataList([]);
+                  if (caseCategory !== "criminal_case") {
+                    props.supervise!.searchValue = [];
+                    props.supervise!.resetSearchModal();
+                    setDataList([]);
+                  }
                   setCaseCategory("criminal_case");
                 }}
               >

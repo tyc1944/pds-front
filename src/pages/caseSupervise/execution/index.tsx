@@ -67,7 +67,7 @@ export const ExecutionTabContent = inject(
       }
       return () => {
         let nextPath = history.location.pathname;
-        if (currentPath === nextPath || !nextPath.startsWith(currentPath)) {
+        if (!nextPath.startsWith(currentPath)) {
           props.supervise!.searchValue = [];
           props.supervise!.resetSearchModal();
         }
@@ -87,7 +87,13 @@ export const ExecutionTabContent = inject(
                 className={`trial-case-supervise-category ${
                   caseCategory === "civil_case" ? "active" : ""
                 }`}
-                onClick={() => setCaseCategory("civil_case")}
+                onClick={() => {
+                  if (caseCategory !== "civil_case") {
+                    props.supervise!.searchValue = [];
+                    props.supervise!.resetSearchModal();
+                  }
+                  setCaseCategory("civil_case");
+                }}
               >
                 民事案件
               </div>
@@ -97,7 +103,13 @@ export const ExecutionTabContent = inject(
                 className={`trial-case-supervise-category ${
                   caseCategory === "criminal_case" ? "active" : ""
                 }`}
-                onClick={() => setCaseCategory("criminal_case")}
+                onClick={() => {
+                  if (caseCategory !== "criminal_case") {
+                    props.supervise!.searchValue = [];
+                    props.supervise!.resetSearchModal();
+                  }
+                  setCaseCategory("criminal_case");
+                }}
               >
                 刑事案件
               </div>
