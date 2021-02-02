@@ -19,6 +19,8 @@ class ExecutorPendingSuperviseClueJudge extends React.Component<
   ClueJudgeProps
 > {
   currentPath = "";
+  selectIds = "";
+
   state = {
     breadscrumData: [],
     clueDataList: [],
@@ -55,6 +57,12 @@ class ExecutorPendingSuperviseClueJudge extends React.Component<
 
   render() {
     const { clue } = this.props;
+    const rowSelection = {
+      onChange: (selectedRowKeys: any) => {
+        this.selectIds = selectedRowKeys.join(",");
+      }
+    };
+
     return (
       <div
         style={{
@@ -68,7 +76,10 @@ class ExecutorPendingSuperviseClueJudge extends React.Component<
           <BoxContainerInner flex={0.5}>
             <TableSearch
               onExport={() =>
-                this.props.clue.exportClueDataList("pendingSupervise")
+                this.props.clue.exportClueDataList(
+                  "pendingSupervise",
+                  this.selectIds
+                )
               }
               onSearch={changed => {
                 clue.searchValue = changed;
@@ -82,6 +93,7 @@ class ExecutorPendingSuperviseClueJudge extends React.Component<
           </BoxContainerInner>
           <BoxContainerInner flex={1} noPadding>
             <TableList
+              rowSelection={rowSelection}
               title="线索列表"
               total={this.state.clueDataTotalCount}
               data={this.state.clueDataList}

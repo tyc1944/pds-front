@@ -17,6 +17,7 @@ interface ClueJudgeProps extends RouteComponentProps {
 @observer
 class ExecutorExaminedClueJudge extends React.Component<ClueJudgeProps> {
   currentPath = "";
+  selectIds = "";
 
   state = {
     breadscrumData: [],
@@ -60,6 +61,11 @@ class ExecutorExaminedClueJudge extends React.Component<ClueJudgeProps> {
 
   render() {
     const { clue } = this.props;
+    const rowSelection = {
+      onChange: (selectedRowKeys: any) => {
+        this.selectIds = selectedRowKeys.join(",");
+      }
+    };
     return (
       <div
         style={{
@@ -72,7 +78,9 @@ class ExecutorExaminedClueJudge extends React.Component<ClueJudgeProps> {
         <BoxContainer>
           <BoxContainerInner flex={0.4}>
             <TableSearch
-              onExport={() => this.props.clue.exportClueDataList("examined")}
+              onExport={() =>
+                this.props.clue.exportClueDataList("examined", this.selectIds)
+              }
               onSearch={changed => {
                 clue.searchValue = changed;
                 clue.searchModel = fillObjectFromOpsValue(
@@ -85,6 +93,7 @@ class ExecutorExaminedClueJudge extends React.Component<ClueJudgeProps> {
           </BoxContainerInner>
           <BoxContainerInner flex={1} noPadding>
             <TableList
+              rowSelection={rowSelection}
               title="线索列表"
               total={this.state.clueDataTotalCount}
               data={this.state.clueDataList}

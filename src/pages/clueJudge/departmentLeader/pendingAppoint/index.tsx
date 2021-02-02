@@ -24,6 +24,7 @@ class DepartmentLeaderPendingAppointClueJudge extends React.Component<
   ClueJudgeProps
 > {
   currentPath = "";
+  selectIds = "";
 
   state = {
     breadscrumData: [],
@@ -80,7 +81,7 @@ class DepartmentLeaderPendingAppointClueJudge extends React.Component<
     const { clue } = this.props;
     const rowSelection = {
       onChange: (selectedRowKeys: any) => {
-        console.log("selectedRowKeys changed: ", selectedRowKeys);
+        this.selectIds = selectedRowKeys.join(",");
       }
     };
 
@@ -128,7 +129,10 @@ class DepartmentLeaderPendingAppointClueJudge extends React.Component<
             <TableSearch
               initValue={clue.searchValue}
               onExport={() =>
-                this.props.clue.exportClueDataList("pendingAppoint")
+                this.props.clue.exportClueDataList(
+                  "pendingAppoint",
+                  this.selectIds
+                )
               }
               onSearch={changed => {
                 clue.searchValue = changed;

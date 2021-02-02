@@ -19,6 +19,7 @@ class DepartmentLeaderPendingExamineClueJudge extends React.Component<
   ClueJudgeProps
 > {
   currentPath = "";
+  selectIds = "";
 
   state = {
     breadscrumData: [],
@@ -64,6 +65,11 @@ class DepartmentLeaderPendingExamineClueJudge extends React.Component<
 
   render() {
     const { clue } = this.props;
+    const rowSelection = {
+      onChange: (selectedRowKeys: any) => {
+        this.selectIds = selectedRowKeys.join(",");
+      }
+    };
     return (
       <div
         style={{
@@ -77,7 +83,10 @@ class DepartmentLeaderPendingExamineClueJudge extends React.Component<
           <BoxContainerInner flex={0.4}>
             <TableSearch
               onExport={() =>
-                this.props.clue.exportClueDataList("pendingExamine")
+                this.props.clue.exportClueDataList(
+                  "pendingExamine",
+                  this.selectIds
+                )
               }
               onSearch={changed => {
                 clue.searchValue = changed;
@@ -91,6 +100,7 @@ class DepartmentLeaderPendingExamineClueJudge extends React.Component<
           </BoxContainerInner>
           <BoxContainerInner flex={1} noPadding>
             <TableList
+              rowSelection={rowSelection}
               title="线索列表"
               total={this.state.clueDataTotalCount}
               data={this.state.clueDataList}

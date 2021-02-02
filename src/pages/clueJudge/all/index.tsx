@@ -16,6 +16,8 @@ interface ClueJudgeProps extends RouteComponentProps {
 @inject("clue")
 @observer
 class AllClueJudge extends React.Component<ClueJudgeProps> {
+  selectIds = "";
+
   state = {
     breadscrumData: [],
     clueDataList: [],
@@ -45,6 +47,12 @@ class AllClueJudge extends React.Component<ClueJudgeProps> {
 
   render() {
     const { clue } = this.props;
+    const rowSelection = {
+      onChange: (selectedRowKeys: any) => {
+        this.selectIds = selectedRowKeys.join(",");
+      }
+    };
+
     return (
       <div
         style={{
@@ -57,7 +65,9 @@ class AllClueJudge extends React.Component<ClueJudgeProps> {
         <BoxContainer>
           <BoxContainerInner flex={0.6}>
             <TableSearch
-              onExport={() => this.props.clue.exportClueDataList("all")}
+              onExport={() =>
+                this.props.clue.exportClueDataList("all", this.selectIds)
+              }
               onSearch={changed => {
                 clue.searchModel = fillObjectFromOpsValue(
                   {},
@@ -69,6 +79,7 @@ class AllClueJudge extends React.Component<ClueJudgeProps> {
           </BoxContainerInner>
           <BoxContainerInner flex={1} noPadding>
             <TableList
+              rowSelection={rowSelection}
               title="线索列表"
               total={this.state.clueDataTotalCount}
               data={this.state.clueDataList}

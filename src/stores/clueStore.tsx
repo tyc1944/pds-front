@@ -221,11 +221,10 @@ export default class ClueStore {
     });
   }
 
-  exportClueDataList(status?: string) {
+  exportClueDataList(status: string = "all", selectIds: string = "") {
     let params = this.preprocessSearchModal(this.searchModel) as any;
-    if (status && status !== "all") {
-      params.status = status;
-    }
+    params.status = status;
+    params.selectIds = selectIds;
     axios
       .get("/api/clue/export", {
         params,
