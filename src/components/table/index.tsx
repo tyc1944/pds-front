@@ -3,6 +3,7 @@ import { Table, Select, InputNumber } from "antd";
 import { ColumnProps } from "antd/lib/table";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import "./tableListPagination.less";
+import { TableRowSelection } from "antd/lib/table/interface";
 
 const { Option } = Select;
 
@@ -20,6 +21,7 @@ export interface TableListProps {
   pages?: number;
   activeKey?: string; //可以通过该字段自动重置分页页数
   cPage?: number; //当前页数
+  rowSelection?: TableRowSelection<any>;
 }
 
 export const TitlePanel = (props: {
@@ -60,7 +62,8 @@ export const TableList = ({
   scroll,
   activeKey = "1",
   showHeader = true,
-  cPage = 1
+  cPage = 1,
+  rowSelection
 }: TableListProps) => {
   const [currentPage, setCurrentPage] = useState(cPage);
   const [pageSize, setPageSize] = useState(20);
@@ -69,6 +72,7 @@ export const TableList = ({
     <div>
       {title && <TitlePanel title={title}>{tableSearchOps}</TitlePanel>}
       <Table
+        rowSelection={rowSelection}
         showHeader={showHeader}
         rowKey="id"
         columns={columns}

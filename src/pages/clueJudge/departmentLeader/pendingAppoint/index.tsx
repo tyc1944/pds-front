@@ -78,6 +78,12 @@ class DepartmentLeaderPendingAppointClueJudge extends React.Component<
 
   render() {
     const { clue } = this.props;
+    const rowSelection = {
+      onChange: (selectedRowKeys: any) => {
+        console.log("selectedRowKeys changed: ", selectedRowKeys);
+      }
+    };
+
     return (
       <div
         style={{
@@ -136,6 +142,7 @@ class DepartmentLeaderPendingAppointClueJudge extends React.Component<
           </BoxContainerInner>
           <BoxContainerInner flex={1} noPadding>
             <TableList
+              rowSelection={rowSelection}
               title="线索列表"
               pages={this.state.pages}
               total={this.state.total}
