@@ -57,6 +57,13 @@ export const TrialTabContent = inject(
         });
     };
 
+    const [selectIds, setSelectIds] = React.useState("");
+    const rowSelection = {
+      onChange: (selectedRowKeys: any) => {
+        setSelectIds(selectedRowKeys.join(","));
+      }
+    };
+
     useEffect(() => {
       if (props.activeTabIndex === "2") {
         getSuperviseDataList();
@@ -119,6 +126,7 @@ export const TrialTabContent = inject(
               initValue={props.supervise!.searchValue}
               onExport={() =>
                 props.supervise!.exportSuperviseDataList(
+                  selectIds,
                   "trial",
                   "审判监督案件数据导出",
                   props.status,
@@ -140,6 +148,7 @@ export const TrialTabContent = inject(
               initValue={props.supervise!.searchValue}
               onExport={() =>
                 props.supervise!.exportSuperviseDataList(
+                  selectIds,
                   "trial",
                   "审判监督案件数据导出",
                   props.status,
@@ -161,6 +170,7 @@ export const TrialTabContent = inject(
         <BoxContainerInner flex={1} noPadding>
           {caseCategory === "civil_case" && (
             <TableList
+              rowSelection={rowSelection}
               total={total}
               pages={pages}
               title="案件列表"
@@ -215,6 +225,7 @@ export const TrialTabContent = inject(
           )}
           {caseCategory === "criminal_case" && (
             <TableList
+              rowSelection={rowSelection}
               total={total}
               pages={pages}
               title="案件列表"

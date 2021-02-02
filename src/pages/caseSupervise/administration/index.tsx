@@ -46,6 +46,13 @@ export const AdministrationTabContent = inject(
         });
     };
 
+    const [selectIds, setSelectIds] = React.useState("");
+    const rowSelection = {
+      onChange: (selectedRowKeys: any) => {
+        setSelectIds(selectedRowKeys.join(","));
+      }
+    };
+
     useEffect(() => {
       if (props.activeTabIndex === "4") {
         getSuperviseDataList();
@@ -66,6 +73,7 @@ export const AdministrationTabContent = inject(
             initValue={props.supervise!.searchValue}
             onExport={() =>
               props.supervise!.exportSuperviseDataList(
+                selectIds,
                 "administration",
                 "行政监督案件数据导出",
                 props.status
@@ -84,6 +92,7 @@ export const AdministrationTabContent = inject(
         </BoxContainerInner>
         <BoxContainerInner flex={1} noPadding>
           <TableList
+            rowSelection={rowSelection}
             pages={pages}
             total={total}
             title="案件列表"

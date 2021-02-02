@@ -50,6 +50,13 @@ export const InvestigationTabContent = inject(
         });
     };
 
+    const [selectIds, setSelectIds] = React.useState("");
+    const rowSelection = {
+      onChange: (selectedRowKeys: any) => {
+        setSelectIds(selectedRowKeys.join(","));
+      }
+    };
+
     useEffect(() => {
       if (props.activeTabIndex === "1") {
         getSuperviseDataList();
@@ -72,6 +79,7 @@ export const InvestigationTabContent = inject(
               initValue={supervise!.searchValue}
               onExport={() =>
                 props.supervise!.exportSuperviseDataList(
+                  selectIds,
                   "investigation",
                   "侦查监督案件数据导出",
                   props.status
@@ -87,6 +95,7 @@ export const InvestigationTabContent = inject(
           </BoxContainerInner>
           <BoxContainerInner flex={1} noPadding>
             <TableList
+              rowSelection={rowSelection}
               title="案件列表"
               data={dataList}
               total={total}

@@ -38,6 +38,7 @@ export interface SuperviseDataSearchModel {
   executionYear?: string;
   examineStep?: string;
   judgementYear?: string;
+  selectIds?: string;
 }
 
 export interface SuperviseCaseData {
@@ -136,15 +137,15 @@ export default class SuperviseStore {
   }
 
   exportSuperviseDataList(
+    selectIds: string = "",
     dataType: string,
     fileName: string,
-    status?: string,
+    status: string = "all",
     caseCategory?: string
   ) {
     let params = _.clone(this.searchModel);
-    if (status && status !== "all") {
-      params.status = status;
-    }
+    params.status = status;
+    params.selectIds = selectIds;
     if (caseCategory) {
       params.caseType = caseCategory;
     }
