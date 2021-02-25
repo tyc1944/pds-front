@@ -88,10 +88,11 @@ export const CivilCaseTableSearch = inject("main")(
               </Col>
               <Col>
                 <SingleSelectionGroup
-                  name="caseCategory"
+                  name="judgementYear"
                   defaultValue="不限"
                   selectItems={[
                     "不限",
+                    "2020年",
                     "2019年",
                     "2018年",
                     "2017年",

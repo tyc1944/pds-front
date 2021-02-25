@@ -78,7 +78,14 @@ export const TableSearch = (props: {
               <SingleSelectionGroup
                 name="year"
                 defaultValue="不限"
-                selectItems={["不限", "2019年", "2018年", "2017年", "2016年"]}
+                selectItems={[
+                  "不限",
+                  "2020年",
+                  "2019年",
+                  "2018年",
+                  "2017年",
+                  "2016年"
+                ]}
               ></SingleSelectionGroup>
             </Col>
           </Row>
