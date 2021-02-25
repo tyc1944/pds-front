@@ -53,6 +53,9 @@ class Main extends React.Component<Props> {
       for (let i in res.data) {
         let tmp = JSON.parse(res.data[i].todoContent);
         let category = tmp["案件类型"].split("-")[0];
+        if (category) {
+          category = category.replace("侦察", "侦查");
+        }
         this.openNotification(
           `${res.data[i].exceptionResult}！`,
           `${category}：${this.getCaseNo(category, tmp)}`,
