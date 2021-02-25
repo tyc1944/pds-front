@@ -212,7 +212,7 @@ class Main extends React.Component<Props> {
         return content["案件编号"] ? content["案件编号"] : content["案件名称"];
       case "行政监督":
         return content["处罚决定文书号"];
-      case "侦察监督":
+      case "侦查监督":
         return content["案件编号"];
       case "执行监督":
         return content["案号"];
