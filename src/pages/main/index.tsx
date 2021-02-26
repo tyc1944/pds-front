@@ -61,6 +61,12 @@ class Main extends React.Component<Props> {
           `${category}：${this.getCaseNo(category, tmp)}`,
           () => {
             this.todoData = res.data[i];
+            if (this.todoData.todoContent) {
+              this.todoData.todoContent = this.todoData.todoContent.replace(
+                "侦察",
+                "侦查"
+              );
+            }
             this.setState({
               showSuperviseAlertModal: true
             });
