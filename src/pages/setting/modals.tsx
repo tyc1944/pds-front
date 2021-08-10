@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { MyModal } from "components/modal";
 import { Select, Form, Input, Row, Col } from "antd";
 import { Store } from "antd/lib/form/interface";
@@ -8,6 +8,7 @@ import { ALL_PROCURATORATE, ALL_DEPARTMENT } from "common";
 import { SelectValue } from "antd/lib/select";
 import { UserAccount, UserProfile } from "stores/mainStore";
 import { useParams } from "react-router-dom";
+import { FormInstance, useForm } from "antd/lib/form/Form";
 
 const { Option } = Select;
 
@@ -32,6 +33,8 @@ export const CreateAccountModal = (props: {
   onFinishFailed?: (errorInfo: ValidateErrorEntity) => void;
 }) => {
   const [departmentList, setDeparmentList] = React.useState([] as string[]);
+  const [formInstance] = useForm();
+  const [requiredDepartment, setRequiredDepartment] = useState(false);
 
   useEffect(() => {
     if (props.userProfile.role === "MANAGER") {
@@ -51,6 +54,7 @@ export const CreateAccountModal = (props: {
       width={766}
     >
       <Form
+        form={formInstance}
         {...layout}
         initialValues={
           props.userProfile.role === "MANAGER"
@@ -59,6 +63,18 @@ export const CreateAccountModal = (props: {
               }
             : {}
         }
+        onValuesChange={changedValues => {
+          if (changedValues && changedValues.role) {
+            if (
+              changedValues.role === "NORMAL_USER" ||
+              changedValues.role === "DEPARTMENT_LEADER"
+            ) {
+              setRequiredDepartment(true);
+            } else {
+              setRequiredDepartment(false);
+            }
+          }
+        }}
         onFinish={props.onFinish}
         onFinishFailed={props.onFinishFailed}
       >
@@ -128,7 +144,13 @@ export const CreateAccountModal = (props: {
               </Form.Item>
             </Col>
             <Col span="12">
-              <Form.Item label="归属部门" name="department">
+              <Form.Item
+                label="归属部门"
+                name="department"
+                rules={[
+                  { required: requiredDepartment, message: "请选择归属部门" }
+                ]}
+              >
                 <Select>
                   <Option value="">请选择</Option>
                   {departmentList.map(item => (
