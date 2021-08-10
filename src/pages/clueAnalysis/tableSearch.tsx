@@ -151,14 +151,38 @@ export const TableSearch = (props: {
         <div>
           <Row>
             <Col xl={2} xs={4} style={{ color: "#9099A2" }}>
-              案件来源
+              线索状态
             </Col>
             <Col xl={22} xs={20}>
-              <SingleSelectionGroup
-                name="caseSource"
-                defaultValue="不限"
-                selectItems={["不限", "驳回", "指派"]}
-              ></SingleSelectionGroup>
+              <MultiSelectionGroup
+                name="clueStatus"
+                selectItems={[
+                  {
+                    label: "待指派",
+                    value: "pendingAppoint"
+                  },
+                  {
+                    label: "待处理",
+                    value: "pendingProcess"
+                  },
+                  {
+                    label: "待审批",
+                    value: "pendingExamine"
+                  },
+                  {
+                    label: "已审批",
+                    value: "examined"
+                  },
+                  {
+                    label: "待监督",
+                    value: "pendingSupervise"
+                  },
+                  {
+                    label: "已完成",
+                    value: "done"
+                  }
+                ]}
+              ></MultiSelectionGroup>
             </Col>
           </Row>
         </div>
