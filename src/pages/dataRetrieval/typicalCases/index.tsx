@@ -47,7 +47,7 @@ class LawsAndRegulationsDataRetrieval extends React.Component<
                 <CourtCase onDetailClick={this.onDetailClick}></CourtCase>
               </TabPane>
               <TabPane
-                tab={<TableNameWithNumber name="案例" count={0} />}
+                tab={<TableNameWithNumber name="检察案例" count={0} />}
                 key="2"
               >
                 <ProcuratorateCase
