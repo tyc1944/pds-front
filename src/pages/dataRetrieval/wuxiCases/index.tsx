@@ -42,7 +42,7 @@ class LawsAndRegulationsDataRetrieval extends React.Component<
           <BoxContainerInner flex={1} noPadding noBorder>
             <Tabs defaultActiveKey="1" onChange={this.onTabChange}>
               <TabPane
-                tab={<TableNameWithNumber name="文书" count={0} />}
+                tab={<TableNameWithNumber name="检察文书" count={0} />}
                 key="1"
               >
                 <ProcuratorialDocument
