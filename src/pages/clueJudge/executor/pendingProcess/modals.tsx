@@ -118,6 +118,7 @@ export const CreateSelfFoundClue = (props: {
                 label=" "
                 colon={false}
                 name="foundAreaDetail"
+                rules={[{ max: 24, message: "请输入小于24个文字" }]}
               >
                 <Input placeholder="详细地址" />
               </Form.Item>
@@ -139,7 +140,10 @@ export const CreateSelfFoundClue = (props: {
             {...layout2}
             label="简要案情"
             name="briefCaseInfo"
-            rules={[{ required: true, message: "请输入简要案情" }]}
+            rules={[
+              { required: true, message: "请输入简要案情" },
+              { max: 240, message: "请输入小于240个文字" }
+            ]}
           >
             <TextArea />
           </Form.Item>
