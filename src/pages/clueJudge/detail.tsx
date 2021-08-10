@@ -319,6 +319,7 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
                 </DataDetail>
               )}
             {main.userProfile.role === "LEADERSHIP" &&
+              clueData.currentStep === "STEP_4" &&
               clueData.status === "pendingExamine" && (
                 <>
                   <DataDetail header="部门领导审批意见">
@@ -407,8 +408,10 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
                       )}
                   </>
                 )}
-                {(main.userProfile.role === "DEPARTMENT_LEADER" ||
-                  main.userProfile.role === "LEADERSHIP") &&
+                {((main.userProfile.role === "DEPARTMENT_LEADER" &&
+                  clueData.currentStep === "STEP_3") ||
+                  (main.userProfile.role === "LEADERSHIP" &&
+                    clueData.currentStep === "STEP_4")) &&
                   clueData.status === "pendingExamine" && (
                     <>
                       <ColorButton
