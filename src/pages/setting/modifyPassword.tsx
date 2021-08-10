@@ -7,8 +7,9 @@ import { Form, Input, message } from "antd";
 import { ColorButton } from "../../components/buttons";
 import { Store, ValidateErrorEntity } from "rc-field-form/lib/interface.d";
 import { FormInstance } from "antd/lib/form";
+import { RouteComponentProps } from "react-router-dom";
 
-interface ModifyPasswordProps {
+interface ModifyPasswordProps extends RouteComponentProps {
   main: MainStore;
 }
 
@@ -18,6 +19,7 @@ class ModifyPassword extends React.Component<ModifyPasswordProps> {
   formRef = React.createRef<FormInstance>();
 
   render() {
+    const { history } = this.props;
     const layout = {
       labelCol: { span: 8 },
       wrapperCol: { span: 16 }
@@ -34,6 +36,9 @@ class ModifyPassword extends React.Component<ModifyPasswordProps> {
       await this.props.main.updateAccountPassword(values as UpdatePassword);
       message.success("密码更新成功！");
       this.formRef.current && this.formRef.current.resetFields();
+      localStorage.removeItem("access_token");
+      message.info("请重新登陆");
+      history.replace("/login");
     };
 
     const onFinishFailed = (errorInfo: ValidateErrorEntity) => {
@@ -80,7 +85,7 @@ class ModifyPassword extends React.Component<ModifyPasswordProps> {
                 rules={[
                   { required: true, message: "请输入新密码!" },
                   {
-                    pattern: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/,
+                    pattern: /^(?![0-9]+$)(?![a-zA-Z]+$)[A-Za-z0-9]{6,16}$/,
                     message: "请输入6到16位数字与字母组合"
                   }
                 ]}
@@ -94,7 +99,7 @@ class ModifyPassword extends React.Component<ModifyPasswordProps> {
                 rules={[
                   { required: true, message: "请输入确认密码!" },
                   {
-                    pattern: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/,
+                    pattern: /^(?![0-9]+$)(?![a-zA-Z]+$)[A-Za-z0-9]{6,16}$/,
                     message: "请输入6到16位数字与字母组合"
                   }
                 ]}
