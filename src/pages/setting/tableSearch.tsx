@@ -78,6 +78,22 @@ export const TableSearch = (props: {
             </Row>
           </div>
         )}
+        {props.userProfile.role === "MANAGER" && (
+          <div>
+            <Row>
+              <Col xl={2} xs={4} style={{ color: "#9099A2" }}>
+                归属部门
+              </Col>
+              <Col xl={22} xs={20}>
+                <SingleSelectionGroup
+                  name="belongToDepartment"
+                  defaultValue="不限"
+                  selectItems={["不限", "第一部", "第二部"]}
+                ></SingleSelectionGroup>
+              </Col>
+            </Row>
+          </div>
+        )}
         <div>
           <Row>
             <Col xl={2} xs={4} style={{ color: "#9099A2" }}>
