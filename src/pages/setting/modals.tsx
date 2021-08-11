@@ -7,8 +7,7 @@ import { ColorButton } from "components/buttons";
 import { ALL_PROCURATORATE, ALL_DEPARTMENT } from "common";
 import { SelectValue } from "antd/lib/select";
 import { UserAccount, UserProfile } from "stores/mainStore";
-import { useParams } from "react-router-dom";
-import { FormInstance, useForm } from "antd/lib/form/Form";
+import { useForm } from "antd/lib/form/Form";
 
 const { Option } = Select;
 
@@ -264,6 +263,7 @@ export const UpdateAccountModal = (props: {
                 rules={[{ required: true, message: "请选择归属检察院" }]}
               >
                 <Select
+                  disabled
                   onChange={(val: SelectValue) => {
                     if (ALL_PROCURATORATE.indexOf(val as string) !== -1) {
                       setDeparmentList(
