@@ -91,7 +91,14 @@ export const InvestigationCaseSearch = inject("main")(
             ></DateRangePicker>
           </div>
           <div>
-            <SingleSelector title="异常结果" selectItems={[]}></SingleSelector>
+            <SingleSelector
+              title="异常结果"
+              name="exceptionResult"
+              selectItems={["未采取强制措施", "未移送审查起诉"].map(v => ({
+                value: v,
+                title: v
+              }))}
+            ></SingleSelector>
           </div>
           <div>
             <InputWithoutIcon name="keyword" />
@@ -147,7 +154,19 @@ export const TrialCaseSearch = inject("main")(
             ></SingleSelector>
           </div>
           <div>
-            <SingleSelector title="异常结果" selectItems={[]}></SingleSelector>
+            <SingleSelector
+              title="异常结果"
+              name="exceptionResult"
+              selectItems={[
+                "审理期限异常",
+                "审判组织异常",
+                "送达程序异常",
+                "诉讼代理异常",
+                "开庭异常",
+                "结案方式异常",
+                "判赔金额异常"
+              ].map(v => ({ value: v, title: v }))}
+            ></SingleSelector>
           </div>
           <div>
             <InputWithoutIcon name="keyword" />
@@ -203,7 +222,15 @@ export const ExecutionCaseSearch = inject("main")(
             ></SingleSelector>
           </div>
           <div>
-            <SingleSelector title="异常结果" selectItems={[]}></SingleSelector>
+            <SingleSelector
+              title="异常结果"
+              name="exceptionResult"
+              selectItems={[
+                "执行程序异常",
+                "结案方式异常",
+                "标的额异常"
+              ].map(v => ({ value: v, title: v }))}
+            ></SingleSelector>
           </div>
           <div>
             <InputWithoutIcon name="keyword" />
@@ -243,7 +270,15 @@ export const AdminCaseSearch = inject("main")(
             <SingleDatePicker title="立案日期"></SingleDatePicker>
           </div>
           <div>
-            <SingleSelector title="异常结果" selectItems={[]}></SingleSelector>
+            <SingleSelector
+              title="异常结果"
+              name="exceptionResult"
+              selectItems={[
+                "涉嫌犯罪未移送",
+                "无立案/结案时间",
+                "案件处理超期"
+              ].map(v => ({ value: v, title: v }))}
+            ></SingleSelector>
           </div>
           <div>
             <InputWithoutIcon name="keyword" />
