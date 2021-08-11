@@ -14,6 +14,7 @@ export const MyModal = (props: {
   width?: number;
 }) => (
   <Modal
+    destroyOnClose={true}
     width={props.width ? props.width : 520}
     wrapClassName="MyModalClass"
     closeIcon={<span style={{ color: "white" }}>X</span>}

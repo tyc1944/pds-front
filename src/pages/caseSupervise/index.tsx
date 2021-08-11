@@ -13,6 +13,7 @@ import SuperviseStore from "stores/superviseStore";
 import { AssignCaseModal } from "./modals";
 import { SuperviseData } from "stores/superviseStore";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { ReturnClueModal } from "pages/clueJudge/modals";
 
 const { confirm } = Modal;
 const { TabPane } = Tabs;
@@ -34,10 +35,14 @@ class CaseSupervise extends React.Component<CaseSuperviseProps> {
     breadscrumData: [],
     activeTabIndex: "1",
     showAppointModal: false,
-    superviseData: {} as SuperviseData
+    superviseData: {} as SuperviseData,
+    showReturnModal: false
   };
 
+  currentCaseId: number = 0;
+
   appointResolve = (val: boolean) => {};
+  returnResolve = (val: boolean) => {};
 
   componentDidMount() {
     this.getBreadscrumData(this.props.match.params.status);
@@ -62,19 +67,10 @@ class CaseSupervise extends React.Component<CaseSuperviseProps> {
 
   onRejectClick = (caseId: number) => {
     return new Promise<boolean>(resolve => {
-      confirm({
-        title: "操作确认",
-        icon: <ExclamationCircleOutlined translate="true" />,
-        content: "确认要退回吗？",
-        onOk: async () => {
-          await this.props.supervise.returnSuperviseData(caseId);
-          message.success("退回成功！");
-          resolve(true);
-        },
-        onCancel() {
-          console.log("Cancel");
-          resolve(false);
-        }
+      this.returnResolve = resolve;
+      this.currentCaseId = caseId;
+      this.setState({
+        showReturnModal: true
       });
     });
   };
@@ -152,6 +148,31 @@ class CaseSupervise extends React.Component<CaseSuperviseProps> {
           flexDirection: "column"
         }}
       >
+        <ReturnClueModal
+          visiable={this.state.showReturnModal}
+          onConfirm={async comment => {
+            await supervise.returnSuperviseData(this.currentCaseId, comment);
+            this.setState(
+              {
+                showReturnModal: false
+              },
+              () => {
+                message.success("退回成功！");
+                this.returnResolve(true);
+              }
+            );
+          }}
+          onCancel={() =>
+            this.setState(
+              {
+                showReturnModal: false
+              },
+              () => {
+                this.returnResolve(false);
+              }
+            )
+          }
+        ></ReturnClueModal>
         {this.state.showAppointModal && (
           <AssignCaseModal
             visiable={this.state.showAppointModal}

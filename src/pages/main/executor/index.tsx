@@ -98,7 +98,8 @@ class ExecutorMainDataList extends React.Component<MainDataListProps> {
                   );
                 } else {
                   await this.props.supervise!.returnSuperviseData(
-                    this.returnId
+                    this.returnId,
+                    vals["comment"]
                   );
                 }
                 message.success("退回成功！");

@@ -29,6 +29,7 @@ import "./detail.less";
 import { ExceptionResultTitle, ExamineComment } from "./components";
 import { formatTimeYMD } from "utils/TimeUtil";
 import { AnalysisReport } from "components/modal";
+import { ReturnClueModal } from "pages/clueJudge/modals";
 
 const { confirm } = Modal;
 const { TextArea } = Input;
@@ -56,6 +57,7 @@ class CaseSuperviseDetail extends React.Component<ClueJudgeDetailProps> {
 
   state = {
     breadscrumData: [],
+    showReturnModal: false,
     dataFlow: [] as { flowType: string; createdTime: number }[],
     superviseData: {} as SuperviseData,
     relatedUnit: "",
@@ -465,17 +467,64 @@ class CaseSuperviseDetail extends React.Component<ClueJudgeDetailProps> {
                         bgColor="#FF3F11"
                         fontColor="#FFFFFF"
                         onClick={() => {
+                          this.setState({
+                            showReturnModal: true
+                          });
+                        }}
+                      >
+                        退回
+                      </ColorButton>
+                      <ReturnClueModal
+                        visiable={this.state.showReturnModal}
+                        onConfirm={async comment => {
+                          await supervise.returnSuperviseData(
+                            this.state.superviseData.id as number,
+                            comment
+                          );
+                          this.setState(
+                            {
+                              showReturnModal: false
+                            },
+                            () => {
+                              message.success("退回成功！");
+                              history.goBack();
+                            }
+                          );
+                        }}
+                        onCancel={() =>
+                          this.setState({
+                            showReturnModal: false
+                          })
+                        }
+                      ></ReturnClueModal>
+                    </>
+                  )}
+                {status === "pendingExamine" &&
+                  (main.userProfile.role === "DEPARTMENT_LEADER" ||
+                    main.userProfile.role === "LEADERSHIP") && (
+                    <>
+                      <ColorButton
+                        bgColor="#4084F0"
+                        fontColor="#FFFFFF"
+                        onClick={() => {
+                          if (_.isEmpty(this.state.comment)) {
+                            message.warning("请填写审批意见");
+                            return;
+                          }
                           confirm({
                             title: "操作确认",
                             icon: (
                               <ExclamationCircleOutlined translate="true" />
                             ),
-                            content: "确认要退回吗？",
+                            content: "确认要提交吗？",
                             onOk: async () => {
-                              await supervise.returnSuperviseData(
-                                this.state.superviseData.id as number
+                              await supervise.addSuperviseProcessData(
+                                superviseId,
+                                {
+                                  comment: this.state.comment
+                                }
                               );
-                              message.success("退回成功！");
+                              message.success("提交成功！");
                               history.goBack();
                             },
                             onCancel() {
@@ -484,43 +533,40 @@ class CaseSuperviseDetail extends React.Component<ClueJudgeDetailProps> {
                           });
                         }}
                       >
-                        退回
+                        提交
+                      </ColorButton>
+                      <ColorButton
+                        bgColor="#FF3F11"
+                        fontColor="#FFFFFF"
+                        onClick={() => {
+                          if (_.isEmpty(this.state.comment)) {
+                            message.warning("请填写审批意见");
+                            return;
+                          }
+                          Modal.confirm({
+                            title: "确认操作",
+                            content: "是否驳回？",
+                            okText: "是",
+                            cancelText: "否",
+                            onOk: async () => {
+                              await supervise.addSuperviseRejectData(
+                                this.props.match.params.superviseId,
+                                {
+                                  comment: this.state.comment
+                                }
+                              );
+                              message.success("驳回成功！");
+                              history.goBack();
+                            },
+                            onCancel() {
+                              console.log("Cancel");
+                            }
+                          });
+                        }}
+                      >
+                        驳回
                       </ColorButton>
                     </>
-                  )}
-                {status === "pendingExamine" &&
-                  (main.userProfile.role === "DEPARTMENT_LEADER" ||
-                    main.userProfile.role === "LEADERSHIP") && (
-                    <ColorButton
-                      bgColor="#4084F0"
-                      fontColor="#FFFFFF"
-                      onClick={() => {
-                        if (_.isEmpty(this.state.comment)) {
-                          message.warning("请填写审批意见");
-                          return;
-                        }
-                        confirm({
-                          title: "操作确认",
-                          icon: <ExclamationCircleOutlined translate="true" />,
-                          content: "确认要提交吗？",
-                          onOk: async () => {
-                            await supervise.addSuperviseProcessData(
-                              superviseId,
-                              {
-                                comment: this.state.comment
-                              }
-                            );
-                            message.success("提交成功！");
-                            history.goBack();
-                          },
-                          onCancel() {
-                            console.log("Cancel");
-                          }
-                        });
-                      }}
-                    >
-                      提交
-                    </ColorButton>
                   )}
                 {status === "examined" &&
                   main.userProfile.role === "NORMAL_USER" && (

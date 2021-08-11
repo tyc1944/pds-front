@@ -214,8 +214,10 @@ export default class SuperviseStore {
     await axios.post(`/api/supervise/${superviseId}/reject`, processInfo);
   }
 
-  async returnSuperviseData(clueId: number) {
-    await axios.put(`/api/supervise/${clueId}/return`);
+  async returnSuperviseData(clueId: number, comment: string) {
+    await axios.put(`/api/supervise/${clueId}/return`, {
+      comment
+    });
   }
 
   async assignSuperviseData(
