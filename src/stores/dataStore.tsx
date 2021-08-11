@@ -228,7 +228,14 @@ export default class DataStore {
   }
 
   getWikiProcuratorialDocumentDownload(id: string) {
-    return axios.get(`/api/wiki/procuratorateDocument/${id}/download`);
+    axios
+      .get(`/api/wiki/procuratorateDocument/${id}/download`, {
+        responseType: "blob"
+      })
+      .then(res => {
+        var fileDownload = require("js-file-download");
+        fileDownload(res.data, "无锡检察文书.docx");
+      });
   }
 
   getWikiCourtDocument(params: WikiCourtDocumentSearch) {
@@ -242,7 +249,14 @@ export default class DataStore {
   }
 
   getWikiCourtDocumentDonwload(id: string) {
-    return axios.get(`/api/wiki/courtDocument/${id}/download`);
+    axios
+      .get(`/api/wiki/courtDocument/${id}/download`, {
+        responseType: "blob"
+      })
+      .then(res => {
+        var fileDownload = require("js-file-download");
+        fileDownload(res.data, "无锡法院文书.docx");
+      });
   }
 
   getWikiAministrationData(params: WikiAdministrationSearch) {
@@ -255,6 +269,17 @@ export default class DataStore {
     return axios.get(`/api/wiki/administration/${id}`);
   }
 
+  getWikiAdministrationDonwload(id: string) {
+    axios
+      .get(`/api/wiki/administration/${id}/download`, {
+        responseType: "blob"
+      })
+      .then(res => {
+        var fileDownload = require("js-file-download");
+        fileDownload(res.data, "无锡行政案件.docx");
+      });
+  }
+
   getWikiExecutionData(params: WikiExecutionSearch) {
     return axios.get("/api/wiki/execution", {
       params
@@ -263,6 +288,17 @@ export default class DataStore {
 
   getWikiExecutionDataDetail(id: string) {
     return axios.get(`/api/wiki/execution/${id}/dataMap`);
+  }
+
+  getWikiExecutionDonwload(id: string) {
+    axios
+      .get(`/api/wiki/execution/${id}/download`, {
+        responseType: "blob"
+      })
+      .then(res => {
+        var fileDownload = require("js-file-download");
+        fileDownload(res.data, "无锡执行案件.docx");
+      });
   }
 
   getStatisticsCityCaseRank() {
