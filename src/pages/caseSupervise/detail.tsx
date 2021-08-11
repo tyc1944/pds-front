@@ -30,6 +30,7 @@ import { ExceptionResultTitle, ExamineComment } from "./components";
 import { formatTimeYMD } from "utils/TimeUtil";
 import { AnalysisReport } from "components/modal";
 import { ReturnClueModal } from "pages/clueJudge/modals";
+import { AssignCaseModal } from "./modals";
 
 const { confirm } = Modal;
 const { TextArea } = Input;
@@ -56,6 +57,7 @@ class CaseSuperviseDetail extends React.Component<ClueJudgeDetailProps> {
   } as { [key: string]: string };
 
   state = {
+    showAppointModal: false,
     breadscrumData: [],
     showReturnModal: false,
     dataFlow: [] as { flowType: string; createdTime: number }[],
@@ -601,6 +603,61 @@ class CaseSuperviseDetail extends React.Component<ClueJudgeDetailProps> {
                       提交
                     </ColorButton>
                   )}
+
+                {status === "pendingAppoint" && (
+                  <>
+                    <AssignCaseModal
+                      visiable={this.state.showAppointModal}
+                      superviseData={this.state.superviseData}
+                      title="指派案件"
+                      onCancel={() => {
+                        this.setState({
+                          showAppointModal: false
+                        });
+                      }}
+                      onConfirm={async res => {
+                        if (res.transfer) {
+                          await supervise.transferSuperviseData(
+                            this.state.superviseData.id!,
+                            {
+                              comment: res.comment,
+                              unit: res.departmentName.split(",")[0],
+                              department: res.departmentName.split(",")[1]
+                            }
+                          );
+                        } else {
+                          await supervise.assignSuperviseData(
+                            this.state.superviseData.id!,
+                            {
+                              accountId: res.executorId
+                            }
+                          );
+                        }
+                        message.success("操作完成！");
+                        this.setState(
+                          {
+                            showAppointModal: false
+                          },
+                          () => {
+                            history.goBack();
+                          }
+                        );
+                      }}
+                    />
+                    <ColorButton
+                      bgColor="#FFFFFF"
+                      fontColor="#1E1E1E"
+                      onClick={() =>
+                        this.setState({
+                          showAppointModal: true
+                        })
+                      }
+                    >
+                      指派
+                    </ColorButton>
+                  </>
+                )}
+
                 <ColorButton
                   bgColor="#FFFFFF"
                   fontColor="#1E1E1E"

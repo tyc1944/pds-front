@@ -16,7 +16,12 @@ import {
 import { ColorButton } from "components/buttons";
 import { formatTimeYMDHMS } from "utils/TimeUtil";
 import { CASE_CATEGORY, CLUE_SOURCE } from "common";
-import { AddressMapModal, FinishJudgeModal, ReturnClueModal } from "./modals";
+import {
+  AddressMapModal,
+  AssignClueModal,
+  FinishJudgeModal,
+  ReturnClueModal
+} from "./modals";
 import { ClueProcessInfo } from "./processInfo";
 import MainStore from "stores/mainStore";
 import { ExamineComment } from "./components";
@@ -49,7 +54,8 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
     comment: "",
     showFinishJudgeModal: false,
     showAnalysisReportModal: false,
-    showReturnClueModal: false
+    showReturnClueModal: false,
+    showAssignClueModal: false
   };
 
   componentDidMount() {
@@ -555,6 +561,49 @@ class ClueJudgeDetail extends React.Component<ClueJudgeDetailProps> {
                       </ColorButton>
                     </>
                   )}
+                {clueData.status === "pendingAppoint" && (
+                  <>
+                    <AssignClueModal
+                      clueData={this.state.clueData}
+                      title="指派线索"
+                      visiable={this.state.showAssignClueModal}
+                      onCancel={() =>
+                        this.setState({
+                          showAssignClueModal: false
+                        })
+                      }
+                      onConfirm={async res => {
+                        if (res.transfer) {
+                          await clue.transferClueData(this.state.clueData.id!, {
+                            comment: res.comment,
+                            unit: res.departmentName.split(",")[0],
+                            department: res.departmentName.split(",")[1]
+                          });
+                        } else {
+                          await clue.assignClueData(this.state.clueData.id!, {
+                            accountId: res.executorId
+                          });
+                          history.goBack();
+                        }
+                        message.success("操作完成！");
+                        this.setState({
+                          showAssignClueModal: false
+                        });
+                      }}
+                    ></AssignClueModal>
+                    <ColorButton
+                      bgColor="#FFFFFF"
+                      fontColor="#1E1E1E"
+                      onClick={() =>
+                        this.setState({
+                          showAssignClueModal: true
+                        })
+                      }
+                    >
+                      指派
+                    </ColorButton>
+                  </>
+                )}
                 <ColorButton
                   bgColor="#FFFFFF"
                   fontColor="#1E1E1E"
