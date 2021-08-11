@@ -74,7 +74,11 @@ axios.interceptors.response.use(
     }
     if (error.response.status === 400) {
       if (error.response.data.error === "invalid_grant") {
-        message.error("用户名或密码错误");
+        if (error.response.data.error_description.indexOf("locked") !== -1) {
+          message.error("该账户已锁定");
+        } else {
+          message.error("用户名或密码错误");
+        }
       } else {
         message.warning(error.response.data.detail);
       }
