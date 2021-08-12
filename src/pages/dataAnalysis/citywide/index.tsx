@@ -4,7 +4,7 @@ import { BoxContainer, BoxContainerInner } from "components/layout";
 import { TableListOpsHelper } from "components/table/tableListOpsContext";
 import { Row, Col } from "antd";
 import {
-  OptionsDateRangePicker,
+  OptionsDateRangePicker1,
   TableListOpsValueType
 } from "components/table/tableListOpsComponents";
 import { ChartRow } from "../components";
@@ -40,31 +40,37 @@ class CitywideDataAnalysis extends React.Component {
         <Breadscrum data={["决策辅助"]}></Breadscrum>
         <BoxContainer>
           <BoxContainerInner>
-            {/* <TableListOpsHelper
-                        onChanged={changed =>
-                            this.setState({
-                                changed
-                            })
-                        }
-                        initData={this.state.changed}
-                    >
-                        <div style={{
-                            margin: '18px 0px 0 0',
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "space-between",
-                            height: '100%'
-                        }}>
-                            <div>
-                                <Row >
-                                    <Col xl={2} xs={4} style={{ color: '#9099A2' }}>统计时段</Col>
-                                    <Col>
-                                        <OptionsDateRangePicker name={["processedDateStart", "processedDateEnd"]}></OptionsDateRangePicker>
-                                    </Col>
-                                </Row>
-                            </div>
-                        </div>
-                    </TableListOpsHelper> */}
+            <TableListOpsHelper
+              onChanged={changed =>
+                this.setState({
+                  changed
+                })
+              }
+              initData={this.state.changed}
+            >
+              <div
+                style={{
+                  margin: "18px 0px 0 0",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                  height: "100%"
+                }}
+              >
+                <div>
+                  <Row>
+                    <Col xl={2} xs={4} style={{ color: "#9099A2" }}>
+                      统计时段
+                    </Col>
+                    <Col>
+                      <OptionsDateRangePicker1
+                        name={["processedDateStart", "processedDateEnd"]}
+                      ></OptionsDateRangePicker1>
+                    </Col>
+                  </Row>
+                </div>
+              </div>
+            </TableListOpsHelper>
             <div
               style={{
                 margin: "18px 0px 0 0",

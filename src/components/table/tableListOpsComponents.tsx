@@ -753,7 +753,7 @@ export const OptionsDateRangePicker = ({
             initValue &&
             initValue.length === 2 &&
             formatTimeYMDHMS(initValue[0]) === currentMounthDate[0] &&
-              formatTimeYMDHMS(initValue[1]) === currentMounthDate[1]
+            formatTimeYMDHMS(initValue[1]) === currentMounthDate[1]
               ? "selected"
               : ""
           }`}
@@ -808,7 +808,229 @@ export const OptionsDateRangePicker = ({
             initValue &&
             initValue.length === 2 &&
             formatTimeYMDHMS(initValue[0]) === currentYearDate[0] &&
-              formatTimeYMDHMS(initValue[1]) === currentYearDate[1]
+            formatTimeYMDHMS(initValue[1]) === currentYearDate[1]
+              ? "selected"
+              : ""
+          }`}
+        >
+          近一年
+        </div>
+        <div>
+          <RangePicker
+            value={initValue}
+            allowClear
+            onChange={date => {
+              let changedVal: Array<TableListOpsValueType> = [];
+              if (date) {
+                if (date[0]) {
+                  changedVal.push({
+                    name: name[0],
+                    value: getDayStartDate(date[0].valueOf())
+                  });
+                } else {
+                  changedVal.push({
+                    name: name[0],
+                    value: undefined
+                  });
+                }
+                if (date[1]) {
+                  changedVal.push({
+                    name: name[1],
+                    value: getDayEndDate(date[1].valueOf())
+                  });
+                } else {
+                  changedVal.push({
+                    name: name[1],
+                    value: undefined
+                  });
+                }
+              } else {
+                if (!supportUnlimited) {
+                  changedVal.push({
+                    name: name[0],
+                    value: currentMounthDate[0]
+                  });
+                  changedVal.push({
+                    name: name[1],
+                    value: currentMounthDate[1]
+                  });
+                } else {
+                  changedVal.push({
+                    name: name[0],
+                    value: undefined
+                  });
+                  changedVal.push({
+                    name: name[1],
+                    value: undefined
+                  });
+                }
+              }
+              updateChange(changedVal);
+            }}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const OptionsDateRangePicker1 = ({
+  name = ["startDate", "endDate"],
+  title,
+  style = {},
+  supportUnlimited = true
+}: {
+  supportUnlimited?: boolean;
+} & TableListOpsProps) => {
+  const { updateChange, getChange } = useContext(TableListOpsContext);
+  const currentMounthDate = [
+    formatTimeYMD(new Date()),
+    formatTimeYMD(moment().subtract(30, "days"))
+  ];
+  const lastMonthDate = [
+    formatTimeYMD(new Date()),
+    formatTimeYMD(moment().subtract(60, "days"))
+  ];
+  const currentYearDate = [
+    formatTimeYMD(new Date()),
+    formatTimeYMD(moment().subtract(365, "days"))
+  ];
+
+  let initValue = getChange()
+    .filter(data => name.indexOf(data.name) !== -1)
+    .map(data => moment(data.value)) as RangeValue<moment.Moment>;
+
+  useEffect(() => {
+    if (!supportUnlimited) {
+      updateChange(
+        [
+          {
+            name: name[0],
+            value: currentMounthDate[0]
+          },
+          {
+            name: name[1],
+            value: currentMounthDate[1]
+          }
+        ],
+        "本月"
+      );
+    }
+  }, [supportUnlimited]);
+
+  return (
+    <div>
+      {title && (
+        <span style={{ padding: "0 10px", color: style.color }}>{title}</span>
+      )}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-start",
+          alignItems: "center"
+        }}
+      >
+        {supportUnlimited && (
+          <div
+            onClick={() =>
+              updateChange([
+                {
+                  name: name[0],
+                  value: undefined
+                },
+                {
+                  name: name[1],
+                  value: undefined
+                }
+              ])
+            }
+            className={`selectOption ${
+              !initValue || initValue.length !== 2 || !initValue[0]
+                ? "selected"
+                : ""
+            }`}
+          >
+            不限
+          </div>
+        )}
+
+        <div
+          onClick={() =>
+            updateChange(
+              [
+                {
+                  name: name[0],
+                  value: currentMounthDate[0]
+                },
+                {
+                  name: name[1],
+                  value: currentMounthDate[1]
+                }
+              ],
+              "本月"
+            )
+          }
+          className={`selectOption ${
+            initValue &&
+            initValue.length === 2 &&
+            formatTimeYMD(initValue[0]) === currentMounthDate[0] &&
+            formatTimeYMD(initValue[1]) === currentMounthDate[1]
+              ? "selected"
+              : ""
+          }`}
+        >
+          近30天
+        </div>
+
+        <div
+          onClick={() =>
+            updateChange(
+              [
+                {
+                  name: name[0],
+                  value: lastMonthDate[0]
+                },
+                {
+                  name: name[1],
+                  value: lastMonthDate[1]
+                }
+              ],
+              "上个月"
+            )
+          }
+          className={`selectOption ${
+            initValue &&
+            initValue.length === 2 &&
+            formatTimeYMD(initValue[0]) === lastMonthDate[0] &&
+            formatTimeYMD(initValue[1]) === lastMonthDate[1]
+              ? "selected"
+              : ""
+          }`}
+        >
+          近90天
+        </div>
+
+        <div
+          onClick={() =>
+            updateChange(
+              [
+                {
+                  name: name[0],
+                  value: currentYearDate[0]
+                },
+                {
+                  name: name[1],
+                  value: currentYearDate[1]
+                }
+              ],
+              "近一年"
+            )
+          }
+          className={`selectOption ${
+            initValue &&
+            initValue.length === 2 &&
+            formatTimeYMD(initValue[0]) === currentYearDate[0] &&
+            formatTimeYMD(initValue[1]) === currentYearDate[1]
               ? "selected"
               : ""
           }`}

@@ -1,6 +1,8 @@
 import moment, { Moment } from "moment";
 
-const formatTimeYMD = (dateString: number | string | Date | null | undefined) => {
+const formatTimeYMD = (
+  dateString: number | string | Date | Moment | null | undefined
+) => {
   if (dateString) {
     return moment(dateString).format("YYYY-MM-DD");
   } else {
@@ -8,11 +10,13 @@ const formatTimeYMD = (dateString: number | string | Date | null | undefined) =>
   }
 };
 
-const formatTimeYMDHMS = (dateString: number | string | Date | Moment | null | undefined) => {
+const formatTimeYMDHMS = (
+  dateString: number | string | Date | Moment | null | undefined
+) => {
   if (dateString) {
     return moment(dateString).format("YYYY-MM-DD HH:mm:ss");
   } else {
-    return "--"
+    return "--";
   }
 };
 
@@ -78,14 +82,7 @@ export const getYearStartDate = () => {
 export const getYearEndDate = () => {
   let now = new Date();
   let nowYear = now.getFullYear();
-  return new Date(
-    nowYear,
-    11,
-    31,
-    23,
-    59,
-    59
-  );
+  return new Date(nowYear, 11, 31, 23, 59, 59);
 };
 
 export const getLastMonthStartDate = () => {
@@ -119,9 +116,4 @@ const getMonthDays = (nowYear: any, nowMonth: any) => {
   return (monthEndDate - monthStartDate) / (1000 * 60 * 60 * 24);
 };
 
-export {
-  getDayStartDate,
-  getDayEndDate,
-  formatTimeYMD,
-  formatTimeYMDHMS
-};
+export { getDayStartDate, getDayEndDate, formatTimeYMD, formatTimeYMDHMS };
