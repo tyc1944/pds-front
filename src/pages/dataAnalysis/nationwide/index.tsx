@@ -50,11 +50,11 @@ class NationwideDataAnalysis extends React.Component {
         <BoxContainer>
           <BoxContainerInner>
             <TableListOpsHelper
-              onChanged={changed =>
+              onChanged={changed => {
                 this.setState({
                   changed
-                })
-              }
+                });
+              }}
               initData={this.state.changed}
             >
               <div
