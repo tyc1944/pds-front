@@ -49,7 +49,7 @@ class NationwideDataAnalysis extends React.Component {
         <Breadscrum data={["决策辅助"]}></Breadscrum>
         <BoxContainer>
           <BoxContainerInner>
-            <TableListOpsHelper
+            {/* <TableListOpsHelper
               onChanged={changed => {
                 this.setState({
                   changed
@@ -79,7 +79,7 @@ class NationwideDataAnalysis extends React.Component {
                   </Row>
                 </div>
               </div>
-            </TableListOpsHelper>
+            </TableListOpsHelper> */}
           </BoxContainerInner>
           <BoxContainerInner flex={1} noPadding noBorder>
             <ChartRow

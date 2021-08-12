@@ -40,7 +40,7 @@ class CitywideDataAnalysis extends React.Component {
         <Breadscrum data={["决策辅助"]}></Breadscrum>
         <BoxContainer>
           <BoxContainerInner>
-            <TableListOpsHelper
+            {/* <TableListOpsHelper
               onChanged={changed =>
                 this.setState({
                   changed
@@ -70,7 +70,7 @@ class CitywideDataAnalysis extends React.Component {
                   </Row>
                 </div>
               </div>
-            </TableListOpsHelper>
+            </TableListOpsHelper> */}
             <div
               style={{
                 margin: "18px 0px 0 0",
