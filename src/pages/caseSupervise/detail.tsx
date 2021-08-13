@@ -29,7 +29,7 @@ import "./detail.less";
 import { ExceptionResultTitle, ExamineComment } from "./components";
 import { formatTimeYMD } from "utils/TimeUtil";
 import { AnalysisReport } from "components/modal";
-import { ReturnClueModal } from "pages/clueJudge/modals";
+import { AddressMapModal, ReturnClueModal } from "pages/clueJudge/modals";
 import { AssignCaseModal } from "./modals";
 
 const { confirm } = Modal;
@@ -74,7 +74,9 @@ class CaseSuperviseDetail extends React.Component<ClueJudgeDetailProps> {
       content: string;
       downloadPath: string;
     }[],
-    showAnalysisReportModal: false
+    showAnalysisReportModal: false,
+    showAddressModal: false,
+    currentSelectAddress: ""
   };
 
   componentDidMount() {
@@ -195,6 +197,17 @@ class CaseSuperviseDetail extends React.Component<ClueJudgeDetailProps> {
           flexDirection: "column"
         }}
       >
+        <AddressMapModal
+          title="案发地址"
+          onCancel={() =>
+            this.setState({
+              showAddressModal: false,
+              currentSelectAddress: ""
+            })
+          }
+          visiable={this.state.showAddressModal}
+          address={this.state.currentSelectAddress}
+        ></AddressMapModal>
         {this.state.showAnalysisReportModal && (
           <AnalysisReport
             id={this.props.match.params.superviseId}
@@ -257,6 +270,12 @@ class CaseSuperviseDetail extends React.Component<ClueJudgeDetailProps> {
                   }
                   return (
                     <CloseableDataTable
+                      onAddressClick={address => {
+                        this.setState({
+                          showAddressModal: true,
+                          currentSelectAddress: address
+                        });
+                      }}
                       dataInfo={this.generateDataTableFormatDataFromString(
                         item.rawData
                       )}

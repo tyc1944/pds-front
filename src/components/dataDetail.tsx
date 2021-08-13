@@ -151,7 +151,9 @@ export const CloseableDataTable = (props: {
                           overflowY: "auto"
                         }}
                       >
-                        {k === "案发地址" || k === "发生地点" ? (
+                        {k === "案发地址" ||
+                        k === "发生地点" ||
+                        k === "发案地址" ? (
                           <span
                             style={{
                               textDecoration: "underline",
