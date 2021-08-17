@@ -11,8 +11,8 @@ FROM registry.yunmotec.com:1443/nginx:latest
 ARG ENV
 COPY ci/nginx.conf /tmp
 COPY ci/setArg.sh /tmp
-COPY nginx-selfsigned.crt /etc/nginx/
-COPY nginx-selfsigned.key /etc/nginx/
+COPY ci/nginx-selfsigned.crt /etc/nginx/
+COPY ci/nginx-selfsigned.key /etc/nginx/
 RUN chmod u+x /tmp/setArg.sh && /tmp/setArg.sh $ENV
 COPY --from=builder build /var/www/html
 EXPOSE 80
