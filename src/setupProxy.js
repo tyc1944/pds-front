@@ -1,7 +1,7 @@
 const proxy = require("http-proxy-middleware");
 
 const devServer = "192.168.102.133:8081";
-const qaServer = "10.233.55.1";
+const qaServer = "10.234.55.149";
 
 module.exports = function(app) {
   let testServer = "";

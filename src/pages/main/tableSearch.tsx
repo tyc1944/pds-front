@@ -137,6 +137,7 @@ export const TrialCaseSearch = inject("main")(
           <div>
             <SingleSelector
               title="裁判年份"
+              name="judgementYear"
               selectItems={[
                 {
                   title: "2018",
