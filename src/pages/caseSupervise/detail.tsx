@@ -184,6 +184,7 @@ class CaseSuperviseDetail extends React.Component<ClueJudgeDetailProps> {
     const { supervise, main, history } = this.props;
     const {
       status,
+      statusAction,
       exceptionContent,
       receptionInformation,
       exceptionResult
@@ -484,17 +485,19 @@ class CaseSuperviseDetail extends React.Component<ClueJudgeDetailProps> {
                       >
                         提交
                       </ColorButton>
-                      <ColorButton
-                        bgColor="#FF3F11"
-                        fontColor="#FFFFFF"
-                        onClick={() => {
-                          this.setState({
-                            showReturnModal: true
-                          });
-                        }}
-                      >
-                        退回
-                      </ColorButton>
+                      {statusAction !== "REJECT" && (
+                        <ColorButton
+                          bgColor="#FF3F11"
+                          fontColor="#FFFFFF"
+                          onClick={() => {
+                            this.setState({
+                              showReturnModal: true
+                            });
+                          }}
+                        >
+                          退回
+                        </ColorButton>
+                      )}
                       <ReturnClueModal
                         visiable={this.state.showReturnModal}
                         onConfirm={async comment => {

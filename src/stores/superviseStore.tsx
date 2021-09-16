@@ -9,6 +9,7 @@ const FileDownload = require("js-file-download");
 export interface SuperviseData {
   id: number;
   status: string;
+  statusAction: string;
   exceptionResult: string;
   exceptionContent: string;
   relatedDate: number;
