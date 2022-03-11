@@ -80,6 +80,8 @@ export const TableSearch = (props: {
                 defaultValue="不限"
                 selectItems={[
                   "不限",
+                  "2022年",
+                  "2021年",
                   "2020年",
                   "2019年",
                   "2018年",

@@ -113,7 +113,7 @@ class MainLayout extends Component<MainLayoutProps, object> {
                 marginRight: "15px"
               }}
             ></img>
-            无锡市人民检察院知识产权检察监督信息平台
+            知识产权检察监督信息平台（新吴区人民检察院）
           </div>
           <div className="mainSearch">
             <Input
