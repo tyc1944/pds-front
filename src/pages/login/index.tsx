@@ -31,8 +31,8 @@ class Login extends React.Component<MainLayoutProps> {
             <img
               alt=""
               src="img/login_logo.png"
-              width="1051px"
-              height="253px"
+              width="613px"
+              height="241px"
             ></img>
           </div>
           <div>
