@@ -131,7 +131,7 @@ export const CloseableDataTable = (props: {
                 let tmp = [];
                 for (let k in item) {
                   let tmpContent = item[k];
-                  let isLongContent = tmpContent && item[k].length > 30;
+                  let isLongContent = tmpContent && item[k].length >= 24;
                   tmp.push(
                     <Fragment key={k}>
                       <div
