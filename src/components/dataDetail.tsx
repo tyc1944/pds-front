@@ -94,7 +94,7 @@ export const DataProcessStep = (props: {
 
 const getShortText = (longText: string) => {
   if (longText) {
-    return longText.substring(0, 30) + "...";
+    return longText.substring(0, 24) + "...";
   }
   return "";
 };
