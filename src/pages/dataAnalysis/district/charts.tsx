@@ -14,6 +14,15 @@ export const ClueRankChart = inject("data")((props: { data?: DataStore }) => {
       let tmp = _.reverse(res.data);
       var myChart = echarts.init(divRef.current as HTMLDivElement);
       var option = {
+        tooltip: {
+          trigger: "axis" as "none" | "axis" | "item" | undefined,
+          axisPointer: {
+            type: "cross" as "line" | "none" | "cross" | "shadow" | undefined,
+            label: {
+              backgroundColor: "#6a7985"
+            }
+          }
+        },
         xAxis: {
           type: "category" as "time" | "category" | "value" | "log" | undefined,
           data: tmp.map((item: any) => item.year)

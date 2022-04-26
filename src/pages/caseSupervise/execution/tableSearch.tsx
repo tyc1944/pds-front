@@ -4,7 +4,8 @@ import {
   TableListOpsValueType,
   InputWithoutIcon,
   SingleSelectionGroup,
-  MultiSelectionGroup
+  MultiSelectionGroup,
+  OptionsDateRangePicker
 } from "components/table/tableListOpsComponents";
 import { Row, Col } from "antd";
 import { ColorButton } from "components/buttons";
@@ -86,22 +87,9 @@ export const CivilCaseTableSearch = inject("main")(
                 执行年份
               </Col>
               <Col>
-                <SingleSelectionGroup
-                  name="executeYear"
-                  defaultValue="不限"
-                  selectItems={[
-                    "不限",
-                    "2022年",
-                    "2021年",
-                    "2020年",
-                    "2019年",
-                    "2018年",
-                    "2017年",
-                    "2016年",
-                    "2015年",
-                    "2014年"
-                  ]}
-                />
+                <OptionsDateRangePicker
+                  name={["executionDateStart", "executionDateEnd"]}
+                ></OptionsDateRangePicker>
               </Col>
             </Row>
           </div>

@@ -87,22 +87,9 @@ export const CivilCaseTableSearch = inject("main")(
                 裁判年份
               </Col>
               <Col>
-                <SingleSelectionGroup
-                  name="judgementYear"
-                  defaultValue="不限"
-                  selectItems={[
-                    "不限",
-                    "2022年",
-                    "2021年",
-                    "2020年",
-                    "2019年",
-                    "2018年",
-                    "2017年",
-                    "2016年",
-                    "2015年",
-                    "2014年"
-                  ]}
-                />
+                <OptionsDateRangePicker
+                  name={["judgementDateStart", "judgementDateEnd"]}
+                ></OptionsDateRangePicker>
               </Col>
             </Row>
           </div>
@@ -263,7 +250,7 @@ export const CriminalCaseTableSearch = inject("main")(
               </Col>
               <Col>
                 <OptionsDateRangePicker
-                  name={["reportDateStart", "reportDateEnd"]}
+                  name={["judgementDateStart", "judgementDateEnd"]}
                 ></OptionsDateRangePicker>
               </Col>
             </Row>

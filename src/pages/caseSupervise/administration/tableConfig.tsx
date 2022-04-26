@@ -14,12 +14,14 @@ const tmpTableColum = [
   {
     title: "序号",
     dataIndex: "id",
-    key: "id"
+    key: "id",
+    sorter: (a: any, b: any) => a.id - b.id
   },
   {
     title: "立案时间",
     dataIndex: ["adminSuperviseDetailData", "filingTime"],
     key: "filingTime",
+    //sorter: (a: any, b: any) => a.earliestReportedDate - b.earliestReportedDate,
     render: (val: string) => (val ? formatTimeYMD(val) : "")
   },
   {
