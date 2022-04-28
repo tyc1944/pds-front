@@ -2,6 +2,7 @@ import React from "react";
 import { Space } from "antd";
 import { formatTimeYMD } from "utils/TimeUtil";
 import { DATA_STATUS_ACTION, ALL_CASE_CATEGORY, CLUE_SOURCE } from "common";
+import { SortOrder } from "antd/es/table/interface";
 
 export const TableColumn = (
   onDetailClick: (id: number) => void,
@@ -10,12 +11,15 @@ export const TableColumn = (
   {
     title: "序号",
     dataIndex: "id",
-    key: "id"
+    key: "id",
+    sorter: (a: any, b: any) => a.id - b.id,
+    defaultSortOrder: "ascend" as SortOrder
   },
   {
     title: "最早报案日期",
     dataIndex: "earliestReportedDate",
     key: "earliestReportedDate",
+    sorter: (a: any, b: any) => a.earliestReportedDate - b.earliestReportedDate,
     render: (val: number) => (val ? formatTimeYMD(val) : "")
   },
   {

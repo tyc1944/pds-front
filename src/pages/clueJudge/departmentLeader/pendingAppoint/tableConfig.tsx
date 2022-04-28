@@ -3,6 +3,7 @@ import { Space } from "antd";
 import { formatTimeYMD } from "utils/TimeUtil";
 import { DATA_STATUS_ACTION, ALL_CASE_CATEGORY, CLUE_SOURCE } from "common";
 import { ClueData } from "stores/clueStore";
+import { SortOrder } from "antd/es/table/interface";
 
 export const TableColumn = (
   onDetailClick: (id: number) => void,
@@ -12,7 +13,8 @@ export const TableColumn = (
     title: "序号",
     dataIndex: "id",
     key: "id",
-    sorter: (a: any, b: any) => a.id - b.id
+    sorter: (a: any, b: any) => a.id - b.id,
+    defaultSortOrder: "ascend" as SortOrder
   },
   {
     title: "最早报案日期",
@@ -24,8 +26,7 @@ export const TableColumn = (
   {
     title: "线索编号",
     dataIndex: "clueCode",
-    key: "clueCode",
-    sorter: (a: any, b: any) => a.clueCode - b.clueCode
+    key: "clueCode"
   },
   {
     title: "案件类别",

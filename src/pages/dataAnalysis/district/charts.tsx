@@ -14,15 +14,6 @@ export const ClueRankChart = inject("data")((props: { data?: DataStore }) => {
       let tmp = _.reverse(res.data);
       var myChart = echarts.init(divRef.current as HTMLDivElement);
       var option = {
-        tooltip: {
-          trigger: "axis" as "none" | "axis" | "item" | undefined,
-          axisPointer: {
-            type: "cross" as "line" | "none" | "cross" | "shadow" | undefined,
-            label: {
-              backgroundColor: "#6a7985"
-            }
-          }
-        },
         xAxis: {
           type: "category" as "time" | "category" | "value" | "log" | undefined,
           data: tmp.map((item: any) => item.year)
@@ -34,6 +25,7 @@ export const ClueRankChart = inject("data")((props: { data?: DataStore }) => {
           {
             data: tmp.map((item: any) => item.clueCount),
             type: "line",
+            itemStyle: { normal: { label: { show: true } } },
             lineStyle: {
               color: "#6691EA"
             }
@@ -91,6 +83,7 @@ export const CaseRankChart = inject("data")((props: { data?: DataStore }) => {
           {
             data: tmpData.map((item: any) => item.count),
             type: "line",
+            itemStyle: { normal: { label: { show: true } } },
             lineStyle: {
               color: "#5760FD",
               shadowColor: "rgba(0, 0, 0, 0.5)",
@@ -736,6 +729,7 @@ export const ClueSuperviseChart = inject("data")(
               data: res.data.map((item: any) => item.count).reverse(),
               type: "bar",
               color: "#817CD6",
+              label: { show: true },
               showBackground: true,
               backgroundStyle: {
                 color: "#EDEDED"
@@ -801,6 +795,7 @@ export const ClueRateRankChart = inject("data")(
             {
               name: "预算 vs 开销（Budget vs spending）",
               type: "radar",
+              label: { show: true },
               lineStyle: {
                 color: "#8594ED"
               },
@@ -888,6 +883,7 @@ export const ProcessedDurationChart = inject("data")(
             {
               name: "线索处理用时",
               data: data1.map((item: any) => item.duration).reverse(),
+              label: { show: true },
               type: "line",
               lineStyle: {
                 shadowColor: "rgba(0, 0, 0, 0.5)",
@@ -900,6 +896,7 @@ export const ProcessedDurationChart = inject("data")(
             {
               name: "监督处理用时",
               data: data2.map((item: any) => item.duration).reverse(),
+              label: { show: true },
               type: "line",
               lineStyle: {
                 shadowColor: "rgba(0, 0, 0, 0.5)",

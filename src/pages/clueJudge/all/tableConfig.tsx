@@ -7,25 +7,26 @@ import {
   CLUE_SOURCE,
   CLUE_STATUS
 } from "common";
+import { SortOrder } from "antd/es/table/interface";
 
 export const TableColumn = (onDetailClick: (id: number) => void) => [
   {
     title: "序号",
     dataIndex: "id",
     key: "id",
-    sorter: (a: any, b: any) => a.id - b.id
+    sorter: (a: any, b: any) => a.id - b.id,
+    defaultSortOrder: "ascend" as SortOrder
   },
   {
     title: "最早报案日期",
     dataIndex: "earliestReportedDate",
-    sorter: (a: any, b: any) => a.earliestReportedDate - b.earliestReportedDate,
     key: "earliestReportedDate",
+    sorter: (a: any, b: any) => a.earliestReportedDate - b.earliestReportedDate,
     render: (val: number) => (val ? formatTimeYMD(val) : "")
   },
   {
     title: "线索编号",
     dataIndex: "clueCode",
-    sorter: (a: any, b: any) => a.clueCode - b.clueCode,
     key: "clueCode"
   },
   {

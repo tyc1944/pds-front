@@ -113,9 +113,13 @@ class MainLayout extends Component<MainLayoutProps, object> {
                 marginRight: "15px"
               }}
             ></img>
-            <div>
-              <div style={{ lineHeight: "25px" }}>知识产权检察监督信息平台</div>
-              <div style={{ lineHeight: "25px" }}>新吴区人民检察院</div>
+            <div style={{ textAlign: "justify", textAlignLast: "justify" }}>
+              <div style={{ lineHeight: "25px", textAlign: "justify" }}>
+                知识产权检察监督信息平台
+              </div>
+              <div style={{ lineHeight: "25px", textAlign: "justify" }}>
+                新吴区人民检察院
+              </div>
             </div>
           </div>
           <div className="mainSearch">

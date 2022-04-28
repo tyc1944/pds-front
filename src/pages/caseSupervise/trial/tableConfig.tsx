@@ -8,17 +8,21 @@ import {
   PendingProcessTempTableColum
 } from "../components";
 import { DATA_STATUS_ACTION } from "common";
+import { SortOrder } from "antd/es/table/interface";
 
 const tmpTableColum = [
   {
     title: "序号",
     dataIndex: "id",
-    key: "id"
+    key: "id",
+    sorter: (a: any, b: any) => a.id - b.id,
+    defaultSortOrder: "ascend" as SortOrder
   },
   {
     title: "案号",
     dataIndex: ["trialSuperviseDetailData", "caseCode"],
-    key: "caseCode"
+    key: "caseCode",
+    sorter: (a: any, b: any) => a.caseCode - b.caseCode
   },
   {
     title: "结案方式",

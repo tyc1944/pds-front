@@ -8,12 +8,15 @@ import {
   PendingExamineForLeaderTempTableColum,
   AllTempTableColum
 } from "../components";
+import { SortOrder } from "antd/es/table/interface";
 
 const civilCaseTempTableColmn = [
   {
     title: "序号",
     dataIndex: "id",
-    key: "id"
+    key: "id",
+    sorter: (a: any, b: any) => a.id - b.id,
+    defaultSortOrder: "ascend" as SortOrder
   },
   {
     title: "案号",

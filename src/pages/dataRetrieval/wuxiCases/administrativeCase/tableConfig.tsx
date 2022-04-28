@@ -7,7 +7,9 @@ export const TableColumn = (onDetailClick: (id: number) => void) => [
   {
     title: "处罚决定文书号",
     dataIndex: "f2",
-    key: "f2"
+    key: "f2",
+    sorter: (a: any, b: any) => a.f2 - b.f2,
+    defaultSortOrder: "ascend" as SortOrder
   },
   {
     title: "当事人",
@@ -24,7 +26,6 @@ export const TableColumn = (onDetailClick: (id: number) => void) => [
     dataIndex: "f8",
     key: "f8",
     sorter: (a: any, b: any) => a.f8 - b.f8,
-    defaultSortOrder: "descend" as SortOrder,
     render: (v: string) => formatTimeYMD(v)
   },
   {

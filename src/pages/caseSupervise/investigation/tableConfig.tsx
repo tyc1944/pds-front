@@ -9,12 +9,15 @@ import {
   PendingProcessTempTableColum,
   AllTempTableColum
 } from "../components";
+import { SortOrder } from "antd/es/table/interface";
 
 const tmpTableColum = [
   {
     title: "序号",
     dataIndex: "id",
-    key: "id"
+    key: "id",
+    sorter: (a: any, b: any) => a.id - b.id,
+    defaultSortOrder: "ascend" as SortOrder
   },
   {
     title: "案件编号",
@@ -25,6 +28,7 @@ const tmpTableColum = [
     title: "报案时间",
     dataIndex: ["investigationSuperviseDetailData", "reportDate"],
     key: "reportDate",
+
     render: (val: number) => formatTimeYMD(val)
   },
   {

@@ -9,19 +9,21 @@ import {
   PendingExamineForLeaderTempTableColum,
   AllTempTableColum
 } from "../components";
+import { SortOrder } from "antd/es/table/interface";
 
 const tmpTableColum = [
   {
     title: "序号",
     dataIndex: "id",
     key: "id",
-    sorter: (a: any, b: any) => a.id - b.id
+    sorter: (a: any, b: any) => a.id - b.id,
+    defaultSortOrder: "ascend" as SortOrder
   },
   {
     title: "立案时间",
     dataIndex: ["adminSuperviseDetailData", "filingTime"],
     key: "filingTime",
-    //sorter: (a: any, b: any) => a.earliestReportedDate - b.earliestReportedDate,
+    sorter: (a: any, b: any) => a.filingTime - b.filingTime,
     render: (val: string) => (val ? formatTimeYMD(val) : "")
   },
   {
